@@ -20,7 +20,7 @@ The clean environment initially had neither pnpm nor an available Corepack comma
 ## Commands reproduced
 
 ```powershell
-git clone --depth 1 https://github.com/GuuFish/wakeintent.git <new-temporary-directory>
+git clone --depth 1 https://github.com/GuuFish/WakeIntent.git <new-temporary-directory>
 pnpm install --frozen-lockfile
 pnpm check
 pnpm demo:alpha -- .wakeintent/external-verification.json

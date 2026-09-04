@@ -2,7 +2,7 @@
 
 [English](README.md) | [简体中文](README.zh-CN.md)
 
-[![CI](https://github.com/GuuFish/wakeintent/actions/workflows/ci.yml/badge.svg)](https://github.com/GuuFish/wakeintent/actions/workflows/ci.yml)
+[![CI](https://github.com/GuuFish/WakeIntent/actions/workflows/ci.yml/badge.svg)](https://github.com/GuuFish/WakeIntent/actions/workflows/ci.yml)
 
 > **Developer component — not an end-user app.** This repository is for
 > developers who want to embed proactive contact decisions into an AI product.
@@ -17,6 +17,28 @@ defer, cancel, expire, resolve, or stay silent.
 > **Status: research Alpha 0.1.** The core engine, local persistence, model
 > adapter, audit trail, and evaluation tooling run today. WakeIntent is not yet a
 > production notification service or a finished chat application.
+
+## Vision
+
+Most conversational AI still lives inside a request-response loop: it speaks
+when called and disappears when the user stops typing. WakeIntent's long-term
+goal is to provide the missing continuity layer—not by making a model think in
+an expensive endless loop, but by letting an assistant preserve a concrete
+reason to reconnect, sleep without polling, and wake only when time or relevant
+new context makes that reason worth reconsidering.
+
+If the project succeeds, an assistant, companion, tutor, recruiter, support
+agent, or other user-authorized AI product could share the same small protocol:
+create a contact intent during normal conversation; revise or invalidate it as
+life changes; revalidate it against current context, policy, relationship, and
+persona; then contact through the host's chosen channel—or deliberately remain
+silent. Different characters may be reserved, warm, or talkative, but none
+should bypass consent, interruption budgets, or explainability.
+
+The ambition is therefore larger than a reminder feature and smaller than a
+general autonomous-agent framework: make thoughtful, accountable continuity a
+reusable piece of AI infrastructure. This is a direction, not a claim that the
+Alpha has already achieved it.
 
 ## Why this exists
 
@@ -95,6 +117,7 @@ nothing when contact is no longer justified.
 - authorization, do-not-disturb, expiry, late-wakeup, and contact-budget policy;
 - idempotent decisions, optimistic revisions, failure backoff, and audit events;
 - recoverable local JSON storage with snapshot migrations;
+- a local structured HTTP reference host with a persistent, receipt-aware outbox;
 - OpenAI-compatible Responses and Chat Completions adapter;
 - deterministic test clock, evaluation datasets, baselines, and token telemetry.
 
@@ -124,9 +147,10 @@ pnpm install --frozen-lockfile
 pnpm check
 ```
 
-`pnpm check` builds and type-checks all five packages, then runs their tests. At
-the independently verified commit `53d5e49`, the expected summary is 178 passing
-tests across 22 test files. The exact count may grow as the project changes.
+`pnpm check` builds and type-checks every workspace package and app, then runs
+their tests. At the independently verified commit `53d5e49`, the summary was
+178 passing tests across five packages and 22 test files. The exact count grows
+as the project changes.
 
 Now run the local Alpha demo twice with the same state file:
 
@@ -178,6 +202,20 @@ message work. The outbox item is explicitly `delivered: false` because message
 generation and delivery remain host responsibilities. This demo uses no API and
 no real user data.
 
+For a persistent local HTTP integration boundary, start the Alpha reference
+host:
+
+```bash
+pnpm host:start
+```
+
+It binds to `127.0.0.1:8787` by default and exposes structured intent,
+evaluation, state, outbox, and delivery-receipt endpoints. It deliberately does
+not accept natural-language chat, call a model, generate a message, or deliver
+one yet. Its purpose is to make the core's host contract runnable and to recover
+the crash window between a committed `contact` decision and outbox enqueue.
+See the [reference host API guide](docs/22-reference-host-api.md).
+
 ## Try a real model
 
 This section is opt-in and spends tokens. `pnpm demo:api` makes at most two
@@ -222,6 +260,7 @@ write detailed, auditable reports under `reports/core-api-smoke/`. The
 | `@wakeintent/store-json` | Single-process local persistence and restart recovery |
 | `@wakeintent/model-openai-compatible` | Structured extraction, routing, and reevaluation model adapter |
 | `@wakeintent/eval` | Baselines, datasets, scoring, and longitudinal evaluation tools |
+| `@wakeintent/reference-host` | Local structured HTTP API, persistent outbox, delivery receipts, and crash recovery |
 
 Packages are currently private workspace packages and are not published to
 npm. The currently supported integration path is to add a host package to this
@@ -257,15 +296,16 @@ cleanup and auditability, but often higher token usage.
 
 WakeIntent currently does not provide:
 
-- a background daemon, hosted API, notification channel, or message delivery;
+- a managed background scheduler, hosted API, notification channel, or message delivery;
 - multi-process writes to one JSON store;
 - a stable npm release or backward-compatibility promise;
 - a role/persona policy or end-user chat UI;
 - proof of lower total cost than every heartbeat implementation.
 
 `contact` means the engine decided that contact is appropriate. It does not mean
-a message was generated, attempted, or delivered. A host application must own
-delivery and feed receipts back through a future delivery contract.
+a message was generated, attempted, or delivered. The reference host now makes
+that delivery contract executable and persistent, but a real host application
+still owns generation and delivery.
 
 ### Terminology
 
@@ -305,6 +345,7 @@ Start with:
 - [Unified execution trace](docs/19-unified-execution-trace.md)
 - [Host integration and delivery boundary](docs/20-host-integration.md)
 - [Recruitment pilot plan](docs/21-recruitment-pilot.md)
+- [Reference host HTTP API](docs/22-reference-host-api.md)
 
 ## Contributing
 

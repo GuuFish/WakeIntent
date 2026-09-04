@@ -18,6 +18,28 @@ importers:
         specifier: ^4.0.0
         version: 4.1.11(@types/node@22.20.1)(vite@8.2.2(@types/node@22.20.1))
 
+  apps/reference-host:
+    dependencies:
+      '@wakeintent/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@wakeintent/schemas':
+        specifier: workspace:*
+        version: link:../../packages/schemas
+      '@wakeintent/store-json':
+        specifier: workspace:*
+        version: link:../../packages/store-json
+    devDependencies:
+      '@types/node':
+        specifier: ^22.0.0
+        version: 22.20.1
+      typescript:
+        specifier: ^5.9.0
+        version: 5.9.3
+      vitest:
+        specifier: ^4.0.0
+        version: 4.1.11(@types/node@22.20.1)(vite@8.2.2(@types/node@22.20.1))
+
   packages/core:
     devDependencies:
       typescript:

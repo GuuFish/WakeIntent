@@ -2,13 +2,21 @@
 
 [English](README.md) | [简体中文](README.zh-CN.md)
 
-[![CI](https://github.com/GuuFish/wakeintent/actions/workflows/ci.yml/badge.svg)](https://github.com/GuuFish/wakeintent/actions/workflows/ci.yml)
+[![CI](https://github.com/GuuFish/WakeIntent/actions/workflows/ci.yml/badge.svg)](https://github.com/GuuFish/WakeIntent/actions/workflows/ci.yml)
 
 > **这是开发者组件，不是开箱即用的应用。** 本仓库面向希望把主动联系决策嵌入 AI 产品的开发者。克隆后得到的是核心引擎、适配器、示例和评测工具；它不会直接启动聊天界面、常驻 AI 助手或自动发送通知。
 
 WakeIntent 是一个面向对话式 AI、与具体框架无关的联系意图引擎。它把对话中“未来值得再次联系用户的理由”转化为可持久化的 `ContactIntent`，并在真正联系前结合最新上下文重新验证，最终决定联系、推迟、取消、过期、标记为已解决或保持沉默。
 
 > **当前状态：研究型 Alpha 0.1。** 核心引擎、本地持久化、模型适配器、审计记录和评测工具现在都可以运行。WakeIntent 还不是生产级通知服务，也不是完整的聊天应用。
+
+## 未来愿景
+
+今天的大多数对话式 AI 仍然被困在“一问一答”里：用户开口时它才出现，用户停止输入后它就消失。WakeIntent 想补上的，是 AI 与用户之间缺失的“连续性层”——不是让模型在昂贵的无限循环里假装一直思考，而是让它在正常对话中保存一个具体的再次联系理由，没有理由时安心休眠，只有时间到达或相关新上下文出现时，才重新醒来判断这件事是否还值得联系。
+
+如果这个方向最终成立，AI 助手、陪伴角色、学习导师、招聘助手、客服以及其他经过用户授权的产品，都可以复用同一套小型协议：在对话中形成联系意图；现实发生变化时修正或使其失效；联系前结合最新上下文、策略、关系和角色人格重新判断；最后通过宿主选择的渠道联系，或者有意识地保持沉默。不同角色可以内向、温暖或更健谈，但都不能绕过用户授权、打扰预算与可解释性。
+
+所以它的野心比“提醒功能”更大，又刻意比“通用自主 Agent 框架”更小：把有分寸、可追责的长期连续性，变成可以被各种 AI 产品嵌入的基础设施。这是项目努力的方向，不代表当前 Alpha 已经实现了全部愿景。
 
 ## 为什么要做 WakeIntent
 
@@ -80,6 +88,7 @@ WakeIntent 把这些职责拆开：
 - 授权、免打扰、过期、迟到唤醒和联系预算策略；
 - 幂等决策、乐观版本控制、失败退避和审计事件；
 - 支持快照迁移和重启恢复的本地 JSON 存储；
+- 带持久化 outbox 和投递回执的本地结构化 HTTP 参考宿主；
 - 兼容 OpenAI Responses API 和 Chat Completions API 的模型适配器；
 - 确定性测试时钟、评测数据集、对照基线和 Token 遥测。
 
@@ -108,7 +117,7 @@ pnpm install --frozen-lockfile
 pnpm check
 ```
 
-`pnpm check` 会构建并类型检查五个包，然后运行全部测试。在经过独立验证的提交 `53d5e49` 上，预期结果为 22 个测试文件、178 项测试全部通过。随着项目继续开发，准确数量可能增加。
+`pnpm check` 会构建并类型检查所有工作区包和应用，然后运行全部测试。在经过独立验证的提交 `53d5e49` 上，结果是五个包、22 个测试文件、178 项测试全部通过。随着项目继续开发，准确数量会继续增加。
 
 接着使用同一个状态文件连续运行两次本地 Alpha 演示：
 
@@ -142,6 +151,14 @@ pnpm demo:host
 ```
 
 它会运行三个合成招聘跟进场景：理由仍然有效、结果已在联系前解决、用户授权状态未知。只有理由有效且已经授权的联系决策会进入宿主 outbox；另外两项不会产生消息工作。outbox 项会明确显示 `delivered: false`，因为消息生成和投递仍是宿主职责。该演示不调用 API，也不包含真实用户数据。
+
+如果要使用可持久化的本地 HTTP 集成边界，可以启动 Alpha 参考宿主：
+
+```bash
+pnpm host:start
+```
+
+它默认监听 `127.0.0.1:8787`，提供结构化意图、重评、状态、outbox 和投递回执接口。当前版本刻意不接收自然语言聊天、不调用模型、不生成消息，也不进行真实投递；这一层的目的，是让核心与宿主之间的契约真正可运行，并能恢复“`contact` 决策已经提交、outbox 尚未写入”这一崩溃窗口。详见[参考宿主 HTTP API 指南](docs/22-reference-host-api.md)。
 
 ## 使用真实模型
 
@@ -181,6 +198,7 @@ pnpm smoke:core-api -- --mode=timing
 | `@wakeintent/store-json` | 单进程本地持久化和重启恢复 |
 | `@wakeintent/model-openai-compatible` | 结构化意图提取、路由和重验证模型适配器 |
 | `@wakeintent/eval` | 基线、数据集、评分和连续时间线评测工具 |
+| `@wakeintent/reference-host` | 本地结构化 HTTP API、持久化 outbox、投递回执与崩溃恢复 |
 
 这些包目前仍是私有工作区包，尚未发布到 npm。当前支持的集成方式是在这个 pnpm workspace 中增加宿主包，并通过 `workspace:*` 依赖所需组件；独立应用暂时无法安装稳定的 npm 版本。参见[宿主集成指南](docs/20-host-integration.md)和可运行的 [`examples/minimal.mjs`](examples/minimal.mjs)。
 
@@ -201,13 +219,13 @@ pnpm smoke:core-api -- --mode=timing
 
 WakeIntent 目前不提供：
 
-- 后台常驻服务、托管 API、通知渠道或真实消息投递；
+- 托管后台调度、云端 API、通知渠道或真实消息投递；
 - 对同一个 JSON 存储的多进程并发写入；
 - 稳定的 npm 版本或向后兼容承诺；
 - 角色人格策略或面向普通用户的聊天界面；
 - 比所有 heartbeat 实现成本更低的证明。
 
-`contact` 只表示引擎认为此时适合联系，不代表消息已经生成、尝试投递或被用户收到。真实投递需要由宿主应用负责，并在未来通过投递契约回传结果。
+`contact` 只表示引擎认为此时适合联系，不代表消息已经生成、尝试投递或被用户收到。参考宿主已经让这套投递契约可以运行和持久化，但消息生成与真实投递仍由实际宿主应用负责。
 
 ### 术语表
 
@@ -242,6 +260,7 @@ WakeIntent 目前不提供：
 - [统一执行追踪](docs/19-unified-execution-trace.md)
 - [宿主集成与投递边界](docs/20-host-integration.md)
 - [招聘跟进试点计划](docs/21-recruitment-pilot.md)
+- [参考宿主 HTTP API](docs/22-reference-host-api.md)
 
 ## 参与贡献
 

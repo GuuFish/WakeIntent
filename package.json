@@ -6,11 +6,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/GuuFish/wakeintent.git"
+    "url": "git+https://github.com/GuuFish/WakeIntent.git"
   },
-  "homepage": "https://github.com/GuuFish/wakeintent#readme",
+  "homepage": "https://github.com/GuuFish/WakeIntent#readme",
   "bugs": {
-    "url": "https://github.com/GuuFish/wakeintent/issues"
+    "url": "https://github.com/GuuFish/WakeIntent/issues"
   },
   "type": "module",
   "engines": {
@@ -26,6 +26,7 @@
     "demo": "pnpm --filter @wakeintent/core build && node examples/minimal.mjs",
     "demo:alpha": "pnpm --filter @wakeintent/core build && pnpm --filter @wakeintent/schemas build && pnpm --filter @wakeintent/store-json build && node examples/alpha-local.mjs",
     "demo:host": "pnpm --filter @wakeintent/core build && node examples/reference-host.mjs",
+    "host:start": "pnpm --filter @wakeintent/reference-host... build && node apps/reference-host/dist/server.js",
     "demo:api": "pnpm --filter @wakeintent/core build && pnpm --filter @wakeintent/model-openai-compatible build && node --env-file=.env examples/real-model.mjs",
     "smoke:core-api": "pnpm --filter @wakeintent/core build && pnpm --filter @wakeintent/schemas build && pnpm --filter @wakeintent/store-json build && pnpm --filter @wakeintent/model-openai-compatible build && pnpm --filter @wakeintent/eval build && node --env-file=.env scripts/run-core-event-wakeup-smoke.mjs",
     "eval:api": "pnpm --filter @wakeintent/core build && pnpm --filter @wakeintent/model-openai-compatible build && pnpm --filter @wakeintent/eval build && node --env-file=.env scripts/run-api-eval.mjs",
