@@ -133,6 +133,16 @@ Alpha 演示完全在本地运行。它使用确定性的模拟语义模型，�
 
 `contact` 同样只是一项决策。在这个流程中，WakeIntent 不会生成或发送消息；消息生成、实际投递、投递回执和面向用户的错误处理都由宿主应用负责。
 
+## 可运行的参考宿主
+
+离线参考宿主演示了产品如何消费 WakeIntent 的决策：
+
+```bash
+pnpm demo:host
+```
+
+它会运行三个合成招聘跟进场景：理由仍然有效、结果已在联系前解决、用户授权状态未知。只有理由有效且已经授权的联系决策会进入宿主 outbox；另外两项不会产生消息工作。outbox 项会明确显示 `delivered: false`，因为消息生成和投递仍是宿主职责。该演示不调用 API，也不包含真实用户数据。
+
 ## 使用真实模型
 
 本节需要主动选择执行，并会消耗 Token。`pnpm demo:api` 最多发出两次模型请求：第一次提取候选意图；如果得到活跃意图，第二次结合最新上下文重验证。没有提取到活跃意图时可能只请求一次。实际 Token 与费用取决于配置的模型和服务商。
@@ -231,6 +241,7 @@ WakeIntent 目前不提供：
 - [引擎编排](docs/13-alpha-engine-orchestration.md)
 - [统一执行追踪](docs/19-unified-execution-trace.md)
 - [宿主集成与投递边界](docs/20-host-integration.md)
+- [招聘跟进试点计划](docs/21-recruitment-pilot.md)
 
 ## 参与贡献
 

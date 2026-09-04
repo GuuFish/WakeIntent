@@ -33,3 +33,6 @@ jobs:
 
       - name: Build, type-check, and test
         run: pnpm check
+
+      - name: Run the offline reference host
+        run: pnpm demo:host

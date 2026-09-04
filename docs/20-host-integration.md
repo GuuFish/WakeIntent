@@ -21,7 +21,13 @@ WakeIntent 的包尚未发布到 npm，也不承诺稳定的跨版本 API。当�
 
 ## 2. 最小调用流程
 
-可运行参考见 [`examples/minimal.mjs`](../examples/minimal.mjs)。它展示了三个步骤：
+最小 API 分支参考见 [`examples/minimal.mjs`](../examples/minimal.mjs)。完整宿主边界演示见 [`examples/reference-host.mjs`](../examples/reference-host.mjs)，可执行：
+
+```bash
+pnpm demo:host
+```
+
+参考宿主展示了三个步骤：
 
 1. 调用 `extractContactIntents()`，从正常对话中生成候选或活跃意图；
 2. 保存意图；到期或相关事件出现时，为它加载最新对话和用户策略；
@@ -50,6 +56,8 @@ switch (result.decision.action) {
 ```
 
 上面的投递代码是边界说明，不是当前已经实现的投递模块。
+
+`demo:host` 会进一步把唯一的 `contact` 决策转换成一个 `delivered: false` 的 outbox 项；`resolve` 和授权未知导致的 `silent` 不会进入 outbox。这可以运行并验证宿主分支，但依然不会生成或发送真实消息。
 
 ## 3. `silent` 为什么仍可能是 `active`
 

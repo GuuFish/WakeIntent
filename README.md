@@ -163,6 +163,21 @@ host request may schedule another evaluation. Terminal actions are `cancel`,
 message in this flow; the host application owns generation, delivery, receipts,
 and any user-facing error handling.
 
+## Runnable reference host
+
+The offline reference host shows how a product consumes WakeIntent decisions:
+
+```bash
+pnpm demo:host
+```
+
+It runs three synthetic recruitment follow-ups: one valid contact, one result
+resolved before contact, and one case without known authorization. Only the
+valid, authorized decision enters the host outbox; the other two create no
+message work. The outbox item is explicitly `delivered: false` because message
+generation and delivery remain host responsibilities. This demo uses no API and
+no real user data.
+
 ## Try a real model
 
 This section is opt-in and spends tokens. `pnpm demo:api` makes at most two
@@ -289,6 +304,7 @@ Start with:
 - [Engine orchestration](docs/13-alpha-engine-orchestration.md)
 - [Unified execution trace](docs/19-unified-execution-trace.md)
 - [Host integration and delivery boundary](docs/20-host-integration.md)
+- [Recruitment pilot plan](docs/21-recruitment-pilot.md)
 
 ## Contributing
 

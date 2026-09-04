@@ -25,6 +25,7 @@
     "check": "pnpm typecheck && pnpm test:run",
     "demo": "pnpm --filter @wakeintent/core build && node examples/minimal.mjs",
     "demo:alpha": "pnpm --filter @wakeintent/core build && pnpm --filter @wakeintent/schemas build && pnpm --filter @wakeintent/store-json build && node examples/alpha-local.mjs",
+    "demo:host": "pnpm --filter @wakeintent/core build && node examples/reference-host.mjs",
     "demo:api": "pnpm --filter @wakeintent/core build && pnpm --filter @wakeintent/model-openai-compatible build && node --env-file=.env examples/real-model.mjs",
     "smoke:core-api": "pnpm --filter @wakeintent/core build && pnpm --filter @wakeintent/schemas build && pnpm --filter @wakeintent/store-json build && pnpm --filter @wakeintent/model-openai-compatible build && pnpm --filter @wakeintent/eval build && node --env-file=.env scripts/run-core-event-wakeup-smoke.mjs",
     "eval:api": "pnpm --filter @wakeintent/core build && pnpm --filter @wakeintent/model-openai-compatible build && pnpm --filter @wakeintent/eval build && node --env-file=.env scripts/run-api-eval.mjs",
