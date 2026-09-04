@@ -1,0 +1,44 @@
+{
+  "name": "wakeintent",
+  "version": "0.0.0",
+  "private": true,
+  "description": "A framework-agnostic contact decision engine for conversational AI.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GuuFish/wakeintent.git"
+  },
+  "homepage": "https://github.com/GuuFish/wakeintent#readme",
+  "bugs": {
+    "url": "https://github.com/GuuFish/wakeintent/issues"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=22.14.0"
+  },
+  "packageManager": "pnpm@11.19.0",
+  "scripts": {
+    "build": "pnpm -r build",
+    "typecheck": "pnpm build && pnpm -r typecheck",
+    "test": "pnpm -r test",
+    "test:run": "pnpm -r test:run",
+    "check": "pnpm typecheck && pnpm test:run",
+    "demo": "pnpm --filter @wakeintent/core build && node examples/minimal.mjs",
+    "demo:alpha": "pnpm --filter @wakeintent/core build && pnpm --filter @wakeintent/schemas build && pnpm --filter @wakeintent/store-json build && node examples/alpha-local.mjs",
+    "demo:api": "pnpm --filter @wakeintent/core build && pnpm --filter @wakeintent/model-openai-compatible build && node --env-file=.env examples/real-model.mjs",
+    "smoke:core-api": "pnpm --filter @wakeintent/core build && pnpm --filter @wakeintent/schemas build && pnpm --filter @wakeintent/store-json build && pnpm --filter @wakeintent/model-openai-compatible build && pnpm --filter @wakeintent/eval build && node --env-file=.env scripts/run-core-event-wakeup-smoke.mjs",
+    "eval:api": "pnpm --filter @wakeintent/core build && pnpm --filter @wakeintent/model-openai-compatible build && pnpm --filter @wakeintent/eval build && node --env-file=.env scripts/run-api-eval.mjs",
+    "eval:timeline": "pnpm --filter @wakeintent/core build && pnpm --filter @wakeintent/model-openai-compatible build && pnpm --filter @wakeintent/eval build && node scripts/run-timeline-eval.mjs",
+    "eval:policy-timeline-offline": "pnpm --filter @wakeintent/core build && pnpm --filter @wakeintent/model-openai-compatible build && pnpm --filter @wakeintent/eval build && node scripts/run-policy-longitudinal-offline-eval.mjs",
+    "eval:alpha-closure:plan": "pnpm --filter @wakeintent/core build && pnpm --filter @wakeintent/model-openai-compatible build && pnpm --filter @wakeintent/eval build && node scripts/run-alpha-closure-eval.mjs",
+    "eval:alpha-closure:api": "pnpm --filter @wakeintent/core build && pnpm --filter @wakeintent/model-openai-compatible build && pnpm --filter @wakeintent/eval build && node --env-file=.env scripts/run-alpha-closure-eval.mjs --execute",
+    "eval:longitudinal-api": "pnpm --filter @wakeintent/core build && pnpm --filter @wakeintent/model-openai-compatible build && pnpm --filter @wakeintent/eval build && node --env-file=.env scripts/run-longitudinal-api-eval.mjs",
+    "eval:policy-api": "pnpm --filter @wakeintent/core build && pnpm --filter @wakeintent/model-openai-compatible build && pnpm --filter @wakeintent/eval build && node --env-file=.env scripts/run-policy-signal-api-eval.mjs",
+    "eval:relevance-api": "pnpm --filter @wakeintent/core build && pnpm --filter @wakeintent/model-openai-compatible build && pnpm --filter @wakeintent/eval build && node --env-file=.env scripts/run-relevance-api-eval.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.9.0",
+    "vitest": "^4.0.0"
+  }
+}

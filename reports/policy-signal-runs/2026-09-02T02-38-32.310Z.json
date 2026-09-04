@@ -1,0 +1,150 @@
+{
+  "schemaVersion": "0.1.0",
+  "dataset": {
+    "name": "WakeIntent frozen state-aware policy signal extraction eval",
+    "version": "0.2.0",
+    "kind": "frozen-state-aware-policy-signal-extraction",
+    "frozenAt": "2026-09-02T02:28:00.000Z",
+    "path": "evals/policy-signal-extraction-v0.2.json",
+    "resolvedFrom": [
+      "evals/policy-signal-extraction-v0.1.json",
+      "evals/policy-signal-extraction-v0.2.json"
+    ]
+  },
+  "completedAt": "2026-09-02T02:38:32.310Z",
+  "model": "gpt-5.5",
+  "apiMode": "responses",
+  "modelSettings": {
+    "extractionReasoningEffort": null,
+    "textVerbosity": null
+  },
+  "promptVersion": "0.2.1",
+  "scoringVersion": "0.1.0",
+  "filters": {
+    "split": null,
+    "scenarioId": "restore-and-clear"
+  },
+  "aggregate": {
+    "scenarios": 1,
+    "passed": 1,
+    "exactMatchAccuracy": 1,
+    "positiveScenarioAccuracy": 1,
+    "negativeScenarioAccuracy": 1,
+    "signalPrecision": 1,
+    "signalRecall": 1,
+    "signalF1": 1,
+    "truePositives": 2,
+    "falsePositives": 0,
+    "falseNegatives": 0,
+    "errors": 0
+  },
+  "bySplit": {
+    "regression": {
+      "scenarios": 1,
+      "passed": 1,
+      "exactMatchAccuracy": 1,
+      "positiveScenarioAccuracy": 1,
+      "negativeScenarioAccuracy": 1,
+      "signalPrecision": 1,
+      "signalRecall": 1,
+      "signalF1": 1,
+      "truePositives": 2,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "errors": 0
+    }
+  },
+  "byCategory": {
+    "compound-restoration": {
+      "scenarios": 1,
+      "passed": 1,
+      "exactMatchAccuracy": 1,
+      "positiveScenarioAccuracy": 1,
+      "negativeScenarioAccuracy": 1,
+      "signalPrecision": 1,
+      "signalRecall": 1,
+      "signalF1": 1,
+      "truePositives": 2,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "errors": 0
+    }
+  },
+  "usage": {
+    "calls": 1,
+    "inputTokens": 472,
+    "outputTokens": 200,
+    "totalTokens": 672,
+    "costUsd": null
+  },
+  "scenarios": [
+    {
+      "scenarioId": "restore-and-clear",
+      "split": "regression",
+      "category": "compound-restoration",
+      "passed": true,
+      "expected": [
+        {
+          "kind": "clear-do-not-disturb",
+          "evidenceRef": "q7"
+        },
+        {
+          "kind": "set-authorization",
+          "evidenceRef": "q7",
+          "authorization": "granted"
+        }
+      ],
+      "actual": [
+        {
+          "kind": "set-authorization",
+          "evidenceRef": "q7",
+          "authorization": "granted"
+        },
+        {
+          "kind": "clear-do-not-disturb",
+          "evidenceRef": "q7"
+        }
+      ],
+      "truePositives": 2,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "error": null,
+      "latencyMs": 7529,
+      "actualSignals": [
+        {
+          "schemaVersion": "0.1.0",
+          "id": "restore-and-clear-policy-signal-1",
+          "evidenceRef": "q7",
+          "occurredAt": "2026-09-02T10:00:00.000Z",
+          "reason": "User explicitly states the prior indefinite refusal of proactive contact is void and that proactive contact is now allowed.",
+          "kind": "set-authorization",
+          "authorization": "granted"
+        },
+        {
+          "schemaVersion": "0.1.0",
+          "id": "restore-and-clear-policy-signal-2",
+          "evidenceRef": "q7",
+          "occurredAt": "2026-09-02T10:00:00.000Z",
+          "reason": "User explicitly states the prior quiet window for today is void, ending the current do-not-disturb period.",
+          "kind": "clear-do-not-disturb"
+        }
+      ],
+      "modelCallRecords": [
+        {
+          "schemaName": "wakeintent_policy_signals",
+          "phase": "extraction",
+          "reasoningEffort": null,
+          "usage": {
+            "inputTokens": 472,
+            "outputTokens": 200,
+            "totalTokens": 672
+          },
+          "requestId": "ef7fc1e9-2b9e-4881-8ced-d6f9d0ffc6c1",
+          "attempts": 1,
+          "costUsd": null
+        }
+      ]
+    }
+  ],
+  "warning": "This frozen extraction eval measures policy-signal classification and normalization only. It does not yet establish end-to-end product value or user preference."
+}

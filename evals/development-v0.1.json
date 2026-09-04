@@ -1,0 +1,340 @@
+{
+  "schemaVersion": "0.1.0",
+  "name": "WakeIntent development fixtures",
+  "version": "0.1.0-dev.4",
+  "kind": "development-fixtures",
+  "scenarios": [
+    {
+      "schemaVersion": "0.1.0",
+      "id": "contact-explicit-window",
+      "category": "effective-contact",
+      "language": "zh-CN",
+      "timeZone": "Asia/Hong_Kong",
+      "initialEvents": [
+        {
+          "id": "contact-plan",
+          "conversationId": "conversation-contact",
+          "actor": "user",
+          "occurredAt": "2026-09-01T09:00:00.000Z",
+          "content": "本周五北京时间下午五点会公布复试结果。如果我没主动说，北京时间五点半问问我吧。"
+        }
+      ],
+      "latestEvents": [],
+      "evaluationTime": "2026-09-04T09:30:00.000Z",
+      "target": { "kind": "user", "id": "user-contact" },
+      "userState": { "authorization": "granted", "remainingContactBudget": 1 },
+      "expected": {
+        "allowedIntentStatuses": ["active"],
+        "primaryAction": "contact",
+        "allowedActions": ["contact"],
+        "requiredEvidenceRefs": ["contact-plan"],
+        "annotation": "The user explicitly requested a follow-up at 17:30 China Standard Time, represented as 09:30Z. Version dev.2 makes the timezone explicit after dev.1 exposed an annotation ambiguity."
+      }
+    },
+    {
+      "schemaVersion": "0.1.0",
+      "id": "resolve-before-window",
+      "category": "early-resolution",
+      "language": "zh-CN",
+      "timeZone": "Asia/Hong_Kong",
+      "initialEvents": [
+        {
+          "id": "resolve-plan",
+          "conversationId": "conversation-resolve",
+          "actor": "user",
+          "occurredAt": "2026-09-01T09:00:00.000Z",
+          "content": "本周五下午会公布复试结果，到时候可以问问我。"
+        }
+      ],
+      "latestEvents": [
+        {
+          "id": "resolve-result",
+          "conversationId": "conversation-resolve",
+          "actor": "user",
+          "occurredAt": "2026-09-03T08:00:00.000Z",
+          "content": "结果提前出了，我通过复试了！"
+        }
+      ],
+      "evaluationTime": "2026-09-03T08:05:00.000Z",
+      "target": { "kind": "user", "id": "user-resolve" },
+      "userState": { "authorization": "granted", "remainingContactBudget": 1 },
+      "expected": {
+        "allowedIntentStatuses": ["active"],
+        "primaryAction": "resolve",
+        "allowedActions": ["resolve"],
+        "requiredEvidenceRefs": ["resolve-result"],
+        "annotation": "The user supplied the outcome before the planned contact window, so asking later would be redundant."
+      }
+    },
+    {
+      "schemaVersion": "0.1.0",
+      "id": "cancel-explicitly",
+      "category": "explicit-cancellation",
+      "language": "zh-CN",
+      "timeZone": "Asia/Hong_Kong",
+      "initialEvents": [
+        {
+          "id": "cancel-plan",
+          "conversationId": "conversation-cancel",
+          "actor": "user",
+          "occurredAt": "2026-09-01T09:00:00.000Z",
+          "content": "周五应该能收到面试结果，到时问问我。"
+        }
+      ],
+      "latestEvents": [
+        {
+          "id": "cancel-request",
+          "conversationId": "conversation-cancel",
+          "actor": "user",
+          "occurredAt": "2026-09-02T10:00:00.000Z",
+          "content": "我改变主意了，不用再问这次面试的事。"
+        }
+      ],
+      "evaluationTime": "2026-09-02T10:05:00.000Z",
+      "target": { "kind": "user", "id": "user-cancel" },
+      "userState": { "authorization": "granted", "remainingContactBudget": 1 },
+      "expected": {
+        "allowedIntentStatuses": ["active"],
+        "primaryAction": "cancel",
+        "allowedActions": ["cancel"],
+        "requiredEvidenceRefs": ["cancel-request"],
+        "annotation": "An explicit withdrawal must permanently cancel this intent."
+      }
+    },
+    {
+      "schemaVersion": "0.1.0",
+      "id": "expire-explicit-boundary",
+      "category": "expiry",
+      "language": "zh-CN",
+      "timeZone": "Asia/Hong_Kong",
+      "initialEvents": [
+        {
+          "id": "expiry-plan",
+          "conversationId": "conversation-expiry",
+          "actor": "user",
+          "occurredAt": "2026-09-01T09:00:00.000Z",
+          "content": "明天下午公布抽签结果。如果三天内没消息就当没中，之后不用再提。"
+        }
+      ],
+      "latestEvents": [],
+      "evaluationTime": "2026-09-11T09:00:00.000Z",
+      "target": { "kind": "user", "id": "user-expiry" },
+      "userState": { "authorization": "granted", "remainingContactBudget": 1 },
+      "expected": {
+        "allowedIntentStatuses": ["active"],
+        "primaryAction": "expire",
+        "allowedActions": ["expire"],
+        "requiredEvidenceRefs": ["expiry-plan"],
+        "annotation": "The user supplied an explicit three-day validity boundary and the evaluation is much later."
+      }
+    },
+    {
+      "schemaVersion": "0.1.0",
+      "id": "defer-while-busy",
+      "category": "temporary-unavailability",
+      "language": "zh-CN",
+      "timeZone": "Asia/Hong_Kong",
+      "initialEvents": [
+        {
+          "id": "busy-plan",
+          "conversationId": "conversation-busy",
+          "actor": "user",
+          "occurredAt": "2026-09-01T09:00:00.000Z",
+          "content": "明晚问我申请材料交了没有。"
+        }
+      ],
+      "latestEvents": [
+        {
+          "id": "busy-update",
+          "conversationId": "conversation-busy",
+          "actor": "user",
+          "occurredAt": "2026-09-02T08:00:00.000Z",
+          "content": "这周临时特别忙，周末前先别打扰我。"
+        }
+      ],
+      "evaluationTime": "2026-09-02T12:00:00.000Z",
+      "target": { "kind": "user", "id": "user-busy" },
+      "userState": { "authorization": "granted", "remainingContactBudget": 1 },
+      "expected": {
+        "allowedIntentStatuses": ["active"],
+        "primaryAction": "defer",
+        "allowedActions": ["defer", "silent"],
+        "requiredEvidenceRefs": ["busy-update"],
+        "annotation": "The topic is still relevant, but the user set a temporary interruption boundary."
+      }
+    },
+    {
+      "schemaVersion": "0.1.0",
+      "id": "contact-after-no-reply-explicit-cadence",
+      "category": "explicit-cadence",
+      "language": "zh-CN",
+      "timeZone": "Asia/Hong_Kong",
+      "initialEvents": [
+        {
+          "id": "study-plan",
+          "conversationId": "conversation-study",
+          "actor": "user",
+          "occurredAt": "2026-09-01T09:00:00.000Z",
+          "content": "这周每天晚上可以问问我背单词完成没有。"
+        }
+      ],
+      "latestEvents": [
+        {
+          "id": "study-check-one",
+          "conversationId": "conversation-study",
+          "actor": "assistant",
+          "occurredAt": "2026-09-02T12:00:00.000Z",
+          "content": "今晚的单词背完了吗？"
+        },
+        {
+          "id": "study-check-two",
+          "conversationId": "conversation-study",
+          "actor": "assistant",
+          "occurredAt": "2026-09-03T12:00:00.000Z",
+          "content": "今天的背词计划完成了吗？"
+        }
+      ],
+      "evaluationTime": "2026-09-04T12:00:00.000Z",
+      "target": { "kind": "user", "id": "user-study" },
+      "userState": { "authorization": "granted", "remainingContactBudget": 1 },
+      "expected": {
+        "allowedIntentStatuses": ["active"],
+        "primaryAction": "contact",
+        "allowedActions": ["contact"],
+        "requiredEvidenceRefs": ["study-plan"],
+        "annotation": "The user explicitly requested a daily cadence for this week. Non-response is counter-evidence, but does not by itself revoke an explicit schedule. This label was corrected in dev.4 after a real run exposed the earlier assumption."
+      }
+    },
+    {
+      "schemaVersion": "0.1.0",
+      "id": "silent-after-no-reply-soft-consent",
+      "category": "non-response",
+      "language": "zh-CN",
+      "timeZone": "Asia/Hong_Kong",
+      "initialEvents": [
+        {
+          "id": "soft-study-plan",
+          "conversationId": "conversation-soft-study",
+          "actor": "user",
+          "occurredAt": "2026-09-01T09:00:00.000Z",
+          "content": "我这周开始背单词，你哪天想起来可以问问我有没有坚持，不过不用天天催。"
+        }
+      ],
+      "latestEvents": [
+        {
+          "id": "soft-study-check-one",
+          "conversationId": "conversation-soft-study",
+          "actor": "assistant",
+          "occurredAt": "2026-09-02T12:00:00.000Z",
+          "content": "这两天背单词坚持得怎么样？"
+        },
+        {
+          "id": "soft-study-check-two",
+          "conversationId": "conversation-soft-study",
+          "actor": "assistant",
+          "occurredAt": "2026-09-03T12:00:00.000Z",
+          "content": "今天还在坚持背单词吗？"
+        }
+      ],
+      "evaluationTime": "2026-09-04T12:00:00.000Z",
+      "target": { "kind": "user", "id": "user-soft-study" },
+      "userState": { "authorization": "granted", "remainingContactBudget": 1 },
+      "expected": {
+        "allowedIntentStatuses": ["active"],
+        "primaryAction": "silent",
+        "allowedActions": ["silent", "defer"],
+        "requiredEvidenceRefs": ["soft-study-check-two"],
+        "annotation": "Consent was occasional rather than daily, and the user explicitly rejected frequent prompting. Two unanswered contacts make a third consecutive message unjustified."
+      }
+    },
+    {
+      "schemaVersion": "0.1.0",
+      "id": "resolve-implicit-goal-superseded",
+      "category": "implicit-resolution",
+      "language": "zh-CN",
+      "timeZone": "Asia/Hong_Kong",
+      "initialEvents": [
+        {
+          "id": "job-fair-plan",
+          "conversationId": "conversation-job-fair",
+          "actor": "user",
+          "occurredAt": "2026-09-01T09:00:00.000Z",
+          "content": "我周五准备去参加双选会，周四晚上可以问问我材料准备好了没有。"
+        }
+      ],
+      "latestEvents": [
+        {
+          "id": "internship-found",
+          "conversationId": "conversation-job-fair",
+          "actor": "user",
+          "occurredAt": "2026-09-03T08:00:00.000Z",
+          "content": "我已经找到实习了，双选会就不去了。"
+        }
+      ],
+      "evaluationTime": "2026-09-03T12:00:00.000Z",
+      "target": { "kind": "user", "id": "user-job-fair" },
+      "userState": { "authorization": "granted", "remainingContactBudget": 1 },
+      "expected": {
+        "allowedIntentStatuses": ["active"],
+        "primaryAction": "resolve",
+        "allowedActions": ["resolve", "cancel"],
+        "requiredEvidenceRefs": ["internship-found"],
+        "annotation": "The later outcome removes the practical reason for the follow-up without using reminder-specific cancellation language. Contacting would be stale."
+      }
+    },
+    {
+      "schemaVersion": "0.1.0",
+      "id": "negative-past-fact",
+      "category": "negative-extraction",
+      "language": "zh-CN",
+      "timeZone": "Asia/Hong_Kong",
+      "initialEvents": [
+        {
+          "id": "past-fact",
+          "conversationId": "conversation-past",
+          "actor": "user",
+          "occurredAt": "2026-09-01T09:00:00.000Z",
+          "content": "我去年参加过一次面试，后来没有去那家公司。"
+        }
+      ],
+      "latestEvents": [],
+      "evaluationTime": "2026-09-02T09:00:00.000Z",
+      "target": { "kind": "user", "id": "user-past" },
+      "userState": { "authorization": "granted", "remainingContactBudget": 1 },
+      "expected": {
+        "allowedIntentStatuses": ["none"],
+        "primaryAction": "none",
+        "allowedActions": ["none"],
+        "requiredEvidenceRefs": [],
+        "annotation": "A completed past fact provides no future follow-up opportunity."
+      }
+    },
+    {
+      "schemaVersion": "0.1.0",
+      "id": "vague-future-wish",
+      "category": "ambiguous-extraction",
+      "language": "zh-CN",
+      "timeZone": "Asia/Hong_Kong",
+      "initialEvents": [
+        {
+          "id": "vague-wish",
+          "conversationId": "conversation-vague",
+          "actor": "user",
+          "occurredAt": "2026-09-01T09:00:00.000Z",
+          "content": "以后有空的话，也许可以学学日语。"
+        }
+      ],
+      "latestEvents": [],
+      "evaluationTime": "2026-09-02T09:00:00.000Z",
+      "target": { "kind": "user", "id": "user-vague" },
+      "userState": { "authorization": "granted", "remainingContactBudget": 1 },
+      "expected": {
+        "allowedIntentStatuses": ["none", "candidate"],
+        "primaryAction": "none",
+        "allowedActions": ["none"],
+        "requiredEvidenceRefs": [],
+        "annotation": "A vague wish may remain a low-confidence candidate but must not become active outreach."
+      }
+    }
+  ]
+}

@@ -1,0 +1,182 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "core-event-wakeup-api-smoke",
+  "syntheticData": true,
+  "runAt": "2026-09-03T03:11:27.232Z",
+  "passed": true,
+  "model": "gpt-5.5",
+  "apiMode": "responses",
+  "maxHttpRequests": 2,
+  "initialEvent": {
+    "id": "synthetic-job-fair-plan",
+    "conversationId": "synthetic-conversation",
+    "actor": "user",
+    "occurredAt": "2026-09-01T09:00:00.000Z",
+    "content": "我周五准备去参加双选会，结束后可能想聊聊结果。",
+    "metadata": {
+      "synthetic": true
+    }
+  },
+  "invalidatingEvent": {
+    "id": "synthetic-found-internship",
+    "conversationId": "synthetic-conversation",
+    "actor": "user",
+    "occurredAt": "2026-09-03T12:00:00.000Z",
+    "content": "我已经找到实习了，不去双选会了，这件事不用再问我。",
+    "metadata": {
+      "synthetic": true
+    }
+  },
+  "extractedIntent": {
+    "schemaVersion": "0.1.0",
+    "id": "core-smoke-intent-1",
+    "status": "active",
+    "subject": "双选会结束后聊聊结果",
+    "reason": "用户明确提到周五参加双选会后可能想聊聊结果，适合在双选会结束后跟进。",
+    "target": {
+      "kind": "user",
+      "id": "synthetic-user"
+    },
+    "evidence": [
+      {
+        "eventId": "synthetic-job-fair-plan",
+        "quote": "我周五准备去参加双选会，结束后可能想聊聊结果。"
+      }
+    ],
+    "notBefore": "2026-09-05T00:00:00.000Z",
+    "expiresAt": null,
+    "cancellationHints": [
+      "用户表示不想再聊双选会结果",
+      "已经聊过双选会结果",
+      "用户未参加双选会或计划已取消",
+      "相关求职后续已通过其他方式完成或被新的安排取代"
+    ],
+    "priority": 0.62,
+    "interruptionCost": 0.3,
+    "confidence": 0.86,
+    "createdAt": "2026-09-01T09:01:00.000Z",
+    "updatedAt": "2026-09-01T09:01:00.000Z"
+  },
+  "routing": {
+    "selections": [
+      {
+        "confidence": 0.99,
+        "effect": "cancel",
+        "eventIds": [
+          "synthetic-found-internship"
+        ],
+        "intentId": "core-smoke-intent-1",
+        "reason": "用户表示已经找到实习、不去双选会，并明确说“这件事不用再问我”，即双选会计划取消且撤回后续跟进需求。"
+      }
+    ],
+    "persistedRequests": [
+      {
+        "id": "evaluation-request:core-api-smoke-route:core-smoke-intent-1",
+        "intentId": "core-smoke-intent-1",
+        "requestedAt": "2026-09-03T12:01:00.000Z",
+        "eventIds": [
+          "synthetic-found-internship"
+        ],
+        "effect": "cancel",
+        "reason": "用户表示已经找到实习、不去双选会，并明确说“这件事不用再问我”，即双选会计划取消且撤回后续跟进需求。",
+        "confidence": 0.99,
+        "nextEvaluationAt": "2026-09-03T12:01:00.000Z",
+        "policyVersion": "core-api-smoke-route-0.1",
+        "metadata": {
+          "source": "conversation-event-route"
+        }
+      }
+    ],
+    "audits": [
+      {
+        "at": "2026-09-03T12:01:00.000Z",
+        "source": "model",
+        "matches": [
+          {
+            "confidence": 0.99,
+            "effect": "cancel",
+            "eventIds": [
+              "synthetic-found-internship"
+            ],
+            "intentId": "core-smoke-intent-1",
+            "reason": "用户表示已经找到实习、不去双选会，并明确说“这件事不用再问我”，即双选会计划取消且撤回后续跟进需求。"
+          }
+        ]
+      }
+    ]
+  },
+  "afterRestart": {
+    "result": {
+      "outcome": "committed",
+      "source": "route-closure",
+      "decision": {
+        "id": "decision:evaluate:core-smoke-intent-1:revision:2",
+        "intentId": "core-smoke-intent-1",
+        "evaluatedAt": "2026-09-03T12:01:00.000Z",
+        "action": "cancel",
+        "reason": "用户表示已经找到实习、不去双选会，并明确说“这件事不用再问我”，即双选会计划取消且撤回后续跟进需求。",
+        "evidenceRefs": [
+          "synthetic-job-fair-plan"
+        ],
+        "counterEvidenceRefs": [
+          "synthetic-found-internship"
+        ],
+        "confidence": 0.99,
+        "nextEvaluationAt": null,
+        "policyVersion": "core-api-smoke-decision-0.1",
+        "metadata": {
+          "source": "relevance-route-closure",
+          "evaluationRequestId": "evaluation-request:core-api-smoke-route:core-smoke-intent-1",
+          "routePolicyVersion": "core-api-smoke-route-0.1"
+        }
+      }
+    },
+    "finalStatus": "cancelled",
+    "fallbackContextLoads": 0,
+    "evaluationWork": {
+      "dueIntents": 1,
+      "contextLoads": 0,
+      "semanticCalls": 0,
+      "hardGateDecisions": 0,
+      "semanticDecisions": 0,
+      "latePolicyDecisions": 0,
+      "routeClosureDecisions": 1,
+      "batchPolicyDecisions": 0,
+      "contactDecisions": 0,
+      "budgetSuppressed": 0,
+      "committed": 1,
+      "duplicates": 0,
+      "conflicts": 0,
+      "failures": 0,
+      "failureRecords": 0,
+      "retriesScheduled": 0,
+      "retriesExhausted": 0,
+      "failureRecordConflicts": 0,
+      "failureRecordFailures": 0
+    }
+  },
+  "usage": {
+    "extractionAndFallbackDecision": {
+      "calls": 1,
+      "inputTokens": 443,
+      "outputTokens": 409,
+      "totalTokens": 852,
+      "costUsd": null,
+      "attempts": 1,
+      "requestIds": [
+        "b8a56e80-f20a-42d5-8e73-a3ec0ee70c7c"
+      ]
+    },
+    "relevanceRouting": {
+      "calls": 1,
+      "inputTokens": 524,
+      "outputTokens": 156,
+      "totalTokens": 680,
+      "costUsd": null,
+      "attempts": 1,
+      "requestIds": [
+        "fc1df551-aec1-4d05-bd9c-9d3f4f62d24a"
+      ]
+    }
+  }
+}

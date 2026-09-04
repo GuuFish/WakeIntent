@@ -1,0 +1,129 @@
+{
+  "schemaVersion": "0.1.0",
+  "dataset": {
+    "name": "WakeIntent relevance routing development fixtures",
+    "version": "0.1.0-dev.2",
+    "kind": "development-relevance-fixtures"
+  },
+  "mode": "hybrid",
+  "model": "gpt-5.5",
+  "apiMode": "responses",
+  "modelSettings": {
+    "reasoningEffort": null,
+    "textVerbosity": null
+  },
+  "promptVersion": "0.2.0",
+  "repeats": 1,
+  "completedAt": "2026-09-02T01:11:58.738Z",
+  "scenarioIds": [
+    "temporary-global-do-not-disturb"
+  ],
+  "metrics": {
+    "total": 1,
+    "exactMatches": 0,
+    "exactMatchAccuracy": 0,
+    "positiveExactMatchAccuracy": 0,
+    "noMatchAccuracy": 1,
+    "truePositives": 1,
+    "falsePositives": 0,
+    "falseNegatives": 1,
+    "precision": 1,
+    "recall": 0.5,
+    "f1": 0.6666666666666666,
+    "falsePositiveScenarioRate": 0,
+    "falseNegativeScenarioRate": 1,
+    "deterministicScenarioRate": 0,
+    "modelFallbackScenarioRate": 1,
+    "errorRate": 0,
+    "totalModelCalls": 1,
+    "averageLatencyMs": 13529.6466,
+    "totalInputTokens": 723,
+    "totalOutputTokens": 559,
+    "totalTokens": 1282,
+    "totalCostUsd": null
+  },
+  "stability": {
+    "totalScenarios": 1,
+    "stableScenarios": 1,
+    "rate": 1,
+    "rows": [
+      {
+        "scenarioId": "temporary-global-do-not-disturb",
+        "stable": true,
+        "signatures": [
+          "job-fair"
+        ]
+      }
+    ]
+  },
+  "rows": [
+    {
+      "runIndex": 1,
+      "scenario": {
+        "id": "temporary-global-do-not-disturb",
+        "category": "global-policy-change",
+        "annotation": "A temporary do-not-disturb statement should select only intents eligible inside that window, not an intent first eligible next week.",
+        "now": "2026-09-03T09:20:00.000Z",
+        "events": [
+          {
+            "id": "temporary-dnd",
+            "conversationId": "routing-conversation",
+            "actor": "user",
+            "occurredAt": "2026-09-03T09:20:00.000Z",
+            "content": "这周事情太多，先别主动联系我，等下周再说。"
+          }
+        ],
+        "expectedIntentIds": [
+          "job-fair",
+          "parcel"
+        ]
+      },
+      "prediction": {
+        "scenarioId": "temporary-global-do-not-disturb",
+        "expectedIntentIds": [
+          "job-fair",
+          "parcel"
+        ],
+        "predictedIntentIds": [
+          "job-fair"
+        ],
+        "routeSelections": [
+          {
+            "confidence": 0.97,
+            "effect": "reevaluate",
+            "eventIds": [
+              "temporary-dnd"
+            ],
+            "intentId": "job-fair",
+            "reason": "用户要求这周不要主动联系，改到下周；但该双选会材料确认的窗口在 2026-09-04 10:00 到 13:00，等到下周会错过时点，需要重新评估是否提前提醒或调整方式。"
+          }
+        ],
+        "source": "model",
+        "latencyMs": 13529.6466,
+        "modelCallRecords": [
+          {
+            "schemaName": "wakeintent_relevance_route",
+            "phase": "extraction",
+            "reasoningEffort": null,
+            "usage": {
+              "inputTokens": 723,
+              "outputTokens": 559,
+              "totalTokens": 1282
+            },
+            "requestId": "5b1b6ad1-991c-4b46-be95-9dc9955f84d3",
+            "attempts": 1,
+            "costUsd": null
+          }
+        ],
+        "error": null
+      },
+      "score": {
+        "truePositives": 1,
+        "falsePositives": 0,
+        "falseNegatives": 1,
+        "exactMatch": false
+      }
+    }
+  ],
+  "warning": "This is a labeled development routing set, not a frozen independent test set. It diagnoses routing feasibility and failure modes but cannot establish product value by itself."
+}

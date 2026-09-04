@@ -1,0 +1,308 @@
+{
+  "schemaVersion": "0.1.0",
+  "name": "WakeIntent relevance routing development fixtures",
+  "version": "0.1.0-dev.2",
+  "kind": "development-relevance-fixtures",
+  "revisionNotes": [
+    {
+      "scenarioId": "temporary-global-do-not-disturb",
+      "fromVersion": "0.1.0-dev.1",
+      "change": "Expected routes changed from all three intents to job-fair and parcel only.",
+      "rationale": "The do-not-disturb window ends next week. The study intent is not eligible until Monday 2026-09-07, after that window, so early reevaluation would add no value. The original label ignored the intent time window. The original API report is retained for audit."
+    }
+  ],
+  "intents": [
+    {
+      "schemaVersion": "0.1.0",
+      "id": "job-fair",
+      "status": "active",
+      "subject": "双选会材料准备",
+      "reason": "在双选会前确认材料是否准备好",
+      "target": { "kind": "user", "id": "routing-user" },
+      "evidence": [
+        {
+          "eventId": "job-fair-plan",
+          "quote": "准备参加双选会，请在会前问问材料准备好了没有"
+        }
+      ],
+      "notBefore": "2026-09-04T10:00:00.000Z",
+      "expiresAt": "2026-09-04T13:00:00.000Z",
+      "cancellationHints": ["不参加双选会", "已经找到实习", "招聘活动不再参加"],
+      "priority": 0.8,
+      "interruptionCost": 0.25,
+      "confidence": 0.95,
+      "createdAt": "2026-09-01T09:00:00.000Z",
+      "updatedAt": "2026-09-01T09:00:00.000Z"
+    },
+    {
+      "schemaVersion": "0.1.0",
+      "id": "parcel",
+      "status": "active",
+      "subject": "快递是否取到",
+      "reason": "预计送达后确认快递是否已经取到",
+      "target": { "kind": "user", "id": "routing-user" },
+      "evidence": [
+        {
+          "eventId": "parcel-plan",
+          "quote": "快递预计9月6日送到，晚上问问取到没有"
+        }
+      ],
+      "notBefore": "2026-09-06T12:00:00.000Z",
+      "expiresAt": "2026-09-08T12:00:00.000Z",
+      "cancellationHints": ["快递提前到了", "已经取到", "包裹退回或取消"],
+      "priority": 0.55,
+      "interruptionCost": 0.2,
+      "confidence": 0.93,
+      "createdAt": "2026-09-01T09:05:00.000Z",
+      "updatedAt": "2026-09-01T09:05:00.000Z"
+    },
+    {
+      "schemaVersion": "0.1.0",
+      "id": "study-plan",
+      "status": "active",
+      "subject": "本周学习计划完成情况",
+      "reason": "周末确认本周的算法学习计划是否完成",
+      "target": { "kind": "user", "id": "routing-user" },
+      "evidence": [
+        {
+          "eventId": "study-plan-created",
+          "quote": "这周学完动态规划，周日再问问进度"
+        }
+      ],
+      "notBefore": "2026-09-07T12:00:00.000Z",
+      "expiresAt": "2026-09-09T12:00:00.000Z",
+      "cancellationHints": ["已经学完", "学习计划暂停", "不再跟进学习进度"],
+      "priority": 0.6,
+      "interruptionCost": 0.3,
+      "confidence": 0.9,
+      "createdAt": "2026-09-01T09:10:00.000Z",
+      "updatedAt": "2026-09-01T09:10:00.000Z"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "direct-job-fair-cancellation",
+      "category": "direct-invalidation",
+      "annotation": "An explicit cancellation should immediately select only the job-fair intent.",
+      "now": "2026-09-03T08:00:00.000Z",
+      "events": [
+        {
+          "id": "job-fair-cancelled",
+          "conversationId": "routing-conversation",
+          "actor": "user",
+          "occurredAt": "2026-09-03T08:00:00.000Z",
+          "content": "我已经找到实习了，双选会不去了。"
+        }
+      ],
+      "expectedIntentIds": ["job-fair"]
+    },
+    {
+      "id": "indirect-recruiting-supersession",
+      "category": "indirect-invalidation",
+      "annotation": "A new outcome indirectly supersedes the recruiting follow-up without naming the job fair.",
+      "now": "2026-09-03T08:05:00.000Z",
+      "events": [
+        {
+          "id": "offer-signed",
+          "conversationId": "routing-conversation",
+          "actor": "user",
+          "occurredAt": "2026-09-03T08:05:00.000Z",
+          "content": "满意的实习 offer 已经签好了，接下来的招聘活动我都不参加了。"
+        }
+      ],
+      "expectedIntentIds": ["job-fair"]
+    },
+    {
+      "id": "parcel-arrived-early",
+      "category": "early-resolution",
+      "annotation": "An outcome arriving before the due time should select only the parcel intent.",
+      "now": "2026-09-04T04:00:00.000Z",
+      "events": [
+        {
+          "id": "parcel-arrived",
+          "conversationId": "routing-conversation",
+          "actor": "user",
+          "occurredAt": "2026-09-04T04:00:00.000Z",
+          "content": "快递提前送到了，我刚刚已经取到了。"
+        }
+      ],
+      "expectedIntentIds": ["parcel"]
+    },
+    {
+      "id": "study-plan-completed-early",
+      "category": "early-resolution",
+      "annotation": "Completing the study goal early should select only its intent.",
+      "now": "2026-09-05T10:00:00.000Z",
+      "events": [
+        {
+          "id": "study-completed",
+          "conversationId": "routing-conversation",
+          "actor": "user",
+          "occurredAt": "2026-09-05T10:00:00.000Z",
+          "content": "这周的动态规划学习计划我提前做完了。"
+        }
+      ],
+      "expectedIntentIds": ["study-plan"]
+    },
+    {
+      "id": "unrelated-movie-update",
+      "category": "negative-unrelated",
+      "annotation": "Completing an unrelated activity must not wake any intent.",
+      "now": "2026-09-03T09:00:00.000Z",
+      "events": [
+        {
+          "id": "movie-finished",
+          "conversationId": "routing-conversation",
+          "actor": "user",
+          "occurredAt": "2026-09-03T09:00:00.000Z",
+          "content": "昨晚那部电影我已经看完了，结局挺意外。"
+        }
+      ],
+      "expectedIntentIds": []
+    },
+    {
+      "id": "superficial-job-topic-no-change",
+      "category": "negative-topic-overlap",
+      "annotation": "Mentioning a topic with generic completed-action language is not evidence that the future follow-up changed.",
+      "now": "2026-09-03T09:10:00.000Z",
+      "events": [
+        {
+          "id": "job-fair-promotion",
+          "conversationId": "routing-conversation",
+          "actor": "user",
+          "occurredAt": "2026-09-03T09:10:00.000Z",
+          "content": "双选会已经开始宣传了，不过我的参会安排没变。"
+        }
+      ],
+      "expectedIntentIds": []
+    },
+    {
+      "id": "temporary-global-do-not-disturb",
+      "category": "global-policy-change",
+      "annotation": "A temporary do-not-disturb statement should select only intents eligible inside that window, not an intent first eligible next week.",
+      "now": "2026-09-03T09:20:00.000Z",
+      "events": [
+        {
+          "id": "temporary-dnd",
+          "conversationId": "routing-conversation",
+          "actor": "user",
+          "occurredAt": "2026-09-03T09:20:00.000Z",
+          "content": "这周事情太多，先别主动联系我，等下周再说。"
+        }
+      ],
+      "expectedIntentIds": ["job-fair", "parcel"]
+    },
+    {
+      "id": "global-followup-withdrawal",
+      "category": "global-cancellation",
+      "annotation": "Withdrawing all earlier follow-ups should select every active intent.",
+      "now": "2026-09-03T09:30:00.000Z",
+      "events": [
+        {
+          "id": "cancel-all-followups",
+          "conversationId": "routing-conversation",
+          "actor": "user",
+          "occurredAt": "2026-09-03T09:30:00.000Z",
+          "content": "之前说的那些事情都不用再问我了，全部取消。"
+        }
+      ],
+      "expectedIntentIds": ["job-fair", "parcel", "study-plan"]
+    },
+    {
+      "id": "parcel-delayed",
+      "category": "timing-change",
+      "annotation": "A carrier delay should select the parcel intent for early rescheduling.",
+      "now": "2026-09-04T09:00:00.000Z",
+      "events": [
+        {
+          "id": "parcel-delay",
+          "conversationId": "routing-conversation",
+          "actor": "user",
+          "occurredAt": "2026-09-04T09:00:00.000Z",
+          "content": "物流更新说包裹延期了，要到下周二才会送达。"
+        }
+      ],
+      "expectedIntentIds": ["parcel"]
+    },
+    {
+      "id": "study-plan-paused",
+      "category": "timing-change",
+      "annotation": "Pausing the goal should select only the study intent.",
+      "now": "2026-09-04T09:10:00.000Z",
+      "events": [
+        {
+          "id": "study-paused",
+          "conversationId": "routing-conversation",
+          "actor": "user",
+          "occurredAt": "2026-09-04T09:10:00.000Z",
+          "content": "最近生病了，本周学习计划暂停，恢复以后再继续。"
+        }
+      ],
+      "expectedIntentIds": ["study-plan"]
+    },
+    {
+      "id": "vague-life-update",
+      "category": "negative-ambiguous",
+      "annotation": "A vague update without an identifiable target should remain unmatched.",
+      "now": "2026-09-04T09:20:00.000Z",
+      "events": [
+        {
+          "id": "vague-update",
+          "conversationId": "routing-conversation",
+          "actor": "user",
+          "occurredAt": "2026-09-04T09:20:00.000Z",
+          "content": "最近几件事情处理得差不多了，总算轻松一点。"
+        }
+      ],
+      "expectedIntentIds": []
+    },
+    {
+      "id": "unrelated-contract-signed",
+      "category": "negative-semantic-decoy",
+      "annotation": "Signing an apartment lease must not be confused with accepting an internship offer.",
+      "now": "2026-09-04T09:30:00.000Z",
+      "events": [
+        {
+          "id": "lease-signed",
+          "conversationId": "routing-conversation",
+          "actor": "user",
+          "occurredAt": "2026-09-04T09:30:00.000Z",
+          "content": "租房合同终于签好了，下个月搬家。"
+        }
+      ],
+      "expectedIntentIds": []
+    },
+    {
+      "id": "two-intents-resolved-together",
+      "category": "multi-intent-impact",
+      "annotation": "One message can independently invalidate two intents while leaving the third untouched.",
+      "now": "2026-09-04T09:40:00.000Z",
+      "events": [
+        {
+          "id": "job-and-parcel-resolved",
+          "conversationId": "routing-conversation",
+          "actor": "user",
+          "occurredAt": "2026-09-04T09:40:00.000Z",
+          "content": "实习已经定了，招聘活动都不参加了；快递也提前取到了。"
+        }
+      ],
+      "expectedIntentIds": ["job-fair", "parcel"]
+    },
+    {
+      "id": "assistant-topic-recap",
+      "category": "negative-actor-decoy",
+      "annotation": "An assistant recap without new user state must not itself invalidate an intent.",
+      "now": "2026-09-04T09:50:00.000Z",
+      "events": [
+        {
+          "id": "assistant-recap",
+          "conversationId": "routing-conversation",
+          "actor": "assistant",
+          "occurredAt": "2026-09-04T09:50:00.000Z",
+          "content": "你之前说双选会材料已经开始准备了，我记得这件事。"
+        }
+      ],
+      "expectedIntentIds": []
+    }
+  ]
+}

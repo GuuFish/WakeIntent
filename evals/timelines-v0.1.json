@@ -1,0 +1,85 @@
+{
+  "schemaVersion": "0.1.0",
+  "name": "WakeIntent longitudinal wake fixtures",
+  "version": "0.1.0-dev.1",
+  "kind": "development-timelines",
+  "scenarios": [
+    {
+      "schemaVersion": "0.1.0",
+      "id": "thirty-days-no-opportunity",
+      "startAt": "2026-09-01T00:00:00.000Z",
+      "endAt": "2026-10-01T00:00:00.000Z",
+      "heartbeatIntervalMinutes": 1440,
+      "opportunities": [],
+      "contextEventTimes": []
+    },
+    {
+      "schemaVersion": "0.1.0",
+      "id": "thirty-days-one-valid-follow-up",
+      "startAt": "2026-09-01T00:00:00.000Z",
+      "endAt": "2026-10-01T00:00:00.000Z",
+      "heartbeatIntervalMinutes": 1440,
+      "opportunities": [
+        {
+          "id": "interview-result",
+          "createdAt": "2026-09-01T09:00:00.000Z",
+          "dueAt": "2026-09-20T12:00:00.000Z",
+          "invalidatedAt": null
+        }
+      ],
+      "contextEventTimes": [
+        "2026-09-05T09:00:00.000Z",
+        "2026-09-11T09:00:00.000Z",
+        "2026-09-17T09:00:00.000Z"
+      ]
+    },
+    {
+      "schemaVersion": "0.1.0",
+      "id": "seven-days-invalidated-before-due",
+      "startAt": "2026-09-01T00:00:00.000Z",
+      "endAt": "2026-09-08T00:00:00.000Z",
+      "heartbeatIntervalMinutes": 1440,
+      "opportunities": [
+        {
+          "id": "job-fair",
+          "createdAt": "2026-09-01T09:00:00.000Z",
+          "dueAt": "2026-09-07T12:00:00.000Z",
+          "invalidatedAt": "2026-09-03T08:00:00.000Z"
+        }
+      ],
+      "contextEventTimes": ["2026-09-03T08:00:00.000Z"]
+    },
+    {
+      "schemaVersion": "0.1.0",
+      "id": "seven-days-three-shared-window-intents",
+      "startAt": "2026-09-01T00:00:00.000Z",
+      "endAt": "2026-09-08T00:00:00.000Z",
+      "heartbeatIntervalMinutes": 1440,
+      "opportunities": [
+        {
+          "id": "application",
+          "createdAt": "2026-09-01T09:00:00.000Z",
+          "dueAt": "2026-09-07T12:00:00.000Z",
+          "invalidatedAt": null
+        },
+        {
+          "id": "interview",
+          "createdAt": "2026-09-01T09:00:00.000Z",
+          "dueAt": "2026-09-07T12:00:00.000Z",
+          "invalidatedAt": null
+        },
+        {
+          "id": "job-fair",
+          "createdAt": "2026-09-01T09:00:00.000Z",
+          "dueAt": "2026-09-07T12:00:00.000Z",
+          "invalidatedAt": "2026-09-03T08:00:00.000Z"
+        }
+      ],
+      "contextEventTimes": [
+        "2026-09-02T08:00:00.000Z",
+        "2026-09-03T08:00:00.000Z",
+        "2026-09-05T08:00:00.000Z"
+      ]
+    }
+  ]
+}

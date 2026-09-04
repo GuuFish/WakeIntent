@@ -1,0 +1,124 @@
+{
+  "schemaVersion": "0.1.0",
+  "name": "WakeIntent frozen state-aware policy signal extraction eval",
+  "version": "0.2.0",
+  "kind": "frozen-state-aware-policy-signal-extraction",
+  "frozenAt": "2026-09-02T02:28:00.000Z",
+  "extends": "policy-signal-extraction-v0.1.json",
+  "baseScenarioSplit": "regression",
+  "defaultCurrentPolicy": { "authorization": "granted" },
+  "overrides": [
+    {
+      "id": "restore-proactive-permission",
+      "currentPolicy": { "authorization": "denied" }
+    },
+    {
+      "id": "clear-quiet-window",
+      "currentPolicy": {
+        "authorization": "granted",
+        "doNotDisturbUntil": "2026-09-02T14:00:00.000Z"
+      }
+    },
+    {
+      "id": "restore-and-clear",
+      "currentPolicy": {
+        "authorization": "denied",
+        "doNotDisturbUntil": "2026-09-02T14:00:00.000Z"
+      },
+      "events": [
+        {
+          "id": "q7",
+          "conversationId": "c7",
+          "actor": "user",
+          "occurredAt": "2026-09-02T10:00:00.000Z",
+          "content": "之前说今天别联系、以后也别主动联系，这两条都作废；现在可以正常主动联系我。"
+        }
+      ]
+    }
+  ],
+  "additions": [
+    {
+      "id": "stateful-clear-after-early-finish",
+      "split": "holdout",
+      "category": "stateful-clear-do-not-disturb",
+      "now": "2026-09-02T10:00:00.000Z",
+      "timeZone": "Asia/Hong_Kong",
+      "currentPolicy": { "authorization": "granted", "doNotDisturbUntil": "2026-09-02T14:00:00.000Z" },
+      "events": [{ "id": "s1", "conversationId": "s1c", "actor": "user", "occurredAt": "2026-09-02T10:00:00.000Z", "content": "考试提前结束了，不用继续免打扰，现在可以联系我。" }],
+      "expected": [{ "kind": "clear-do-not-disturb", "evidenceRef": "s1" }]
+    },
+    {
+      "id": "stateful-grant-after-denial",
+      "split": "holdout",
+      "category": "stateful-authorization-granted",
+      "now": "2026-09-02T10:00:00.000Z",
+      "timeZone": "Asia/Hong_Kong",
+      "currentPolicy": { "authorization": "denied" },
+      "events": [{ "id": "s2", "conversationId": "s2c", "actor": "user", "occurredAt": "2026-09-02T10:00:00.000Z", "content": "之前不让你主动找我，现在这项限制取消，你可以主动联系。" }],
+      "expected": [{ "kind": "set-authorization", "evidenceRef": "s2", "authorization": "granted" }]
+    },
+    {
+      "id": "stateful-explicit-double-restoration",
+      "split": "holdout",
+      "category": "stateful-compound-restoration",
+      "now": "2026-09-02T10:00:00.000Z",
+      "timeZone": "Asia/Hong_Kong",
+      "currentPolicy": { "authorization": "denied", "doNotDisturbUntil": "2026-09-03T01:00:00.000Z" },
+      "events": [{ "id": "s3", "conversationId": "s3c", "actor": "user", "occurredAt": "2026-09-02T10:00:00.000Z", "content": "把临时免打扰和永久禁止主动联系都取消，现在恢复正常主动联系。" }],
+      "expected": [
+        { "kind": "clear-do-not-disturb", "evidenceRef": "s3" },
+        { "kind": "set-authorization", "evidenceRef": "s3", "authorization": "granted" }
+      ]
+    },
+    {
+      "id": "stateful-redundant-grant",
+      "split": "holdout",
+      "category": "stateful-no-op",
+      "now": "2026-09-02T10:00:00.000Z",
+      "timeZone": "Asia/Hong_Kong",
+      "currentPolicy": { "authorization": "granted" },
+      "events": [{ "id": "s4", "conversationId": "s4c", "actor": "user", "occurredAt": "2026-09-02T10:00:00.000Z", "content": "你本来就可以主动联系我，保持这样就行。" }],
+      "expected": []
+    },
+    {
+      "id": "stateful-unrelated-event-during-quiet",
+      "split": "holdout",
+      "category": "stateful-no-op",
+      "now": "2026-09-02T10:00:00.000Z",
+      "timeZone": "Asia/Hong_Kong",
+      "currentPolicy": { "authorization": "granted", "doNotDisturbUntil": "2026-09-02T14:00:00.000Z" },
+      "events": [{ "id": "s5", "conversationId": "s5c", "actor": "user", "occurredAt": "2026-09-02T10:00:00.000Z", "content": "我刚刚拿到实习 offer 了。" }],
+      "expected": []
+    },
+    {
+      "id": "stateful-extend-quiet-window",
+      "split": "holdout",
+      "category": "stateful-update-do-not-disturb",
+      "now": "2026-09-02T10:00:00.000Z",
+      "timeZone": "Asia/Hong_Kong",
+      "currentPolicy": { "authorization": "granted", "doNotDisturbUntil": "2026-09-02T12:00:00.000Z" },
+      "events": [{ "id": "s6", "conversationId": "s6c", "actor": "user", "occurredAt": "2026-09-02T10:00:00.000Z", "content": "免打扰延长到今晚十点，十点前先别主动联系。" }],
+      "expected": [{ "kind": "set-do-not-disturb", "evidenceRef": "s6", "doNotDisturbUntil": "2026-09-02T14:00:00.000Z" }]
+    },
+    {
+      "id": "stateful-shorten-quiet-window",
+      "split": "holdout",
+      "category": "stateful-update-do-not-disturb",
+      "now": "2026-09-02T10:00:00.000Z",
+      "timeZone": "Asia/Hong_Kong",
+      "currentPolicy": { "authorization": "granted", "doNotDisturbUntil": "2026-09-02T14:00:00.000Z" },
+      "events": [{ "id": "s7", "conversationId": "s7c", "actor": "user", "occurredAt": "2026-09-02T10:00:00.000Z", "content": "不用等到十点，今晚九点以后就可以联系我。" }],
+      "expected": [{ "kind": "set-do-not-disturb", "evidenceRef": "s7", "doNotDisturbUntil": "2026-09-02T13:00:00.000Z" }]
+    },
+    {
+      "id": "stateful-redundant-clear",
+      "split": "holdout",
+      "category": "stateful-no-op",
+      "now": "2026-09-02T10:00:00.000Z",
+      "timeZone": "Asia/Hong_Kong",
+      "currentPolicy": { "authorization": "granted" },
+      "events": [{ "id": "s8", "conversationId": "s8c", "actor": "user", "occurredAt": "2026-09-02T10:00:00.000Z", "content": "现在不用免打扰，照常就好。" }],
+      "expected": []
+    }
+  ]
+}

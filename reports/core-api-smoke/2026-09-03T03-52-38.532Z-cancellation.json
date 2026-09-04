@@ -1,0 +1,291 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "core-event-wakeup-api-smoke",
+  "mode": "cancellation",
+  "syntheticData": true,
+  "runAt": "2026-09-03T03:52:38.532Z",
+  "passed": true,
+  "model": "gpt-5.5",
+  "apiMode": "responses",
+  "maxHttpRequests": 2,
+  "initialEvent": {
+    "id": "synthetic-job-fair-plan",
+    "conversationId": "synthetic-conversation",
+    "actor": "user",
+    "occurredAt": "2026-09-01T09:00:00.000Z",
+    "content": "我周五准备去参加双选会，结束后可能想聊聊结果。",
+    "metadata": {
+      "synthetic": true
+    }
+  },
+  "invalidatingEvent": {
+    "id": "synthetic-found-internship",
+    "conversationId": "synthetic-conversation",
+    "actor": "user",
+    "occurredAt": "2026-09-03T12:00:00.000Z",
+    "content": "我已经找到实习了，不去双选会了，这件事不用再问我。",
+    "metadata": {
+      "synthetic": true
+    }
+  },
+  "extractedIntent": {
+    "schemaVersion": "0.1.0",
+    "id": "core-smoke-intent-1",
+    "status": "active",
+    "subject": "聊聊周五双选会的结果",
+    "reason": "用户明确提到周五参加双选会后可能想聊聊结果，适合在活动结束后跟进。",
+    "target": {
+      "kind": "user",
+      "id": "synthetic-user"
+    },
+    "evidence": [
+      {
+        "eventId": "synthetic-job-fair-plan",
+        "quote": "我周五准备去参加双选会，结束后可能想聊聊结果。"
+      }
+    ],
+    "notBefore": "2026-09-05T00:00:00.000Z",
+    "expiresAt": null,
+    "cancellationHints": [
+      "用户表示不想再聊双选会结果",
+      "用户已经聊过或总结了双选会结果",
+      "参加双选会的计划取消或被替代"
+    ],
+    "priority": 0.7,
+    "interruptionCost": 0.3,
+    "confidence": 0.86,
+    "createdAt": "2026-09-01T09:01:00.000Z",
+    "updatedAt": "2026-09-01T09:01:00.000Z"
+  },
+  "routing": {
+    "selections": [
+      {
+        "confidence": 0.99,
+        "effect": "cancel",
+        "eventIds": [
+          "synthetic-found-internship"
+        ],
+        "intentId": "core-smoke-intent-1",
+        "reason": "用户明确表示已经找到实习、不去双选会，并且“这件事不用再问我”，既取消了参加双选会的计划，也撤回了后续跟进需求。"
+      }
+    ],
+    "persistedRequests": [
+      {
+        "id": "evaluation-request:core-api-smoke-route:core-smoke-intent-1",
+        "intentId": "core-smoke-intent-1",
+        "requestedAt": "2026-09-03T12:01:00.000Z",
+        "eventIds": [
+          "synthetic-found-internship"
+        ],
+        "effect": "cancel",
+        "reason": "用户明确表示已经找到实习、不去双选会，并且“这件事不用再问我”，既取消了参加双选会的计划，也撤回了后续跟进需求。",
+        "confidence": 0.99,
+        "nextEvaluationAt": "2026-09-03T12:01:00.000Z",
+        "policyVersion": "core-api-smoke-route-0.1",
+        "metadata": {
+          "source": "conversation-event-route"
+        }
+      }
+    ],
+    "audits": [
+      {
+        "at": "2026-09-03T12:01:00.000Z",
+        "source": "model",
+        "matches": [
+          {
+            "confidence": 0.99,
+            "effect": "cancel",
+            "eventIds": [
+              "synthetic-found-internship"
+            ],
+            "intentId": "core-smoke-intent-1",
+            "reason": "用户明确表示已经找到实习、不去双选会，并且“这件事不用再问我”，既取消了参加双选会的计划，也撤回了后续跟进需求。"
+          }
+        ]
+      }
+    ]
+  },
+  "afterRestart": {
+    "result": {
+      "outcome": "committed",
+      "source": "route-closure",
+      "decision": {
+        "id": "decision:evaluate:core-smoke-intent-1:revision:2",
+        "intentId": "core-smoke-intent-1",
+        "evaluatedAt": "2026-09-03T12:01:00.000Z",
+        "action": "cancel",
+        "reason": "用户明确表示已经找到实习、不去双选会，并且“这件事不用再问我”，既取消了参加双选会的计划，也撤回了后续跟进需求。",
+        "evidenceRefs": [
+          "synthetic-job-fair-plan"
+        ],
+        "counterEvidenceRefs": [
+          "synthetic-found-internship"
+        ],
+        "confidence": 0.99,
+        "nextEvaluationAt": null,
+        "policyVersion": "core-api-smoke-decision-0.1",
+        "metadata": {
+          "source": "relevance-route-closure",
+          "evaluationRequestId": "evaluation-request:core-api-smoke-route:core-smoke-intent-1",
+          "routePolicyVersion": "core-api-smoke-route-0.1"
+        }
+      }
+    },
+    "finalStatus": "cancelled",
+    "fallbackContextLoads": 0,
+    "evaluationWork": {
+      "dueIntents": 1,
+      "contextLoads": 0,
+      "semanticCalls": 0,
+      "hardGateDecisions": 0,
+      "semanticDecisions": 0,
+      "latePolicyDecisions": 0,
+      "routeClosureDecisions": 1,
+      "batchPolicyDecisions": 0,
+      "contactDecisions": 0,
+      "budgetSuppressed": 0,
+      "committed": 1,
+      "duplicates": 0,
+      "conflicts": 0,
+      "failures": 0,
+      "failureRecords": 0,
+      "retriesScheduled": 0,
+      "retriesExhausted": 0,
+      "failureRecordConflicts": 0,
+      "failureRecordFailures": 0
+    }
+  },
+  "usage": {
+    "extractionAndFallbackDecision": {
+      "calls": 1,
+      "inputTokens": 443,
+      "outputTokens": 361,
+      "totalTokens": 804,
+      "costUsd": null,
+      "attempts": 1,
+      "requestIds": [
+        "92e826d8-91af-4d9d-9bf4-fca465660ec0"
+      ]
+    },
+    "relevanceRouting": {
+      "calls": 1,
+      "inputTokens": 511,
+      "outputTokens": 137,
+      "totalTokens": 648,
+      "costUsd": null,
+      "attempts": 1,
+      "requestIds": [
+        "269a85f2-778f-4fbf-ac7a-b2ba99c1e930"
+      ]
+    }
+  },
+  "unifiedTrace": {
+    "schemaVersion": "0.1.0",
+    "traceId": "core-api-smoke:cancellation:2026-09-03T03:52:38.532Z",
+    "startedAt": "2026-09-03T03:52:38.532Z",
+    "completedAt": "2026-09-03T03:52:53.166Z",
+    "durationMs": 14634,
+    "trigger": "context-change",
+    "routing": {
+      "routerCalled": true,
+      "activeIntentCount": 1,
+      "eventCount": 1,
+      "selections": [
+        {
+          "intentId": "core-smoke-intent-1",
+          "eventIds": [
+            "synthetic-found-internship"
+          ],
+          "effect": "cancel",
+          "confidence": 0.99,
+          "requestId": "evaluation-request:core-api-smoke-route:core-smoke-intent-1",
+          "persistenceOutcome": "requested"
+        }
+      ]
+    },
+    "evaluation": {
+      "evaluatedAt": "2026-09-03T12:01:00.000Z",
+      "dueCount": 1,
+      "work": {
+        "dueIntents": 1,
+        "contextLoads": 0,
+        "semanticCalls": 0,
+        "hardGateDecisions": 0,
+        "semanticDecisions": 0,
+        "latePolicyDecisions": 0,
+        "routeClosureDecisions": 1,
+        "batchPolicyDecisions": 0,
+        "contactDecisions": 0,
+        "budgetSuppressed": 0,
+        "committed": 1,
+        "duplicates": 0,
+        "conflicts": 0,
+        "failures": 0,
+        "failureRecords": 0,
+        "retriesScheduled": 0,
+        "retriesExhausted": 0,
+        "failureRecordConflicts": 0,
+        "failureRecordFailures": 0
+      },
+      "items": [
+        {
+          "intentId": "core-smoke-intent-1",
+          "previousRevision": 2,
+          "outcome": "committed",
+          "source": "route-closure",
+          "action": "cancel",
+          "decisionId": "decision:evaluate:core-smoke-intent-1:revision:2",
+          "errorCode": null,
+          "retryAt": null,
+          "retryExhausted": null
+        }
+      ]
+    },
+    "model": {
+      "totals": {
+        "calls": 2,
+        "attempts": 2,
+        "inputTokens": 954,
+        "outputTokens": 498,
+        "totalTokens": 1452,
+        "costUsd": null,
+        "usageComplete": true,
+        "costComplete": false
+      },
+      "calls": [
+        {
+          "schemaName": "wakeintent_candidates",
+          "phase": "extraction",
+          "reasoningEffort": null,
+          "usage": {
+            "inputTokens": 443,
+            "outputTokens": 361,
+            "totalTokens": 804
+          },
+          "requestId": "92e826d8-91af-4d9d-9bf4-fca465660ec0",
+          "attempts": 1,
+          "costUsd": null
+        },
+        {
+          "schemaName": "wakeintent_relevance_route",
+          "phase": "extraction",
+          "reasoningEffort": null,
+          "usage": {
+            "inputTokens": 511,
+            "outputTokens": 137,
+            "totalTokens": 648
+          },
+          "requestId": "269a85f2-778f-4fbf-ac7a-b2ba99c1e930",
+          "attempts": 1,
+          "costUsd": null
+        }
+      ]
+    },
+    "metadata": {
+      "syntheticData": true,
+      "model": "gpt-5.5",
+      "apiMode": "responses",
+      "mode": "cancellation"
+    }
+  }
+}

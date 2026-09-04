@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wakeintent.dev/schemas/0.1/contact-policy-signal.schema.json",
+  "title": "ContactPolicySignal",
+  "description": "An evidence-backed global change to proactive-contact policy.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "id",
+    "kind",
+    "evidenceRef",
+    "occurredAt",
+    "reason"
+  ],
+  "properties": {
+    "schemaVersion": { "type": "string", "const": "0.1.0" },
+    "id": { "type": "string", "minLength": 1 },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "set-do-not-disturb",
+        "clear-do-not-disturb",
+        "set-authorization"
+      ]
+    },
+    "evidenceRef": { "type": "string", "minLength": 1 },
+    "occurredAt": { "type": "string", "format": "date-time" },
+    "reason": { "type": "string", "minLength": 1, "maxLength": 1000 },
+    "doNotDisturbUntil": { "type": "string", "format": "date-time" },
+    "authorization": {
+      "type": "string",
+      "enum": ["granted", "denied", "unknown"]
+    }
+  },
+  "oneOf": [
+    {
+      "properties": {
+        "kind": { "const": "set-do-not-disturb" },
+        "doNotDisturbUntil": { "type": "string", "format": "date-time" },
+        "authorization": false
+      },
+      "required": ["doNotDisturbUntil"]
+    },
+    {
+      "properties": {
+        "kind": { "const": "clear-do-not-disturb" },
+        "doNotDisturbUntil": false,
+        "authorization": false
+      }
+    },
+    {
+      "properties": {
+        "kind": { "const": "set-authorization" },
+        "doNotDisturbUntil": false,
+        "authorization": {
+          "type": "string",
+          "enum": ["granted", "denied", "unknown"]
+        }
+      },
+      "required": ["authorization"]
+    }
+  ]
+}

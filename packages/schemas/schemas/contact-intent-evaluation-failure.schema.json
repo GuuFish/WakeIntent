@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wakeintent.dev/schemas/0.1/contact-intent-evaluation-failure.schema.json",
+  "title": "ContactIntentEvaluationFailure",
+  "description": "A sanitized, auditable evaluation failure and its durable retry projection.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "intentId",
+    "failedAt",
+    "stage",
+    "code",
+    "attempt",
+    "exhausted",
+    "nextEvaluationAt",
+    "policyVersion"
+  ],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "intentId": { "type": "string", "minLength": 1 },
+    "failedAt": { "type": "string", "format": "date-time" },
+    "stage": {
+      "type": "string",
+      "enum": ["context", "semantic", "evaluation"]
+    },
+    "code": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "attempt": { "type": "integer", "minimum": 1 },
+    "exhausted": { "type": "boolean" },
+    "nextEvaluationAt": {
+      "anyOf": [
+        { "type": "string", "format": "date-time" },
+        { "type": "null" }
+      ]
+    },
+    "policyVersion": { "type": "string", "minLength": 1 },
+    "metadata": { "type": "object", "additionalProperties": true }
+  }
+}

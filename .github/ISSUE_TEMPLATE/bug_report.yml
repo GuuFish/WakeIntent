@@ -1,0 +1,46 @@
+name: Bug report
+description: Report reproducible incorrect behavior in WakeIntent
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for helping make proactive contact safer and more predictable.
+  - type: textarea
+    id: behavior
+    attributes:
+      label: What happened?
+      description: Include the expected decision and the actual decision.
+    validations:
+      required: true
+  - type: textarea
+    id: timeline
+    attributes:
+      label: Minimal synthetic timeline
+      description: Replace private conversation content with synthetic data.
+      placeholder: Include events, timestamps, current intent, and policy state.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction steps
+    validations:
+      required: true
+  - type: input
+    id: revision
+    attributes:
+      label: WakeIntent revision
+      placeholder: Commit SHA or version
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      placeholder: Node version, OS, model/provider if relevant
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy check
+      options:
+        - label: I removed API keys and private conversation data.
+          required: true

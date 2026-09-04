@@ -1,0 +1,128 @@
+{
+  "schemaVersion": "0.1.0",
+  "name": "WakeIntent model-backed longitudinal fixtures",
+  "version": "0.1.0-dev.1",
+  "kind": "development-longitudinal-fixtures",
+  "scenarios": [
+    {
+      "id": "selective-early-resolution-with-surviving-intent",
+      "timeZone": "Asia/Hong_Kong",
+      "target": { "kind": "user", "id": "user-longitudinal" },
+      "initialUserState": {
+        "authorization": "granted",
+        "remainingContactBudget": 2
+      },
+      "initialEvents": [
+        {
+          "id": "job-fair-plan",
+          "conversationId": "conversation-longitudinal",
+          "actor": "user",
+          "occurredAt": "2026-09-01T09:00:00.000Z",
+          "content": "我准备参加2026年9月4日晚上八点的双选会。请在北京时间9月4日下午六点问问我材料准备好了没有。"
+        },
+        {
+          "id": "parcel-plan",
+          "conversationId": "conversation-longitudinal",
+          "actor": "user",
+          "occurredAt": "2026-09-01T09:05:00.000Z",
+          "content": "我的快递预计2026年9月6日送到，请在北京时间9月6日晚上八点问问我取到没有。"
+        }
+      ],
+      "steps": [
+        {
+          "at": "2026-09-03T08:00:00.000Z",
+          "kind": "context",
+          "events": [
+            {
+              "id": "internship-found",
+              "conversationId": "conversation-longitudinal",
+              "actor": "user",
+              "occurredAt": "2026-09-03T08:00:00.000Z",
+              "content": "我已经找到实习了，所以双选会不去了。"
+            }
+          ]
+        },
+        {
+          "at": "2026-09-04T10:00:00.000Z",
+          "kind": "scheduled",
+          "events": []
+        },
+        {
+          "at": "2026-09-06T12:00:00.000Z",
+          "kind": "scheduled",
+          "events": []
+        }
+      ],
+      "expected": {
+        "intentCount": 2,
+        "routeMatchCount": 1,
+        "requiredRouteEvidence": "internship-found",
+        "wakeRequiredActions": ["contact"],
+        "wakeRequiredTerminalActions": ["resolve", "cancel"],
+        "baselineRequiredActions": ["contact"],
+        "baselineRequiredTerminalActions": ["resolve", "cancel", "expire"],
+        "forbiddenJobFairContactEvidence": "job-fair-plan"
+      }
+    },
+    {
+      "id": "indirect-resolution-with-surviving-intent",
+      "timeZone": "Asia/Hong_Kong",
+      "target": { "kind": "user", "id": "user-indirect" },
+      "initialUserState": {
+        "authorization": "granted",
+        "remainingContactBudget": 2
+      },
+      "initialEvents": [
+        {
+          "id": "indirect-job-plan",
+          "conversationId": "conversation-indirect",
+          "actor": "user",
+          "occurredAt": "2026-09-01T09:00:00.000Z",
+          "content": "我准备参加2026年9月4日晚上八点的双选会。请在北京时间9月4日下午六点问问我材料准备好了没有。"
+        },
+        {
+          "id": "indirect-parcel-plan",
+          "conversationId": "conversation-indirect",
+          "actor": "user",
+          "occurredAt": "2026-09-01T09:05:00.000Z",
+          "content": "我的快递预计2026年9月6日送到，请在北京时间9月6日晚上八点问问我取到没有。"
+        }
+      ],
+      "steps": [
+        {
+          "at": "2026-09-03T08:00:00.000Z",
+          "kind": "context",
+          "events": [
+            {
+              "id": "offer-signed",
+              "conversationId": "conversation-indirect",
+              "actor": "user",
+              "occurredAt": "2026-09-03T08:00:00.000Z",
+              "content": "我已经签了满意的实习 offer，接下来的招聘活动都不参加了。"
+            }
+          ]
+        },
+        {
+          "at": "2026-09-04T10:00:00.000Z",
+          "kind": "scheduled",
+          "events": []
+        },
+        {
+          "at": "2026-09-06T12:00:00.000Z",
+          "kind": "scheduled",
+          "events": []
+        }
+      ],
+      "expected": {
+        "intentCount": 2,
+        "routeMatchCount": 1,
+        "requiredRouteEvidence": "offer-signed",
+        "wakeRequiredActions": ["contact"],
+        "wakeRequiredTerminalActions": ["resolve", "cancel"],
+        "baselineRequiredActions": ["contact"],
+        "baselineRequiredTerminalActions": ["resolve", "cancel", "expire"],
+        "forbiddenJobFairContactEvidence": "indirect-job-plan"
+      }
+    }
+  ]
+}

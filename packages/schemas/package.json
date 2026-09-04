@@ -1,0 +1,38 @@
+{
+  "name": "@wakeintent/schemas",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "files": [
+    "dist",
+    "schemas"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./contact-intent": "./schemas/contact-intent.schema.json",
+    "./contact-intent-activation": "./schemas/contact-intent-activation.schema.json",
+    "./contact-intent-evaluation-failure": "./schemas/contact-intent-evaluation-failure.schema.json",
+    "./contact-intent-evaluation-request": "./schemas/contact-intent-evaluation-request.schema.json",
+    "./contact-policy-signal": "./schemas/contact-policy-signal.schema.json",
+    "./conversation-event": "./schemas/conversation-event.schema.json",
+    "./decision": "./schemas/decision.schema.json"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest",
+    "test:run": "vitest run"
+  },
+  "dependencies": {
+    "ajv": "^8.17.0",
+    "ajv-formats": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.9.0",
+    "vitest": "^4.0.0"
+  }
+}

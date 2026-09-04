@@ -1,0 +1,269 @@
+{
+  "schemaVersion": "0.1.0",
+  "dataset": {
+    "name": "WakeIntent global policy longitudinal development fixture",
+    "version": "0.1.0-dev.1",
+    "kind": "development-longitudinal-policy-fixtures",
+    "path": "evals/longitudinal-policy-development-v0.1.json"
+  },
+  "completedAt": "2026-09-02T06:28:49.066Z",
+  "scenarios": [
+    {
+      "scenarioId": "global-do-not-disturb-two-intents",
+      "passed": true,
+      "score": {
+        "wakeIntentCount": true,
+        "policySignalApplied": true,
+        "wakeAvoidedOriginalDueEvaluation": true,
+        "baselineUsedFairBatch": true,
+        "wakeFinalActions": true,
+        "baselineFinalActions": true
+      },
+      "comparison": {
+        "wakeintent": {
+          "logicalModelCalls": 5,
+          "callBreakdown": {
+            "extraction": 1,
+            "policyExtraction": 1,
+            "routing": 1,
+            "semanticDecision": 2
+          },
+          "originalDueWakeBatches": 0,
+          "policyReactionLatencyMs": 0,
+          "finalActions": [
+            "contact",
+            "contact"
+          ],
+          "tokens": null
+        },
+        "dueGatedBaseline": {
+          "logicalModelCalls": 3,
+          "callBreakdown": {
+            "extraction": 1,
+            "dueDecisionBatches": 2
+          },
+          "originalDueWakeBatches": 1,
+          "policyReactionLatencyMs": 187200000,
+          "finalActions": [
+            "contact",
+            "contact"
+          ],
+          "tokens": null
+        }
+      },
+      "wakeintent": {
+        "intents": [
+          {
+            "schemaVersion": "0.1.0",
+            "id": "global-do-not-disturb-two-intents-extract-intent-1",
+            "status": "active",
+            "subject": "双选会材料",
+            "reason": "用户要求在指定时间跟进双选会材料。",
+            "target": {
+              "kind": "user",
+              "id": "user-policy-timeline"
+            },
+            "evidence": [
+              {
+                "eventId": "job-plan"
+              }
+            ],
+            "notBefore": "2026-09-05T12:00:00.000Z",
+            "expiresAt": null,
+            "cancellationHints": [
+              "用户不再参加双选会",
+              "材料已经准备完成"
+            ],
+            "priority": 0.8,
+            "interruptionCost": 0.2,
+            "confidence": 1,
+            "createdAt": "2026-09-01T09:05:00.000Z",
+            "updatedAt": "2026-09-08T00:00:00.000Z"
+          },
+          {
+            "schemaVersion": "0.1.0",
+            "id": "global-do-not-disturb-two-intents-extract-intent-2",
+            "status": "active",
+            "subject": "快递签收",
+            "reason": "用户要求在指定时间跟进快递是否取到。",
+            "target": {
+              "kind": "user",
+              "id": "user-policy-timeline"
+            },
+            "evidence": [
+              {
+                "eventId": "parcel-plan"
+              }
+            ],
+            "notBefore": "2026-09-05T12:00:00.000Z",
+            "expiresAt": null,
+            "cancellationHints": [
+              "用户已经取到快递",
+              "用户不再需要跟进"
+            ],
+            "priority": 0.7,
+            "interruptionCost": 0.2,
+            "confidence": 1,
+            "createdAt": "2026-09-01T09:05:00.000Z",
+            "updatedAt": "2026-09-08T00:00:00.000Z"
+          }
+        ],
+        "traces": [
+          {
+            "at": "2026-09-08T00:00:00.000Z",
+            "trigger": "scheduled",
+            "intentId": "global-do-not-disturb-two-intents-extract-intent-1",
+            "decision": {
+              "id": "global-do-not-disturb-two-intents-timeline-decision-1",
+              "intentId": "global-do-not-disturb-two-intents-extract-intent-1",
+              "evaluatedAt": "2026-09-08T00:00:00.000Z",
+              "action": "contact",
+              "reason": "The follow-up remains useful after the quiet window.",
+              "evidenceRefs": [
+                "job-plan"
+              ],
+              "counterEvidenceRefs": [],
+              "confidence": 1,
+              "nextEvaluationAt": null,
+              "policyVersion": "longitudinal-eval-0.1",
+              "metadata": {
+                "source": "development-oracle"
+              }
+            },
+            "source": "semantic"
+          },
+          {
+            "at": "2026-09-08T00:00:00.000Z",
+            "trigger": "scheduled",
+            "intentId": "global-do-not-disturb-two-intents-extract-intent-2",
+            "decision": {
+              "id": "global-do-not-disturb-two-intents-timeline-decision-2",
+              "intentId": "global-do-not-disturb-two-intents-extract-intent-2",
+              "evaluatedAt": "2026-09-08T00:00:00.000Z",
+              "action": "contact",
+              "reason": "The follow-up remains useful after the quiet window.",
+              "evidenceRefs": [
+                "parcel-plan"
+              ],
+              "counterEvidenceRefs": [],
+              "confidence": 1,
+              "nextEvaluationAt": null,
+              "policyVersion": "longitudinal-eval-0.1",
+              "metadata": {
+                "source": "development-oracle"
+              }
+            },
+            "source": "semantic"
+          }
+        ],
+        "metrics": {
+          "extractionModelCalls": 1,
+          "policySignalExtractionCalls": 1,
+          "policySignalsApplied": 1,
+          "routingCalls": 1,
+          "reevaluationAttempts": 2,
+          "semanticDecisionModelCalls": 2,
+          "contactDecisions": 2,
+          "terminalDecisions": 0
+        },
+        "pendingEvaluationAt": {},
+        "policySnapshot": {
+          "state": {
+            "authorization": "granted",
+            "remainingContactBudget": 2,
+            "doNotDisturbUntil": "2026-09-08T00:00:00.000Z"
+          },
+          "appliedSignalIds": [
+            "global-do-not-disturb-two-intents-policy-policy-signal-1"
+          ],
+          "updatedAt": "2026-09-03T08:00:00.000Z"
+        },
+        "policyAudits": [
+          {
+            "signalId": "global-do-not-disturb-two-intents-policy-policy-signal-1",
+            "kind": "set-do-not-disturb",
+            "evidenceRef": "global-quiet",
+            "occurredAt": "2026-09-03T08:00:00.000Z",
+            "appliedAt": "2026-09-03T08:00:00.000Z",
+            "outcome": "applied",
+            "reason": "用户明确要求本周不要主动联系。",
+            "before": {
+              "authorization": "granted",
+              "remainingContactBudget": 2
+            },
+            "after": {
+              "authorization": "granted",
+              "remainingContactBudget": 2,
+              "doNotDisturbUntil": "2026-09-08T00:00:00.000Z"
+            }
+          }
+        ]
+      },
+      "dueGatedBaseline": {
+        "memories": [],
+        "traces": [
+          {
+            "at": "2026-09-05T12:00:00.000Z",
+            "decisions": [
+              {
+                "memoryId": "baseline-job",
+                "action": "defer",
+                "reason": "用户要求本周免打扰。",
+                "evidenceRefs": [
+                  "global-quiet"
+                ],
+                "nextEvaluationAt": "2026-09-08T00:00:00.000Z"
+              },
+              {
+                "memoryId": "baseline-parcel",
+                "action": "defer",
+                "reason": "用户要求本周免打扰。",
+                "evidenceRefs": [
+                  "global-quiet"
+                ],
+                "nextEvaluationAt": "2026-09-08T00:00:00.000Z"
+              }
+            ]
+          },
+          {
+            "at": "2026-09-08T00:00:00.000Z",
+            "decisions": [
+              {
+                "memoryId": "baseline-job",
+                "action": "contact",
+                "reason": "免打扰窗口已结束，原跟进仍然有效。",
+                "evidenceRefs": [
+                  "job-plan",
+                  "global-quiet"
+                ],
+                "nextEvaluationAt": null
+              },
+              {
+                "memoryId": "baseline-parcel",
+                "action": "contact",
+                "reason": "免打扰窗口已结束，原跟进仍然有效。",
+                "evidenceRefs": [
+                  "parcel-plan",
+                  "global-quiet"
+                ],
+                "nextEvaluationAt": null
+              }
+            ]
+          }
+        ],
+        "metrics": {
+          "extractionModelCalls": 1,
+          "deterministicChecks": 3,
+          "decisionModelCalls": 2,
+          "contactDecisions": 2,
+          "terminalDecisions": 0
+        }
+      }
+    }
+  ],
+  "aggregate": {
+    "scenarios": 1,
+    "passed": 1
+  },
+  "warning": "This offline oracle evaluation verifies lifecycle mechanics, accounting, and baseline fairness only. Logical calls are simulated pipeline invocations; token fields are null. It does not measure model extraction quality or establish product value."
+}

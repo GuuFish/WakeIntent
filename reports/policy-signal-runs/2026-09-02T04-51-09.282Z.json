@@ -1,0 +1,351 @@
+{
+  "schemaVersion": "0.1.0",
+  "dataset": {
+    "name": "WakeIntent frozen state-aware policy signal extraction eval",
+    "version": "0.2.0",
+    "kind": "frozen-state-aware-policy-signal-extraction",
+    "frozenAt": "2026-09-02T02:28:00.000Z",
+    "path": "evals/policy-signal-extraction-v0.2.json",
+    "resolvedFrom": [
+      "evals/policy-signal-extraction-v0.1.json",
+      "evals/policy-signal-extraction-v0.2.json"
+    ]
+  },
+  "completedAt": "2026-09-02T04:51:09.282Z",
+  "model": "gpt-5.5",
+  "apiMode": "responses",
+  "modelSettings": {
+    "extractionReasoningEffort": null,
+    "textVerbosity": null
+  },
+  "promptVersion": "0.3.0",
+  "scoringVersion": "0.1.0",
+  "filters": {
+    "split": null,
+    "scenarioId": "stateful-explicit-double-restoration",
+    "repeats": 3
+  },
+  "aggregate": {
+    "scenarios": 3,
+    "passed": 3,
+    "exactMatchAccuracy": 1,
+    "positiveScenarioAccuracy": 1,
+    "negativeScenarioAccuracy": 1,
+    "signalPrecision": 1,
+    "signalRecall": 1,
+    "signalF1": 1,
+    "truePositives": 6,
+    "falsePositives": 0,
+    "falseNegatives": 0,
+    "errors": 0
+  },
+  "bySplit": {
+    "holdout": {
+      "scenarios": 3,
+      "passed": 3,
+      "exactMatchAccuracy": 1,
+      "positiveScenarioAccuracy": 1,
+      "negativeScenarioAccuracy": 1,
+      "signalPrecision": 1,
+      "signalRecall": 1,
+      "signalF1": 1,
+      "truePositives": 6,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "errors": 0
+    }
+  },
+  "byRepeat": {
+    "1": {
+      "scenarios": 1,
+      "passed": 1,
+      "exactMatchAccuracy": 1,
+      "positiveScenarioAccuracy": 1,
+      "negativeScenarioAccuracy": 1,
+      "signalPrecision": 1,
+      "signalRecall": 1,
+      "signalF1": 1,
+      "truePositives": 2,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "errors": 0
+    },
+    "2": {
+      "scenarios": 1,
+      "passed": 1,
+      "exactMatchAccuracy": 1,
+      "positiveScenarioAccuracy": 1,
+      "negativeScenarioAccuracy": 1,
+      "signalPrecision": 1,
+      "signalRecall": 1,
+      "signalF1": 1,
+      "truePositives": 2,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "errors": 0
+    },
+    "3": {
+      "scenarios": 1,
+      "passed": 1,
+      "exactMatchAccuracy": 1,
+      "positiveScenarioAccuracy": 1,
+      "negativeScenarioAccuracy": 1,
+      "signalPrecision": 1,
+      "signalRecall": 1,
+      "signalF1": 1,
+      "truePositives": 2,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "errors": 0
+    }
+  },
+  "byCategory": {
+    "stateful-compound-restoration": {
+      "scenarios": 3,
+      "passed": 3,
+      "exactMatchAccuracy": 1,
+      "positiveScenarioAccuracy": 1,
+      "negativeScenarioAccuracy": 1,
+      "signalPrecision": 1,
+      "signalRecall": 1,
+      "signalF1": 1,
+      "truePositives": 6,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "errors": 0
+    }
+  },
+  "stability": {
+    "repeats": 3,
+    "scenarios": 1,
+    "stablePredictionScenarios": 1,
+    "allPassedScenarios": 1,
+    "meanLatencyMs": 8441,
+    "minLatencyMs": 7344,
+    "maxLatencyMs": 9011,
+    "byScenario": {
+      "stateful-explicit-double-restoration": {
+        "runs": 3,
+        "passedRuns": 3,
+        "passRate": 1,
+        "stablePrediction": true,
+        "uniquePredictionCount": 1,
+        "errors": 0
+      }
+    }
+  },
+  "usage": {
+    "calls": 3,
+    "inputTokens": 1506,
+    "outputTokens": 825,
+    "totalTokens": 2331,
+    "costUsd": null
+  },
+  "scenarios": [
+    {
+      "scenarioId": "stateful-explicit-double-restoration",
+      "split": "holdout",
+      "category": "stateful-compound-restoration",
+      "passed": true,
+      "expected": [
+        {
+          "kind": "clear-do-not-disturb",
+          "evidenceRef": "s3"
+        },
+        {
+          "kind": "set-authorization",
+          "evidenceRef": "s3",
+          "authorization": "granted"
+        }
+      ],
+      "actual": [
+        {
+          "kind": "clear-do-not-disturb",
+          "evidenceRef": "s3"
+        },
+        {
+          "kind": "set-authorization",
+          "evidenceRef": "s3",
+          "authorization": "granted"
+        }
+      ],
+      "truePositives": 2,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "error": null,
+      "repeatIndex": 1,
+      "latencyMs": 8968,
+      "actualSignals": [
+        {
+          "schemaVersion": "0.1.0",
+          "id": "stateful-explicit-double-restoration-r1-policy-signal-1",
+          "evidenceRef": "s3",
+          "occurredAt": "2026-09-02T10:00:00.000Z",
+          "reason": "User explicitly canceled the temporary do-not-disturb period and asked to restore normal proactive contact.",
+          "kind": "clear-do-not-disturb"
+        },
+        {
+          "schemaVersion": "0.1.0",
+          "id": "stateful-explicit-double-restoration-r1-policy-signal-2",
+          "evidenceRef": "s3",
+          "occurredAt": "2026-09-02T10:00:00.000Z",
+          "reason": "User explicitly revoked the indefinite prohibition on proactive contact and restored normal proactive contact.",
+          "kind": "set-authorization",
+          "authorization": "granted"
+        }
+      ],
+      "modelCallRecords": [
+        {
+          "schemaName": "wakeintent_policy_signals",
+          "phase": "extraction",
+          "reasoningEffort": null,
+          "usage": {
+            "inputTokens": 502,
+            "outputTokens": 301,
+            "totalTokens": 803
+          },
+          "requestId": "398ac91b-b0a6-4e4d-b6d4-bc22084e3481",
+          "attempts": 1,
+          "costUsd": null
+        }
+      ]
+    },
+    {
+      "scenarioId": "stateful-explicit-double-restoration",
+      "split": "holdout",
+      "category": "stateful-compound-restoration",
+      "passed": true,
+      "expected": [
+        {
+          "kind": "clear-do-not-disturb",
+          "evidenceRef": "s3"
+        },
+        {
+          "kind": "set-authorization",
+          "evidenceRef": "s3",
+          "authorization": "granted"
+        }
+      ],
+      "actual": [
+        {
+          "kind": "clear-do-not-disturb",
+          "evidenceRef": "s3"
+        },
+        {
+          "kind": "set-authorization",
+          "evidenceRef": "s3",
+          "authorization": "granted"
+        }
+      ],
+      "truePositives": 2,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "error": null,
+      "repeatIndex": 2,
+      "latencyMs": 7344,
+      "actualSignals": [
+        {
+          "schemaVersion": "0.1.0",
+          "id": "stateful-explicit-double-restoration-r2-policy-signal-1",
+          "evidenceRef": "s3",
+          "occurredAt": "2026-09-02T10:00:00.000Z",
+          "reason": "User explicitly canceled the temporary do-not-disturb window.",
+          "kind": "clear-do-not-disturb"
+        },
+        {
+          "schemaVersion": "0.1.0",
+          "id": "stateful-explicit-double-restoration-r2-policy-signal-2",
+          "evidenceRef": "s3",
+          "occurredAt": "2026-09-02T10:00:00.000Z",
+          "reason": "User explicitly restored normal proactive contact after previously denying it.",
+          "kind": "set-authorization",
+          "authorization": "granted"
+        }
+      ],
+      "modelCallRecords": [
+        {
+          "schemaName": "wakeintent_policy_signals",
+          "phase": "extraction",
+          "reasoningEffort": null,
+          "usage": {
+            "inputTokens": 502,
+            "outputTokens": 216,
+            "totalTokens": 718
+          },
+          "requestId": "1ae041ef-121b-4347-814d-3cd9245c1aeb",
+          "attempts": 1,
+          "costUsd": null
+        }
+      ]
+    },
+    {
+      "scenarioId": "stateful-explicit-double-restoration",
+      "split": "holdout",
+      "category": "stateful-compound-restoration",
+      "passed": true,
+      "expected": [
+        {
+          "kind": "clear-do-not-disturb",
+          "evidenceRef": "s3"
+        },
+        {
+          "kind": "set-authorization",
+          "evidenceRef": "s3",
+          "authorization": "granted"
+        }
+      ],
+      "actual": [
+        {
+          "kind": "clear-do-not-disturb",
+          "evidenceRef": "s3"
+        },
+        {
+          "kind": "set-authorization",
+          "evidenceRef": "s3",
+          "authorization": "granted"
+        }
+      ],
+      "truePositives": 2,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "error": null,
+      "repeatIndex": 3,
+      "latencyMs": 9011,
+      "actualSignals": [
+        {
+          "schemaVersion": "0.1.0",
+          "id": "stateful-explicit-double-restoration-r3-policy-signal-1",
+          "evidenceRef": "s3",
+          "occurredAt": "2026-09-02T10:00:00.000Z",
+          "reason": "User explicitly canceled the temporary do-not-disturb period and restored normal proactive contact.",
+          "kind": "clear-do-not-disturb"
+        },
+        {
+          "schemaVersion": "0.1.0",
+          "id": "stateful-explicit-double-restoration-r3-policy-signal-2",
+          "evidenceRef": "s3",
+          "occurredAt": "2026-09-02T10:00:00.000Z",
+          "reason": "User explicitly revoked the permanent prohibition on proactive contact and restored normal proactive contact.",
+          "kind": "set-authorization",
+          "authorization": "granted"
+        }
+      ],
+      "modelCallRecords": [
+        {
+          "schemaName": "wakeintent_policy_signals",
+          "phase": "extraction",
+          "reasoningEffort": null,
+          "usage": {
+            "inputTokens": 502,
+            "outputTokens": 308,
+            "totalTokens": 810
+          },
+          "requestId": "949f7787-e66b-4e7d-9aa8-3941ac7eb99c",
+          "attempts": 1,
+          "costUsd": null
+        }
+      ]
+    }
+  ],
+  "warning": "This frozen extraction eval measures policy-signal classification and normalization only. It does not yet establish end-to-end product value or user preference."
+}

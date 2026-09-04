@@ -1,0 +1,174 @@
+{
+  "schemaVersion": "0.1.0",
+  "name": "WakeIntent global policy longitudinal development fixture",
+  "version": "0.1.0-dev.1",
+  "kind": "development-longitudinal-policy-fixtures",
+  "scenarios": [
+    {
+      "id": "global-do-not-disturb-two-intents",
+      "timeZone": "Asia/Shanghai",
+      "target": { "kind": "user", "id": "user-policy-timeline" },
+      "initialUserState": {
+        "authorization": "granted",
+        "remainingContactBudget": 2
+      },
+      "initialEvents": [
+        {
+          "id": "job-plan",
+          "conversationId": "conversation-policy-timeline",
+          "actor": "user",
+          "occurredAt": "2026-09-01T09:00:00.000Z",
+          "content": "请在北京时间9月5日晚上八点问我双选会材料准备好了没有。"
+        },
+        {
+          "id": "parcel-plan",
+          "conversationId": "conversation-policy-timeline",
+          "actor": "user",
+          "occurredAt": "2026-09-01T09:05:00.000Z",
+          "content": "请在北京时间9月5日晚上八点问我快递取到了没有。"
+        }
+      ],
+      "steps": [
+        {
+          "at": "2026-09-03T08:00:00.000Z",
+          "kind": "context",
+          "events": [
+            {
+              "id": "global-quiet",
+              "conversationId": "conversation-policy-timeline",
+              "actor": "user",
+              "occurredAt": "2026-09-03T08:00:00.000Z",
+              "content": "这周先别主动联系我，等下周再说。"
+            }
+          ]
+        },
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "kind": "scheduled",
+          "events": []
+        },
+        {
+          "at": "2026-09-06T12:00:00.000Z",
+          "kind": "scheduled",
+          "events": []
+        },
+        {
+          "at": "2026-09-08T00:00:00.000Z",
+          "kind": "scheduled",
+          "events": []
+        }
+      ],
+      "oracle": {
+        "wakeIntent": {
+          "candidates": [
+            {
+              "subject": "双选会材料",
+              "reason": "用户要求在指定时间跟进双选会材料。",
+              "evidence": [{ "eventId": "job-plan" }],
+              "notBefore": "2026-09-05T12:00:00.000Z",
+              "expiresAt": null,
+              "cancellationHints": ["用户不再参加双选会", "材料已经准备完成"],
+              "priority": 0.8,
+              "interruptionCost": 0.2,
+              "confidence": 1
+            },
+            {
+              "subject": "快递签收",
+              "reason": "用户要求在指定时间跟进快递是否取到。",
+              "evidence": [{ "eventId": "parcel-plan" }],
+              "notBefore": "2026-09-05T12:00:00.000Z",
+              "expiresAt": null,
+              "cancellationHints": ["用户已经取到快递", "用户不再需要跟进"],
+              "priority": 0.7,
+              "interruptionCost": 0.2,
+              "confidence": 1
+            }
+          ],
+          "policySignals": [
+            {
+              "kind": "set-do-not-disturb",
+              "evidenceRef": "global-quiet",
+              "reason": "用户明确要求本周不要主动联系。",
+              "doNotDisturbUntil": "2026-09-08T00:00:00.000Z"
+            }
+          ]
+        },
+        "baseline": {
+          "memories": [
+            {
+              "id": "baseline-job",
+              "summary": "在指定时间询问双选会材料是否准备好。",
+              "dueAt": "2026-09-05T12:00:00.000Z",
+              "evidenceRefs": ["job-plan"]
+            },
+            {
+              "id": "baseline-parcel",
+              "summary": "在指定时间询问快递是否取到。",
+              "dueAt": "2026-09-05T12:00:00.000Z",
+              "evidenceRefs": ["parcel-plan"]
+            }
+          ],
+          "decisionBatches": [
+            {
+              "at": "2026-09-05T12:00:00.000Z",
+              "decisions": [
+                {
+                  "memoryId": "baseline-job",
+                  "action": "defer",
+                  "reason": "用户要求本周免打扰。",
+                  "evidenceRefs": ["global-quiet"],
+                  "nextEvaluationAt": "2026-09-08T00:00:00.000Z"
+                },
+                {
+                  "memoryId": "baseline-parcel",
+                  "action": "defer",
+                  "reason": "用户要求本周免打扰。",
+                  "evidenceRefs": ["global-quiet"],
+                  "nextEvaluationAt": "2026-09-08T00:00:00.000Z"
+                }
+              ]
+            },
+            {
+              "at": "2026-09-08T00:00:00.000Z",
+              "decisions": [
+                {
+                  "memoryId": "baseline-job",
+                  "action": "contact",
+                  "reason": "免打扰窗口已结束，原跟进仍然有效。",
+                  "evidenceRefs": ["job-plan", "global-quiet"],
+                  "nextEvaluationAt": null
+                },
+                {
+                  "memoryId": "baseline-parcel",
+                  "action": "contact",
+                  "reason": "免打扰窗口已结束，原跟进仍然有效。",
+                  "evidenceRefs": ["parcel-plan", "global-quiet"],
+                  "nextEvaluationAt": null
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expected": {
+        "intentCount": 2,
+        "policySignal": {
+          "kind": "set-do-not-disturb",
+          "evidenceRef": "global-quiet",
+          "doNotDisturbUntil": "2026-09-08T00:00:00.000Z"
+        },
+        "originalDueAt": "2026-09-05T12:00:00.000Z",
+        "finalEvaluationAt": "2026-09-08T00:00:00.000Z",
+        "wake": {
+          "scheduledEvaluationsAtOriginalDue": 0,
+          "finalActions": ["contact", "contact"]
+        },
+        "baseline": {
+          "dueMemoryBatchCallsAtOriginalWindow": 1,
+          "decisionCountInBatch": 2,
+          "finalActions": ["contact", "contact"]
+        }
+      }
+    }
+  ]
+}

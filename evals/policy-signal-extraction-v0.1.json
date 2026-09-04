@@ -1,0 +1,192 @@
+{
+  "schemaVersion": "0.1.0",
+  "name": "WakeIntent frozen global policy signal extraction eval",
+  "version": "0.1.0",
+  "kind": "frozen-policy-signal-extraction",
+  "frozenAt": "2026-09-02T02:20:00.000Z",
+  "scenarios": [
+    {
+      "id": "quiet-tonight-until-ten",
+      "split": "development",
+      "category": "finite-do-not-disturb",
+      "now": "2026-09-02T10:00:00.000Z",
+      "timeZone": "Asia/Hong_Kong",
+      "events": [{ "id": "q1", "conversationId": "c1", "actor": "user", "occurredAt": "2026-09-02T10:00:00.000Z", "content": "今晚十点前别主动联系我。" }],
+      "expected": [{ "kind": "set-do-not-disturb", "evidenceRef": "q1", "doNotDisturbUntil": "2026-09-02T14:00:00.000Z" }]
+    },
+    {
+      "id": "quiet-next-two-hours",
+      "split": "development",
+      "category": "finite-do-not-disturb",
+      "now": "2026-09-02T10:00:00.000Z",
+      "timeZone": "Asia/Hong_Kong",
+      "events": [{ "id": "q2", "conversationId": "c2", "actor": "user", "occurredAt": "2026-09-02T10:00:00.000Z", "content": "接下来两个小时不要主动找我，我要专心考试。" }],
+      "expected": [{ "kind": "set-do-not-disturb", "evidenceRef": "q2", "doNotDisturbUntil": "2026-09-02T12:00:00.000Z" }]
+    },
+    {
+      "id": "quiet-until-next-monday",
+      "split": "holdout",
+      "category": "finite-do-not-disturb",
+      "now": "2026-09-02T10:00:00.000Z",
+      "timeZone": "Asia/Hong_Kong",
+      "events": [{ "id": "q3", "conversationId": "c3", "actor": "user", "occurredAt": "2026-09-02T10:00:00.000Z", "content": "这周剩下时间先别主动联系我，下周一上午九点以后再说。" }],
+      "expected": [{ "kind": "set-do-not-disturb", "evidenceRef": "q3", "doNotDisturbUntil": "2026-09-07T01:00:00.000Z" }]
+    },
+    {
+      "id": "deny-indefinite-contact",
+      "split": "development",
+      "category": "authorization-denied",
+      "now": "2026-09-02T10:00:00.000Z",
+      "timeZone": "Asia/Hong_Kong",
+      "events": [{ "id": "q4", "conversationId": "c4", "actor": "user", "occurredAt": "2026-09-02T10:00:00.000Z", "content": "以后不要再主动联系我，除非我先来找你。" }],
+      "expected": [{ "kind": "set-authorization", "evidenceRef": "q4", "authorization": "denied" }]
+    },
+    {
+      "id": "restore-proactive-permission",
+      "split": "development",
+      "category": "authorization-granted",
+      "now": "2026-09-02T10:00:00.000Z",
+      "timeZone": "Asia/Hong_Kong",
+      "events": [{ "id": "q5", "conversationId": "c5", "actor": "user", "occurredAt": "2026-09-02T10:00:00.000Z", "content": "我改主意了，以后你可以主动联系我。" }],
+      "expected": [{ "kind": "set-authorization", "evidenceRef": "q5", "authorization": "granted" }]
+    },
+    {
+      "id": "clear-quiet-window",
+      "split": "development",
+      "category": "clear-do-not-disturb",
+      "now": "2026-09-02T10:00:00.000Z",
+      "timeZone": "Asia/Hong_Kong",
+      "events": [{ "id": "q6", "conversationId": "c6", "actor": "user", "occurredAt": "2026-09-02T10:00:00.000Z", "content": "不用等到晚上十点了，现在可以正常联系我。" }],
+      "expected": [{ "kind": "clear-do-not-disturb", "evidenceRef": "q6" }]
+    },
+    {
+      "id": "restore-and-clear",
+      "split": "holdout",
+      "category": "compound-restoration",
+      "now": "2026-09-02T10:00:00.000Z",
+      "timeZone": "Asia/Hong_Kong",
+      "events": [{ "id": "q7", "conversationId": "c7", "actor": "user", "occurredAt": "2026-09-02T10:00:00.000Z", "content": "之前说别主动找我的要求作废，现在可以主动联系我。" }],
+      "expected": [
+        { "kind": "clear-do-not-disturb", "evidenceRef": "q7" },
+        { "kind": "set-authorization", "evidenceRef": "q7", "authorization": "granted" }
+      ]
+    },
+    {
+      "id": "english-quiet-until-morning",
+      "split": "holdout",
+      "category": "finite-do-not-disturb",
+      "now": "2026-09-02T10:00:00.000Z",
+      "timeZone": "Asia/Hong_Kong",
+      "events": [{ "id": "q8", "conversationId": "c8", "actor": "user", "occurredAt": "2026-09-02T10:00:00.000Z", "content": "Please don't proactively contact me until tomorrow at 9am." }],
+      "expected": [{ "kind": "set-do-not-disturb", "evidenceRef": "q8", "doNotDisturbUntil": "2026-09-03T01:00:00.000Z" }]
+    },
+    {
+      "id": "english-deny-indefinite",
+      "split": "holdout",
+      "category": "authorization-denied",
+      "now": "2026-09-02T10:00:00.000Z",
+      "timeZone": "Asia/Hong_Kong",
+      "events": [{ "id": "q9", "conversationId": "c9", "actor": "user", "occurredAt": "2026-09-02T10:00:00.000Z", "content": "Stop reaching out proactively. I'll message you when I need something." }],
+      "expected": [{ "kind": "set-authorization", "evidenceRef": "q9", "authorization": "denied" }]
+    },
+    {
+      "id": "busy-is-not-policy",
+      "split": "development",
+      "category": "negative-busy",
+      "now": "2026-09-02T10:00:00.000Z",
+      "timeZone": "Asia/Hong_Kong",
+      "events": [{ "id": "n1", "conversationId": "n1c", "actor": "user", "occurredAt": "2026-09-02T10:00:00.000Z", "content": "我今天特别忙，事情堆成山了。" }],
+      "expected": []
+    },
+    {
+      "id": "topic-specific-job-fair-cancel",
+      "split": "development",
+      "category": "negative-intent-specific",
+      "now": "2026-09-02T10:00:00.000Z",
+      "timeZone": "Asia/Hong_Kong",
+      "events": [{ "id": "n2", "conversationId": "n2c", "actor": "user", "occurredAt": "2026-09-02T10:00:00.000Z", "content": "别再问我双选会的事了。" }],
+      "expected": []
+    },
+    {
+      "id": "topic-specific-parcel-cancel",
+      "split": "holdout",
+      "category": "negative-intent-specific",
+      "now": "2026-09-02T10:00:00.000Z",
+      "timeZone": "Asia/Hong_Kong",
+      "events": [{ "id": "n3", "conversationId": "n3c", "actor": "user", "occurredAt": "2026-09-02T10:00:00.000Z", "content": "快递已经收到了，这件事不用再提醒我。" }],
+      "expected": []
+    },
+    {
+      "id": "past-quiet-window",
+      "split": "holdout",
+      "category": "negative-past-policy",
+      "now": "2026-09-02T10:00:00.000Z",
+      "timeZone": "Asia/Hong_Kong",
+      "events": [{ "id": "n4", "conversationId": "n4c", "actor": "user", "occurredAt": "2026-09-02T10:00:00.000Z", "content": "昨天开会时我本来不想被打扰，不过现在已经没事了。" }],
+      "expected": []
+    },
+    {
+      "id": "third-party-instruction",
+      "split": "development",
+      "category": "negative-third-party",
+      "now": "2026-09-02T10:00:00.000Z",
+      "timeZone": "Asia/Hong_Kong",
+      "events": [{ "id": "n5", "conversationId": "n5c", "actor": "user", "occurredAt": "2026-09-02T10:00:00.000Z", "content": "你先别联系小王，他正在考试。" }],
+      "expected": []
+    },
+    {
+      "id": "reported-speech",
+      "split": "holdout",
+      "category": "negative-reported-speech",
+      "now": "2026-09-02T10:00:00.000Z",
+      "timeZone": "Asia/Hong_Kong",
+      "events": [{ "id": "n6", "conversationId": "n6c", "actor": "user", "occurredAt": "2026-09-02T10:00:00.000Z", "content": "我朋友刚跟我说：‘这两天别联系我。’" }],
+      "expected": []
+    },
+    {
+      "id": "hypothetical-contact-preference",
+      "split": "development",
+      "category": "negative-hypothetical",
+      "now": "2026-09-02T10:00:00.000Z",
+      "timeZone": "Asia/Hong_Kong",
+      "events": [{ "id": "n7", "conversationId": "n7c", "actor": "user", "occurredAt": "2026-09-02T10:00:00.000Z", "content": "如果哪天我很忙，你晚点找我可能会比较好。" }],
+      "expected": []
+    },
+    {
+      "id": "assistant-cannot-set-policy",
+      "split": "holdout",
+      "category": "negative-assistant-evidence",
+      "now": "2026-09-02T10:00:00.000Z",
+      "timeZone": "Asia/Hong_Kong",
+      "events": [{ "id": "n8", "conversationId": "n8c", "actor": "assistant", "occurredAt": "2026-09-02T10:00:00.000Z", "content": "我今晚十点前不会主动联系你。" }],
+      "expected": []
+    },
+    {
+      "id": "general-evening-busyness",
+      "split": "development",
+      "category": "negative-preference",
+      "now": "2026-09-02T10:00:00.000Z",
+      "timeZone": "Asia/Hong_Kong",
+      "events": [{ "id": "n9", "conversationId": "n9c", "actor": "user", "occurredAt": "2026-09-02T10:00:00.000Z", "content": "我晚上一般都比较忙，白天精神会好一点。" }],
+      "expected": []
+    },
+    {
+      "id": "message-overload-without-request",
+      "split": "holdout",
+      "category": "negative-implicit",
+      "now": "2026-09-02T10:00:00.000Z",
+      "timeZone": "Asia/Hong_Kong",
+      "events": [{ "id": "n10", "conversationId": "n10c", "actor": "user", "occurredAt": "2026-09-02T10:00:00.000Z", "content": "这两天消息太多了，看得我头疼。" }],
+      "expected": []
+    },
+    {
+      "id": "conversation-closing",
+      "split": "holdout",
+      "category": "negative-conversation-closing",
+      "now": "2026-09-02T10:00:00.000Z",
+      "timeZone": "Asia/Hong_Kong",
+      "events": [{ "id": "n11", "conversationId": "n11c", "actor": "user", "occurredAt": "2026-09-02T10:00:00.000Z", "content": "好，那今天先这样吧，我去吃饭了。" }],
+      "expected": []
+    }
+  ]
+}

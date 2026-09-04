@@ -1,0 +1,312 @@
+{
+  "schemaVersion": "0.1.0",
+  "dataset": {
+    "name": "WakeIntent model-backed longitudinal fixtures",
+    "version": "0.1.0-dev.1",
+    "kind": "development-longitudinal-fixtures"
+  },
+  "scenarioId": "selective-early-resolution-with-surviving-intent",
+  "model": "gpt-5.5",
+  "apiMode": "responses",
+  "modelSettings": {
+    "extractionReasoningEffort": "none",
+    "decisionReasoningEffort": "low",
+    "textVerbosity": "low"
+  },
+  "promptVersions": {
+    "wakeintent": "0.1.1",
+    "relevanceRouter": "0.1.0",
+    "dueGatedBaseline": "0.1.0"
+  },
+  "completedAt": "2026-09-01T13:46:19.461Z",
+  "passed": false,
+  "score": {
+    "wakeIntentCount": true,
+    "baselineMemoryCount": true,
+    "selectiveRoute": true,
+    "wakeEarlyTerminal": false,
+    "wakeSurvivingContact": true,
+    "wakeTerminalAction": true,
+    "baselineSurvivingContact": true,
+    "baselineTerminalAction": true,
+    "wakeNoFalseJobContact": true,
+    "baselineNoFalseJobContact": true
+  },
+  "staleStateAvoidedMilliseconds": null,
+  "wakeintent": {
+    "usage": {
+      "calls": 4,
+      "inputTokens": 2091,
+      "outputTokens": 659,
+      "totalTokens": 2750,
+      "costUsd": null
+    },
+    "result": {
+      "intents": [
+        {
+          "schemaVersion": "0.1.0",
+          "id": "selective-early-resolution-with-surviving-intent-extract-intent-1",
+          "status": "cancelled",
+          "subject": "问问双选会材料是否准备好了",
+          "reason": "用户明确请求在双选会前询问材料是否准备好。",
+          "target": {
+            "kind": "user",
+            "id": "user-longitudinal"
+          },
+          "evidence": [
+            {
+              "eventId": "job-fair-plan",
+              "quote": "请在北京时间9月4日下午六点问问我材料准备好了没有。"
+            }
+          ],
+          "notBefore": "2026-09-04T10:00:00Z",
+          "expiresAt": null,
+          "cancellationHints": [
+            "如果用户之后说不去双选会或不需要提醒，可取消。"
+          ],
+          "priority": 0.86,
+          "interruptionCost": 0.2,
+          "confidence": 0.98,
+          "createdAt": "2026-09-01T09:05:00.000Z",
+          "updatedAt": "2026-09-03T08:00:00.000Z"
+        },
+        {
+          "schemaVersion": "0.1.0",
+          "id": "selective-early-resolution-with-surviving-intent-extract-intent-2",
+          "status": "active",
+          "subject": "问问快递取到了没有",
+          "reason": "用户明确请求在预计送达后询问是否已取到快递。",
+          "target": {
+            "kind": "user",
+            "id": "user-longitudinal"
+          },
+          "evidence": [
+            {
+              "eventId": "parcel-plan",
+              "quote": "请在北京时间9月6日晚上八点问问我取到没有。"
+            }
+          ],
+          "notBefore": "2026-09-06T12:00:00Z",
+          "expiresAt": null,
+          "cancellationHints": [
+            "如果用户之后说快递已改期、已提前取到或不需要提醒，可取消。"
+          ],
+          "priority": 0.84,
+          "interruptionCost": 0.2,
+          "confidence": 0.98,
+          "createdAt": "2026-09-01T09:05:00.000Z",
+          "updatedAt": "2026-09-06T12:00:00.000Z"
+        }
+      ],
+      "traces": [
+        {
+          "at": "2026-09-03T08:00:00.000Z",
+          "trigger": "context",
+          "intentId": "selective-early-resolution-with-surviving-intent-extract-intent-1",
+          "decision": {
+            "id": "selective-early-resolution-with-surviving-intent-timeline-decision-1",
+            "intentId": "selective-early-resolution-with-surviving-intent-extract-intent-1",
+            "evaluatedAt": "2026-09-03T08:00:00.000Z",
+            "action": "cancel",
+            "reason": "用户已明确表示“我已经找到实习了，所以双选会不去了”，原本关于双选会前询问材料准备情况的跟进已失去意义，因此应取消。",
+            "evidenceRefs": [
+              "internship-found"
+            ],
+            "counterEvidenceRefs": [],
+            "confidence": 0.99,
+            "nextEvaluationAt": null,
+            "policyVersion": "longitudinal-eval-0.1"
+          },
+          "source": "semantic"
+        },
+        {
+          "at": "2026-09-06T12:00:00.000Z",
+          "trigger": "scheduled",
+          "intentId": "selective-early-resolution-with-surviving-intent-extract-intent-2",
+          "decision": {
+            "id": "selective-early-resolution-with-surviving-intent-timeline-decision-2",
+            "intentId": "selective-early-resolution-with-surviving-intent-extract-intent-2",
+            "evaluatedAt": "2026-09-06T12:00:00.000Z",
+            "action": "contact",
+            "reason": "当前仍到达原定询问时间，且最新事件（internship-found）只是在说实习和双选会，和“快递是否取到”无关，没有取消、改期或已取到的证据。",
+            "evidenceRefs": [
+              "parcel-plan"
+            ],
+            "counterEvidenceRefs": [],
+            "confidence": 0.86,
+            "nextEvaluationAt": null,
+            "policyVersion": "longitudinal-eval-0.1"
+          },
+          "source": "semantic"
+        }
+      ],
+      "metrics": {
+        "extractionModelCalls": 1,
+        "routingCalls": 1,
+        "reevaluationAttempts": 2,
+        "semanticDecisionModelCalls": 2,
+        "contactDecisions": 1,
+        "terminalDecisions": 1
+      },
+      "pendingEvaluationAt": {}
+    },
+    "routeAudits": [
+      {
+        "at": "2026-09-03T08:00:00.000Z",
+        "matches": [
+          {
+            "confidence": 0.99,
+            "eventIds": [
+              "internship-found"
+            ],
+            "intentId": "selective-early-resolution-with-surviving-intent-extract-intent-1",
+            "reason": "用户表示已找到实习且不去双选会，直接触发该双选会材料提醒的取消条件；需要提前复评/取消。"
+          }
+        ]
+      }
+    ],
+    "modelCallRecords": [
+      {
+        "usage": {
+          "inputTokens": 455,
+          "outputTokens": 272,
+          "totalTokens": 727
+        },
+        "requestId": "0dbeb6bb-cca4-438c-928c-679d93ac077b",
+        "attempts": 1,
+        "costUsd": null
+      },
+      {
+        "usage": {
+          "inputTokens": 531,
+          "outputTokens": 113,
+          "totalTokens": 644
+        },
+        "requestId": "8cca0732-04a7-427b-93d1-b8bfee91335c",
+        "attempts": 1,
+        "costUsd": null
+      },
+      {
+        "usage": {
+          "inputTokens": 534,
+          "outputTokens": 187,
+          "totalTokens": 721
+        },
+        "requestId": "cabce2f7-5a55-4b24-8d4d-ef19b28d256a",
+        "attempts": 1,
+        "costUsd": null
+      },
+      {
+        "usage": {
+          "inputTokens": 571,
+          "outputTokens": 87,
+          "totalTokens": 658
+        },
+        "requestId": "ca8b9157-df58-40d2-9cad-ea1e8a45bdf1",
+        "attempts": 1,
+        "costUsd": null
+      }
+    ]
+  },
+  "dueGatedBaseline": {
+    "usage": {
+      "calls": 3,
+      "inputTokens": 1345,
+      "outputTokens": 519,
+      "totalTokens": 1864,
+      "costUsd": null
+    },
+    "initialMemories": [
+      {
+        "id": "baseline-memory-1",
+        "summary": "在双选会前确认材料是否准备好了",
+        "evidenceRefs": [
+          "job-fair-plan"
+        ],
+        "dueAt": "2026-09-04T10:00:00.000Z"
+      },
+      {
+        "id": "baseline-memory-2",
+        "summary": "快递预计到达后询问是否已取到",
+        "evidenceRefs": [
+          "parcel-plan"
+        ],
+        "dueAt": "2026-09-06T12:00:00.000Z"
+      }
+    ],
+    "result": {
+      "memories": [],
+      "traces": [
+        {
+          "at": "2026-09-04T10:00:00.000Z",
+          "decisions": [
+            {
+              "action": "cancel",
+              "evidenceRefs": [
+                "internship-found",
+                "job-fair-plan"
+              ],
+              "memoryId": "baseline-memory-1",
+              "nextEvaluationAt": null,
+              "reason": "用户已说明找到实习且不去双选会，原先关于会前确认材料的提醒已被直接取消。"
+            }
+          ]
+        },
+        {
+          "at": "2026-09-06T12:00:00.000Z",
+          "decisions": [
+            {
+              "action": "contact",
+              "evidenceRefs": [
+                "parcel-plan"
+              ],
+              "memoryId": "baseline-memory-2",
+              "nextEvaluationAt": null,
+              "reason": "现在是北京时间晚上8点，正好到达用户要求的取件询问时间，发起联系有用。"
+            }
+          ]
+        }
+      ],
+      "metrics": {
+        "extractionModelCalls": 1,
+        "deterministicChecks": 2,
+        "decisionModelCalls": 2,
+        "contactDecisions": 1,
+        "terminalDecisions": 1
+      }
+    },
+    "modelCallRecords": [
+      {
+        "usage": {
+          "inputTokens": 342,
+          "outputTokens": 103,
+          "totalTokens": 445
+        },
+        "requestId": "fedf3310-c499-422b-86d7-c5c56ff85832",
+        "attempts": 1,
+        "costUsd": null
+      },
+      {
+        "usage": {
+          "inputTokens": 529,
+          "outputTokens": 249,
+          "totalTokens": 778
+        },
+        "requestId": "543c2691-9dfc-4944-8ae4-9ca2ed0473fe",
+        "attempts": 1,
+        "costUsd": null
+      },
+      {
+        "usage": {
+          "inputTokens": 474,
+          "outputTokens": 167,
+          "totalTokens": 641
+        },
+        "requestId": "86885358-d21c-44e5-b051-d64a85b0d4dd",
+        "attempts": 1,
+        "costUsd": null
+      }
+    ]
+  },
+  "warning": "One development timeline validates the pipeline only. It cannot establish product value without a frozen multi-scenario evaluation."
+}

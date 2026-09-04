@@ -1,0 +1,689 @@
+{
+  "schemaVersion": "0.1.0",
+  "dataset": {
+    "name": "WakeIntent relevance routing development fixtures",
+    "version": "0.1.0-dev.1",
+    "kind": "development-relevance-fixtures"
+  },
+  "mode": "hybrid",
+  "model": "gpt-5.5",
+  "apiMode": "responses",
+  "modelSettings": {
+    "reasoningEffort": null,
+    "textVerbosity": null
+  },
+  "promptVersion": "0.1.1",
+  "completedAt": "2026-09-01T14:23:05.591Z",
+  "scenarioIds": [
+    "direct-job-fair-cancellation",
+    "indirect-recruiting-supersession",
+    "parcel-arrived-early",
+    "study-plan-completed-early",
+    "unrelated-movie-update",
+    "superficial-job-topic-no-change",
+    "temporary-global-do-not-disturb",
+    "global-followup-withdrawal",
+    "parcel-delayed",
+    "study-plan-paused",
+    "vague-life-update",
+    "unrelated-contract-signed",
+    "two-intents-resolved-together",
+    "assistant-topic-recap"
+  ],
+  "metrics": {
+    "total": 14,
+    "exactMatches": 14,
+    "exactMatchAccuracy": 1,
+    "positiveExactMatchAccuracy": 1,
+    "noMatchAccuracy": 1,
+    "truePositives": 14,
+    "falsePositives": 0,
+    "falseNegatives": 0,
+    "precision": 1,
+    "recall": 1,
+    "f1": 1,
+    "falsePositiveScenarioRate": 0,
+    "falseNegativeScenarioRate": 0,
+    "deterministicScenarioRate": 0.5,
+    "modelFallbackScenarioRate": 0.5,
+    "errorRate": 0,
+    "totalModelCalls": 7,
+    "averageLatencyMs": 5369.496885714286,
+    "totalInputTokens": 4575,
+    "totalOutputTokens": 1853,
+    "totalTokens": 6428,
+    "totalCostUsd": null
+  },
+  "rows": [
+    {
+      "scenario": {
+        "id": "direct-job-fair-cancellation",
+        "category": "direct-invalidation",
+        "annotation": "An explicit cancellation should immediately select only the job-fair intent.",
+        "now": "2026-09-03T08:00:00.000Z",
+        "events": [
+          {
+            "id": "job-fair-cancelled",
+            "conversationId": "routing-conversation",
+            "actor": "user",
+            "occurredAt": "2026-09-03T08:00:00.000Z",
+            "content": "我已经找到实习了，双选会不去了。"
+          }
+        ],
+        "expectedIntentIds": [
+          "job-fair"
+        ]
+      },
+      "prediction": {
+        "scenarioId": "direct-job-fair-cancellation",
+        "expectedIntentIds": [
+          "job-fair"
+        ],
+        "predictedIntentIds": [
+          "job-fair"
+        ],
+        "source": "deterministic",
+        "latencyMs": 1.1912999999999982,
+        "modelCallRecords": [],
+        "error": null
+      },
+      "score": {
+        "truePositives": 1,
+        "falsePositives": 0,
+        "falseNegatives": 0,
+        "exactMatch": true
+      }
+    },
+    {
+      "scenario": {
+        "id": "indirect-recruiting-supersession",
+        "category": "indirect-invalidation",
+        "annotation": "A new outcome indirectly supersedes the recruiting follow-up without naming the job fair.",
+        "now": "2026-09-03T08:05:00.000Z",
+        "events": [
+          {
+            "id": "offer-signed",
+            "conversationId": "routing-conversation",
+            "actor": "user",
+            "occurredAt": "2026-09-03T08:05:00.000Z",
+            "content": "满意的实习 offer 已经签好了，接下来的招聘活动我都不参加了。"
+          }
+        ],
+        "expectedIntentIds": [
+          "job-fair"
+        ]
+      },
+      "prediction": {
+        "scenarioId": "indirect-recruiting-supersession",
+        "expectedIntentIds": [
+          "job-fair"
+        ],
+        "predictedIntentIds": [
+          "job-fair"
+        ],
+        "source": "deterministic",
+        "latencyMs": 0.19819999999999993,
+        "modelCallRecords": [],
+        "error": null
+      },
+      "score": {
+        "truePositives": 1,
+        "falsePositives": 0,
+        "falseNegatives": 0,
+        "exactMatch": true
+      }
+    },
+    {
+      "scenario": {
+        "id": "parcel-arrived-early",
+        "category": "early-resolution",
+        "annotation": "An outcome arriving before the due time should select only the parcel intent.",
+        "now": "2026-09-04T04:00:00.000Z",
+        "events": [
+          {
+            "id": "parcel-arrived",
+            "conversationId": "routing-conversation",
+            "actor": "user",
+            "occurredAt": "2026-09-04T04:00:00.000Z",
+            "content": "快递提前送到了，我刚刚已经取到了。"
+          }
+        ],
+        "expectedIntentIds": [
+          "parcel"
+        ]
+      },
+      "prediction": {
+        "scenarioId": "parcel-arrived-early",
+        "expectedIntentIds": [
+          "parcel"
+        ],
+        "predictedIntentIds": [
+          "parcel"
+        ],
+        "source": "deterministic",
+        "latencyMs": 0.17940000000000111,
+        "modelCallRecords": [],
+        "error": null
+      },
+      "score": {
+        "truePositives": 1,
+        "falsePositives": 0,
+        "falseNegatives": 0,
+        "exactMatch": true
+      }
+    },
+    {
+      "scenario": {
+        "id": "study-plan-completed-early",
+        "category": "early-resolution",
+        "annotation": "Completing the study goal early should select only its intent.",
+        "now": "2026-09-05T10:00:00.000Z",
+        "events": [
+          {
+            "id": "study-completed",
+            "conversationId": "routing-conversation",
+            "actor": "user",
+            "occurredAt": "2026-09-05T10:00:00.000Z",
+            "content": "这周的动态规划学习计划我提前做完了。"
+          }
+        ],
+        "expectedIntentIds": [
+          "study-plan"
+        ]
+      },
+      "prediction": {
+        "scenarioId": "study-plan-completed-early",
+        "expectedIntentIds": [
+          "study-plan"
+        ],
+        "predictedIntentIds": [
+          "study-plan"
+        ],
+        "source": "deterministic",
+        "latencyMs": 0.05789999999999651,
+        "modelCallRecords": [],
+        "error": null
+      },
+      "score": {
+        "truePositives": 1,
+        "falsePositives": 0,
+        "falseNegatives": 0,
+        "exactMatch": true
+      }
+    },
+    {
+      "scenario": {
+        "id": "unrelated-movie-update",
+        "category": "negative-unrelated",
+        "annotation": "Completing an unrelated activity must not wake any intent.",
+        "now": "2026-09-03T09:00:00.000Z",
+        "events": [
+          {
+            "id": "movie-finished",
+            "conversationId": "routing-conversation",
+            "actor": "user",
+            "occurredAt": "2026-09-03T09:00:00.000Z",
+            "content": "昨晚那部电影我已经看完了，结局挺意外。"
+          }
+        ],
+        "expectedIntentIds": []
+      },
+      "prediction": {
+        "scenarioId": "unrelated-movie-update",
+        "expectedIntentIds": [],
+        "predictedIntentIds": [],
+        "source": "model",
+        "latencyMs": 18085.3069,
+        "modelCallRecords": [
+          {
+            "schemaName": "wakeintent_relevance_route",
+            "phase": "extraction",
+            "reasoningEffort": null,
+            "usage": {
+              "inputTokens": 654,
+              "outputTokens": 113,
+              "totalTokens": 767
+            },
+            "requestId": "e593ba93-747c-41de-9070-2d1bf559abb0",
+            "attempts": 1,
+            "costUsd": null
+          }
+        ],
+        "error": null
+      },
+      "score": {
+        "truePositives": 0,
+        "falsePositives": 0,
+        "falseNegatives": 0,
+        "exactMatch": true
+      }
+    },
+    {
+      "scenario": {
+        "id": "superficial-job-topic-no-change",
+        "category": "negative-topic-overlap",
+        "annotation": "Mentioning a topic with generic completed-action language is not evidence that the future follow-up changed.",
+        "now": "2026-09-03T09:10:00.000Z",
+        "events": [
+          {
+            "id": "job-fair-promotion",
+            "conversationId": "routing-conversation",
+            "actor": "user",
+            "occurredAt": "2026-09-03T09:10:00.000Z",
+            "content": "双选会已经开始宣传了，不过我的参会安排没变。"
+          }
+        ],
+        "expectedIntentIds": []
+      },
+      "prediction": {
+        "scenarioId": "superficial-job-topic-no-change",
+        "expectedIntentIds": [],
+        "predictedIntentIds": [],
+        "source": "model",
+        "latencyMs": 7284.9715,
+        "modelCallRecords": [
+          {
+            "schemaName": "wakeintent_relevance_route",
+            "phase": "extraction",
+            "reasoningEffort": null,
+            "usage": {
+              "inputTokens": 656,
+              "outputTokens": 187,
+              "totalTokens": 843
+            },
+            "requestId": "924af92f-5893-495c-82fc-c154ef258c81",
+            "attempts": 1,
+            "costUsd": null
+          }
+        ],
+        "error": null
+      },
+      "score": {
+        "truePositives": 0,
+        "falsePositives": 0,
+        "falseNegatives": 0,
+        "exactMatch": true
+      }
+    },
+    {
+      "scenario": {
+        "id": "temporary-global-do-not-disturb",
+        "category": "global-policy-change",
+        "annotation": "A temporary do-not-disturb statement changes the timing or interruption cost of every active intent.",
+        "now": "2026-09-03T09:20:00.000Z",
+        "events": [
+          {
+            "id": "temporary-dnd",
+            "conversationId": "routing-conversation",
+            "actor": "user",
+            "occurredAt": "2026-09-03T09:20:00.000Z",
+            "content": "这周事情太多，先别主动联系我，等下周再说。"
+          }
+        ],
+        "expectedIntentIds": [
+          "job-fair",
+          "parcel",
+          "study-plan"
+        ]
+      },
+      "prediction": {
+        "scenarioId": "temporary-global-do-not-disturb",
+        "expectedIntentIds": [
+          "job-fair",
+          "parcel",
+          "study-plan"
+        ],
+        "predictedIntentIds": [
+          "job-fair",
+          "parcel",
+          "study-plan"
+        ],
+        "source": "model",
+        "latencyMs": 17809.818799999997,
+        "modelCallRecords": [
+          {
+            "schemaName": "wakeintent_relevance_route",
+            "phase": "extraction",
+            "reasoningEffort": null,
+            "usage": {
+              "inputTokens": 655,
+              "outputTokens": 744,
+              "totalTokens": 1399
+            },
+            "requestId": "031615fa-712f-449d-93a2-5dc83153d2cc",
+            "attempts": 1,
+            "costUsd": null
+          }
+        ],
+        "error": null
+      },
+      "score": {
+        "truePositives": 3,
+        "falsePositives": 0,
+        "falseNegatives": 0,
+        "exactMatch": true
+      }
+    },
+    {
+      "scenario": {
+        "id": "global-followup-withdrawal",
+        "category": "global-cancellation",
+        "annotation": "Withdrawing all earlier follow-ups should select every active intent.",
+        "now": "2026-09-03T09:30:00.000Z",
+        "events": [
+          {
+            "id": "cancel-all-followups",
+            "conversationId": "routing-conversation",
+            "actor": "user",
+            "occurredAt": "2026-09-03T09:30:00.000Z",
+            "content": "之前说的那些事情都不用再问我了，全部取消。"
+          }
+        ],
+        "expectedIntentIds": [
+          "job-fair",
+          "parcel",
+          "study-plan"
+        ]
+      },
+      "prediction": {
+        "scenarioId": "global-followup-withdrawal",
+        "expectedIntentIds": [
+          "job-fair",
+          "parcel",
+          "study-plan"
+        ],
+        "predictedIntentIds": [
+          "job-fair",
+          "parcel",
+          "study-plan"
+        ],
+        "source": "model",
+        "latencyMs": 8211.822500000002,
+        "modelCallRecords": [
+          {
+            "schemaName": "wakeintent_relevance_route",
+            "phase": "extraction",
+            "reasoningEffort": null,
+            "usage": {
+              "inputTokens": 654,
+              "outputTokens": 248,
+              "totalTokens": 902
+            },
+            "requestId": "d77821e7-e08a-4a5f-b8c4-ec0d0e8fe95f",
+            "attempts": 1,
+            "costUsd": null
+          }
+        ],
+        "error": null
+      },
+      "score": {
+        "truePositives": 3,
+        "falsePositives": 0,
+        "falseNegatives": 0,
+        "exactMatch": true
+      }
+    },
+    {
+      "scenario": {
+        "id": "parcel-delayed",
+        "category": "timing-change",
+        "annotation": "A carrier delay should select the parcel intent for early rescheduling.",
+        "now": "2026-09-04T09:00:00.000Z",
+        "events": [
+          {
+            "id": "parcel-delay",
+            "conversationId": "routing-conversation",
+            "actor": "user",
+            "occurredAt": "2026-09-04T09:00:00.000Z",
+            "content": "物流更新说包裹延期了，要到下周二才会送达。"
+          }
+        ],
+        "expectedIntentIds": [
+          "parcel"
+        ]
+      },
+      "prediction": {
+        "scenarioId": "parcel-delayed",
+        "expectedIntentIds": [
+          "parcel"
+        ],
+        "predictedIntentIds": [
+          "parcel"
+        ],
+        "source": "deterministic",
+        "latencyMs": 0.08239999999932479,
+        "modelCallRecords": [],
+        "error": null
+      },
+      "score": {
+        "truePositives": 1,
+        "falsePositives": 0,
+        "falseNegatives": 0,
+        "exactMatch": true
+      }
+    },
+    {
+      "scenario": {
+        "id": "study-plan-paused",
+        "category": "timing-change",
+        "annotation": "Pausing the goal should select only the study intent.",
+        "now": "2026-09-04T09:10:00.000Z",
+        "events": [
+          {
+            "id": "study-paused",
+            "conversationId": "routing-conversation",
+            "actor": "user",
+            "occurredAt": "2026-09-04T09:10:00.000Z",
+            "content": "最近生病了，本周学习计划暂停，恢复以后再继续。"
+          }
+        ],
+        "expectedIntentIds": [
+          "study-plan"
+        ]
+      },
+      "prediction": {
+        "scenarioId": "study-plan-paused",
+        "expectedIntentIds": [
+          "study-plan"
+        ],
+        "predictedIntentIds": [
+          "study-plan"
+        ],
+        "source": "deterministic",
+        "latencyMs": 0.05159999999887077,
+        "modelCallRecords": [],
+        "error": null
+      },
+      "score": {
+        "truePositives": 1,
+        "falsePositives": 0,
+        "falseNegatives": 0,
+        "exactMatch": true
+      }
+    },
+    {
+      "scenario": {
+        "id": "vague-life-update",
+        "category": "negative-ambiguous",
+        "annotation": "A vague update without an identifiable target should remain unmatched.",
+        "now": "2026-09-04T09:20:00.000Z",
+        "events": [
+          {
+            "id": "vague-update",
+            "conversationId": "routing-conversation",
+            "actor": "user",
+            "occurredAt": "2026-09-04T09:20:00.000Z",
+            "content": "最近几件事情处理得差不多了，总算轻松一点。"
+          }
+        ],
+        "expectedIntentIds": []
+      },
+      "prediction": {
+        "scenarioId": "vague-life-update",
+        "expectedIntentIds": [],
+        "predictedIntentIds": [],
+        "source": "model",
+        "latencyMs": 8176.222600000001,
+        "modelCallRecords": [
+          {
+            "schemaName": "wakeintent_relevance_route",
+            "phase": "extraction",
+            "reasoningEffort": null,
+            "usage": {
+              "inputTokens": 653,
+              "outputTokens": 214,
+              "totalTokens": 867
+            },
+            "requestId": "a67ebce5-6383-448b-a1d7-29907ec04b60",
+            "attempts": 1,
+            "costUsd": null
+          }
+        ],
+        "error": null
+      },
+      "score": {
+        "truePositives": 0,
+        "falsePositives": 0,
+        "falseNegatives": 0,
+        "exactMatch": true
+      }
+    },
+    {
+      "scenario": {
+        "id": "unrelated-contract-signed",
+        "category": "negative-semantic-decoy",
+        "annotation": "Signing an apartment lease must not be confused with accepting an internship offer.",
+        "now": "2026-09-04T09:30:00.000Z",
+        "events": [
+          {
+            "id": "lease-signed",
+            "conversationId": "routing-conversation",
+            "actor": "user",
+            "occurredAt": "2026-09-04T09:30:00.000Z",
+            "content": "租房合同终于签好了，下个月搬家。"
+          }
+        ],
+        "expectedIntentIds": []
+      },
+      "prediction": {
+        "scenarioId": "unrelated-contract-signed",
+        "expectedIntentIds": [],
+        "predictedIntentIds": [],
+        "source": "model",
+        "latencyMs": 7635.801099999997,
+        "modelCallRecords": [
+          {
+            "schemaName": "wakeintent_relevance_route",
+            "phase": "extraction",
+            "reasoningEffort": null,
+            "usage": {
+              "inputTokens": 648,
+              "outputTokens": 143,
+              "totalTokens": 791
+            },
+            "requestId": "9f7a6974-74f9-4317-a2a1-88ae5d7d87bd",
+            "attempts": 1,
+            "costUsd": null
+          }
+        ],
+        "error": null
+      },
+      "score": {
+        "truePositives": 0,
+        "falsePositives": 0,
+        "falseNegatives": 0,
+        "exactMatch": true
+      }
+    },
+    {
+      "scenario": {
+        "id": "two-intents-resolved-together",
+        "category": "multi-intent-impact",
+        "annotation": "One message can independently invalidate two intents while leaving the third untouched.",
+        "now": "2026-09-04T09:40:00.000Z",
+        "events": [
+          {
+            "id": "job-and-parcel-resolved",
+            "conversationId": "routing-conversation",
+            "actor": "user",
+            "occurredAt": "2026-09-04T09:40:00.000Z",
+            "content": "实习已经定了，招聘活动都不参加了；快递也提前取到了。"
+          }
+        ],
+        "expectedIntentIds": [
+          "job-fair",
+          "parcel"
+        ]
+      },
+      "prediction": {
+        "scenarioId": "two-intents-resolved-together",
+        "expectedIntentIds": [
+          "job-fair",
+          "parcel"
+        ],
+        "predictedIntentIds": [
+          "job-fair",
+          "parcel"
+        ],
+        "source": "deterministic",
+        "latencyMs": 0.10510000000067521,
+        "modelCallRecords": [],
+        "error": null
+      },
+      "score": {
+        "truePositives": 2,
+        "falsePositives": 0,
+        "falseNegatives": 0,
+        "exactMatch": true
+      }
+    },
+    {
+      "scenario": {
+        "id": "assistant-topic-recap",
+        "category": "negative-actor-decoy",
+        "annotation": "An assistant recap without new user state must not itself invalidate an intent.",
+        "now": "2026-09-04T09:50:00.000Z",
+        "events": [
+          {
+            "id": "assistant-recap",
+            "conversationId": "routing-conversation",
+            "actor": "assistant",
+            "occurredAt": "2026-09-04T09:50:00.000Z",
+            "content": "你之前说双选会材料已经开始准备了，我记得这件事。"
+          }
+        ],
+        "expectedIntentIds": []
+      },
+      "prediction": {
+        "scenarioId": "assistant-topic-recap",
+        "expectedIntentIds": [],
+        "predictedIntentIds": [],
+        "source": "model",
+        "latencyMs": 7967.147100000002,
+        "modelCallRecords": [
+          {
+            "schemaName": "wakeintent_relevance_route",
+            "phase": "extraction",
+            "reasoningEffort": null,
+            "usage": {
+              "inputTokens": 655,
+              "outputTokens": 204,
+              "totalTokens": 859
+            },
+            "requestId": "904994bc-7a6d-42b8-b935-df1d29dc4f8f",
+            "attempts": 1,
+            "costUsd": null
+          }
+        ],
+        "error": null
+      },
+      "score": {
+        "truePositives": 0,
+        "falsePositives": 0,
+        "falseNegatives": 0,
+        "exactMatch": true
+      }
+    }
+  ],
+  "warning": "This is a labeled development routing set, not a frozen independent test set. It diagnoses routing feasibility and failure modes but cannot establish product value by itself."
+}

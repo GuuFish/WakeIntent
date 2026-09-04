@@ -1,0 +1,262 @@
+{
+  "schemaVersion": "0.1.0",
+  "dataset": {
+    "name": "WakeIntent longitudinal wake fixtures",
+    "version": "0.1.0-dev.1",
+    "kind": "development-timelines"
+  },
+  "completedAt": "2026-09-01T13:14:38.586Z",
+  "results": [
+    {
+      "scenarioId": "thirty-days-no-opportunity",
+      "heartbeatTicks": [
+        "2026-09-02T00:00:00.000Z",
+        "2026-09-03T00:00:00.000Z",
+        "2026-09-04T00:00:00.000Z",
+        "2026-09-05T00:00:00.000Z",
+        "2026-09-06T00:00:00.000Z",
+        "2026-09-07T00:00:00.000Z",
+        "2026-09-08T00:00:00.000Z",
+        "2026-09-09T00:00:00.000Z",
+        "2026-09-10T00:00:00.000Z",
+        "2026-09-11T00:00:00.000Z",
+        "2026-09-12T00:00:00.000Z",
+        "2026-09-13T00:00:00.000Z",
+        "2026-09-14T00:00:00.000Z",
+        "2026-09-15T00:00:00.000Z",
+        "2026-09-16T00:00:00.000Z",
+        "2026-09-17T00:00:00.000Z",
+        "2026-09-18T00:00:00.000Z",
+        "2026-09-19T00:00:00.000Z",
+        "2026-09-20T00:00:00.000Z",
+        "2026-09-21T00:00:00.000Z",
+        "2026-09-22T00:00:00.000Z",
+        "2026-09-23T00:00:00.000Z",
+        "2026-09-24T00:00:00.000Z",
+        "2026-09-25T00:00:00.000Z",
+        "2026-09-26T00:00:00.000Z",
+        "2026-09-27T00:00:00.000Z",
+        "2026-09-28T00:00:00.000Z",
+        "2026-09-29T00:00:00.000Z",
+        "2026-09-30T00:00:00.000Z",
+        "2026-10-01T00:00:00.000Z"
+      ],
+      "results": [
+        {
+          "strategy": "naive-heartbeat",
+          "schedulerActivations": 30,
+          "deterministicChecks": 0,
+          "contextRoutingChecks": 0,
+          "extractionModelCalls": 0,
+          "decisionModelCalls": 30,
+          "totalModelCalls": 30,
+          "expectedContacts": 0,
+          "staleIntentMilliseconds": 0,
+          "llmCallsAvoidedVsNaive": 0
+        },
+        {
+          "strategy": "due-gated-heartbeat",
+          "schedulerActivations": 30,
+          "deterministicChecks": 30,
+          "contextRoutingChecks": 0,
+          "extractionModelCalls": 0,
+          "decisionModelCalls": 0,
+          "totalModelCalls": 0,
+          "expectedContacts": 0,
+          "staleIntentMilliseconds": 0,
+          "llmCallsAvoidedVsNaive": 30
+        },
+        {
+          "strategy": "wakeintent",
+          "schedulerActivations": 0,
+          "deterministicChecks": 0,
+          "contextRoutingChecks": 0,
+          "extractionModelCalls": 0,
+          "decisionModelCalls": 0,
+          "totalModelCalls": 0,
+          "expectedContacts": 0,
+          "staleIntentMilliseconds": 0,
+          "llmCallsAvoidedVsNaive": 30
+        }
+      ],
+      "caveat": "This deterministic model measures wake mechanics, not model judgment quality. A due-gated heartbeat is intentionally strong; WakeIntent must earn additional value through lifecycle correctness and lower false outreach in model-backed evals."
+    },
+    {
+      "scenarioId": "thirty-days-one-valid-follow-up",
+      "heartbeatTicks": [
+        "2026-09-02T00:00:00.000Z",
+        "2026-09-03T00:00:00.000Z",
+        "2026-09-04T00:00:00.000Z",
+        "2026-09-05T00:00:00.000Z",
+        "2026-09-06T00:00:00.000Z",
+        "2026-09-07T00:00:00.000Z",
+        "2026-09-08T00:00:00.000Z",
+        "2026-09-09T00:00:00.000Z",
+        "2026-09-10T00:00:00.000Z",
+        "2026-09-11T00:00:00.000Z",
+        "2026-09-12T00:00:00.000Z",
+        "2026-09-13T00:00:00.000Z",
+        "2026-09-14T00:00:00.000Z",
+        "2026-09-15T00:00:00.000Z",
+        "2026-09-16T00:00:00.000Z",
+        "2026-09-17T00:00:00.000Z",
+        "2026-09-18T00:00:00.000Z",
+        "2026-09-19T00:00:00.000Z",
+        "2026-09-20T00:00:00.000Z",
+        "2026-09-21T00:00:00.000Z",
+        "2026-09-22T00:00:00.000Z",
+        "2026-09-23T00:00:00.000Z",
+        "2026-09-24T00:00:00.000Z",
+        "2026-09-25T00:00:00.000Z",
+        "2026-09-26T00:00:00.000Z",
+        "2026-09-27T00:00:00.000Z",
+        "2026-09-28T00:00:00.000Z",
+        "2026-09-29T00:00:00.000Z",
+        "2026-09-30T00:00:00.000Z",
+        "2026-10-01T00:00:00.000Z"
+      ],
+      "results": [
+        {
+          "strategy": "naive-heartbeat",
+          "schedulerActivations": 30,
+          "deterministicChecks": 0,
+          "contextRoutingChecks": 0,
+          "extractionModelCalls": 1,
+          "decisionModelCalls": 30,
+          "totalModelCalls": 31,
+          "expectedContacts": 1,
+          "staleIntentMilliseconds": 0,
+          "llmCallsAvoidedVsNaive": 0
+        },
+        {
+          "strategy": "due-gated-heartbeat",
+          "schedulerActivations": 30,
+          "deterministicChecks": 30,
+          "contextRoutingChecks": 0,
+          "extractionModelCalls": 1,
+          "decisionModelCalls": 1,
+          "totalModelCalls": 2,
+          "expectedContacts": 1,
+          "staleIntentMilliseconds": 0,
+          "llmCallsAvoidedVsNaive": 29
+        },
+        {
+          "strategy": "wakeintent",
+          "schedulerActivations": 1,
+          "deterministicChecks": 1,
+          "contextRoutingChecks": 3,
+          "extractionModelCalls": 1,
+          "decisionModelCalls": 1,
+          "totalModelCalls": 2,
+          "expectedContacts": 1,
+          "staleIntentMilliseconds": 0,
+          "llmCallsAvoidedVsNaive": 29
+        }
+      ],
+      "caveat": "This deterministic model measures wake mechanics, not model judgment quality. A due-gated heartbeat is intentionally strong; WakeIntent must earn additional value through lifecycle correctness and lower false outreach in model-backed evals."
+    },
+    {
+      "scenarioId": "seven-days-invalidated-before-due",
+      "heartbeatTicks": [
+        "2026-09-02T00:00:00.000Z",
+        "2026-09-03T00:00:00.000Z",
+        "2026-09-04T00:00:00.000Z",
+        "2026-09-05T00:00:00.000Z",
+        "2026-09-06T00:00:00.000Z",
+        "2026-09-07T00:00:00.000Z",
+        "2026-09-08T00:00:00.000Z"
+      ],
+      "results": [
+        {
+          "strategy": "naive-heartbeat",
+          "schedulerActivations": 7,
+          "deterministicChecks": 0,
+          "contextRoutingChecks": 0,
+          "extractionModelCalls": 1,
+          "decisionModelCalls": 7,
+          "totalModelCalls": 8,
+          "expectedContacts": 0,
+          "staleIntentMilliseconds": 403200000,
+          "llmCallsAvoidedVsNaive": 0
+        },
+        {
+          "strategy": "due-gated-heartbeat",
+          "schedulerActivations": 7,
+          "deterministicChecks": 7,
+          "contextRoutingChecks": 0,
+          "extractionModelCalls": 1,
+          "decisionModelCalls": 1,
+          "totalModelCalls": 2,
+          "expectedContacts": 0,
+          "staleIntentMilliseconds": 403200000,
+          "llmCallsAvoidedVsNaive": 6
+        },
+        {
+          "strategy": "wakeintent",
+          "schedulerActivations": 1,
+          "deterministicChecks": 1,
+          "contextRoutingChecks": 1,
+          "extractionModelCalls": 1,
+          "decisionModelCalls": 1,
+          "totalModelCalls": 2,
+          "expectedContacts": 0,
+          "staleIntentMilliseconds": 0,
+          "llmCallsAvoidedVsNaive": 6
+        }
+      ],
+      "caveat": "This deterministic model measures wake mechanics, not model judgment quality. A due-gated heartbeat is intentionally strong; WakeIntent must earn additional value through lifecycle correctness and lower false outreach in model-backed evals."
+    },
+    {
+      "scenarioId": "seven-days-three-shared-window-intents",
+      "heartbeatTicks": [
+        "2026-09-02T00:00:00.000Z",
+        "2026-09-03T00:00:00.000Z",
+        "2026-09-04T00:00:00.000Z",
+        "2026-09-05T00:00:00.000Z",
+        "2026-09-06T00:00:00.000Z",
+        "2026-09-07T00:00:00.000Z",
+        "2026-09-08T00:00:00.000Z"
+      ],
+      "results": [
+        {
+          "strategy": "naive-heartbeat",
+          "schedulerActivations": 7,
+          "deterministicChecks": 0,
+          "contextRoutingChecks": 0,
+          "extractionModelCalls": 1,
+          "decisionModelCalls": 7,
+          "totalModelCalls": 8,
+          "expectedContacts": 2,
+          "staleIntentMilliseconds": 403200000,
+          "llmCallsAvoidedVsNaive": 0
+        },
+        {
+          "strategy": "due-gated-heartbeat",
+          "schedulerActivations": 7,
+          "deterministicChecks": 7,
+          "contextRoutingChecks": 0,
+          "extractionModelCalls": 1,
+          "decisionModelCalls": 1,
+          "totalModelCalls": 2,
+          "expectedContacts": 2,
+          "staleIntentMilliseconds": 403200000,
+          "llmCallsAvoidedVsNaive": 6
+        },
+        {
+          "strategy": "wakeintent",
+          "schedulerActivations": 2,
+          "deterministicChecks": 2,
+          "contextRoutingChecks": 3,
+          "extractionModelCalls": 1,
+          "decisionModelCalls": 2,
+          "totalModelCalls": 3,
+          "expectedContacts": 2,
+          "staleIntentMilliseconds": 0,
+          "llmCallsAvoidedVsNaive": 5
+        }
+      ],
+      "caveat": "This deterministic model measures wake mechanics, not model judgment quality. A due-gated heartbeat is intentionally strong; WakeIntent must earn additional value through lifecycle correctness and lower false outreach in model-backed evals."
+    }
+  ],
+  "warning": "This is a deterministic wake-mechanics model, not evidence of semantic model quality."
+}

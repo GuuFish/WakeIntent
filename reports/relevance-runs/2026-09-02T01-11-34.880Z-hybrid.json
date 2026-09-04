@@ -1,0 +1,151 @@
+{
+  "schemaVersion": "0.1.0",
+  "dataset": {
+    "name": "WakeIntent relevance routing development fixtures",
+    "version": "0.1.0-dev.2",
+    "kind": "development-relevance-fixtures"
+  },
+  "mode": "hybrid",
+  "model": "gpt-5.5",
+  "apiMode": "responses",
+  "modelSettings": {
+    "reasoningEffort": null,
+    "textVerbosity": null
+  },
+  "promptVersion": "0.2.0",
+  "repeats": 1,
+  "completedAt": "2026-09-02T01:11:34.880Z",
+  "scenarioIds": [
+    "global-followup-withdrawal"
+  ],
+  "metrics": {
+    "total": 1,
+    "exactMatches": 1,
+    "exactMatchAccuracy": 1,
+    "positiveExactMatchAccuracy": 1,
+    "noMatchAccuracy": 1,
+    "truePositives": 3,
+    "falsePositives": 0,
+    "falseNegatives": 0,
+    "precision": 1,
+    "recall": 1,
+    "f1": 1,
+    "falsePositiveScenarioRate": 0,
+    "falseNegativeScenarioRate": 0,
+    "deterministicScenarioRate": 0,
+    "modelFallbackScenarioRate": 1,
+    "errorRate": 0,
+    "totalModelCalls": 1,
+    "averageLatencyMs": 8399.071,
+    "totalInputTokens": 722,
+    "totalOutputTokens": 271,
+    "totalTokens": 993,
+    "totalCostUsd": null
+  },
+  "stability": {
+    "totalScenarios": 1,
+    "stableScenarios": 1,
+    "rate": 1,
+    "rows": [
+      {
+        "scenarioId": "global-followup-withdrawal",
+        "stable": true,
+        "signatures": [
+          "job-fair,parcel,study-plan"
+        ]
+      }
+    ]
+  },
+  "rows": [
+    {
+      "runIndex": 1,
+      "scenario": {
+        "id": "global-followup-withdrawal",
+        "category": "global-cancellation",
+        "annotation": "Withdrawing all earlier follow-ups should select every active intent.",
+        "now": "2026-09-03T09:30:00.000Z",
+        "events": [
+          {
+            "id": "cancel-all-followups",
+            "conversationId": "routing-conversation",
+            "actor": "user",
+            "occurredAt": "2026-09-03T09:30:00.000Z",
+            "content": "之前说的那些事情都不用再问我了，全部取消。"
+          }
+        ],
+        "expectedIntentIds": [
+          "job-fair",
+          "parcel",
+          "study-plan"
+        ]
+      },
+      "prediction": {
+        "scenarioId": "global-followup-withdrawal",
+        "expectedIntentIds": [
+          "job-fair",
+          "parcel",
+          "study-plan"
+        ],
+        "predictedIntentIds": [
+          "job-fair",
+          "parcel",
+          "study-plan"
+        ],
+        "routeSelections": [
+          {
+            "confidence": 0.99,
+            "effect": "cancel",
+            "eventIds": [
+              "cancel-all-followups"
+            ],
+            "intentId": "job-fair",
+            "reason": "用户明确表示“之前说的那些事情都不用再问我了，全部取消”，直接撤销了双选会材料确认这个后续联系。"
+          },
+          {
+            "confidence": 0.99,
+            "effect": "cancel",
+            "eventIds": [
+              "cancel-all-followups"
+            ],
+            "intentId": "parcel",
+            "reason": "用户明确取消所有后续询问，快递取件确认这个跟进也被一并撤销。"
+          },
+          {
+            "confidence": 0.99,
+            "effect": "cancel",
+            "eventIds": [
+              "cancel-all-followups"
+            ],
+            "intentId": "study-plan",
+            "reason": "用户明确表示全部取消，不再需要继续询问本周学习计划完成情况。"
+          }
+        ],
+        "source": "model",
+        "latencyMs": 8399.071,
+        "modelCallRecords": [
+          {
+            "schemaName": "wakeintent_relevance_route",
+            "phase": "extraction",
+            "reasoningEffort": null,
+            "usage": {
+              "inputTokens": 722,
+              "outputTokens": 271,
+              "totalTokens": 993
+            },
+            "requestId": "14a6912d-abf4-499d-970e-243c6dfafbb5",
+            "attempts": 1,
+            "costUsd": null
+          }
+        ],
+        "error": null
+      },
+      "score": {
+        "truePositives": 3,
+        "falsePositives": 0,
+        "falseNegatives": 0,
+        "exactMatch": true
+      }
+    }
+  ],
+  "warning": "This is a labeled development routing set, not a frozen independent test set. It diagnoses routing feasibility and failure modes but cannot establish product value by itself."
+}

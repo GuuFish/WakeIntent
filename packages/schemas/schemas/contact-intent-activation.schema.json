@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wakeintent.dev/schemas/0.1/contact-intent-activation.schema.json",
+  "title": "ContactIntentActivation",
+  "description": "An auditable transition that promotes a candidate ContactIntent to active and schedules its first reevaluation.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "intentId",
+    "activatedAt",
+    "reason",
+    "evidenceRefs",
+    "nextEvaluationAt",
+    "policyVersion"
+  ],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "intentId": { "type": "string", "minLength": 1 },
+    "activatedAt": { "type": "string", "format": "date-time" },
+    "reason": { "type": "string", "minLength": 1, "maxLength": 2000 },
+    "evidenceRefs": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "nextEvaluationAt": { "type": "string", "format": "date-time" },
+    "policyVersion": { "type": "string", "minLength": 1 },
+    "metadata": { "type": "object", "additionalProperties": true }
+  }
+}

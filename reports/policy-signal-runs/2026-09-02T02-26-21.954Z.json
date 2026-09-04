@@ -1,0 +1,1082 @@
+{
+  "schemaVersion": "0.1.0",
+  "dataset": {
+    "name": "WakeIntent frozen global policy signal extraction eval",
+    "version": "0.1.0",
+    "kind": "frozen-policy-signal-extraction",
+    "frozenAt": "2026-09-02T02:20:00.000Z",
+    "path": "evals/policy-signal-extraction-v0.1.json"
+  },
+  "completedAt": "2026-09-02T02:26:21.954Z",
+  "model": "gpt-5.5",
+  "apiMode": "responses",
+  "modelSettings": {
+    "extractionReasoningEffort": null,
+    "textVerbosity": null
+  },
+  "promptVersion": "0.1.0",
+  "scoringVersion": "0.1.0",
+  "filters": {
+    "split": null,
+    "scenarioId": null
+  },
+  "aggregate": {
+    "scenarios": 20,
+    "passed": 18,
+    "exactMatchAccuracy": 0.9,
+    "positiveScenarioAccuracy": 0.7777777777777778,
+    "negativeScenarioAccuracy": 1,
+    "signalPrecision": 0.9,
+    "signalRecall": 0.9,
+    "signalF1": 0.9,
+    "truePositives": 9,
+    "falsePositives": 1,
+    "falseNegatives": 1,
+    "errors": 0
+  },
+  "bySplit": {
+    "development": {
+      "scenarios": 10,
+      "passed": 9,
+      "exactMatchAccuracy": 0.9,
+      "positiveScenarioAccuracy": 0.8,
+      "negativeScenarioAccuracy": 1,
+      "signalPrecision": 0.8333333333333334,
+      "signalRecall": 1,
+      "signalF1": 0.9090909090909091,
+      "truePositives": 5,
+      "falsePositives": 1,
+      "falseNegatives": 0,
+      "errors": 0
+    },
+    "holdout": {
+      "scenarios": 10,
+      "passed": 9,
+      "exactMatchAccuracy": 0.9,
+      "positiveScenarioAccuracy": 0.75,
+      "negativeScenarioAccuracy": 1,
+      "signalPrecision": 1,
+      "signalRecall": 0.8,
+      "signalF1": 0.888888888888889,
+      "truePositives": 4,
+      "falsePositives": 0,
+      "falseNegatives": 1,
+      "errors": 0
+    }
+  },
+  "byCategory": {
+    "finite-do-not-disturb": {
+      "scenarios": 4,
+      "passed": 4,
+      "exactMatchAccuracy": 1,
+      "positiveScenarioAccuracy": 1,
+      "negativeScenarioAccuracy": 1,
+      "signalPrecision": 1,
+      "signalRecall": 1,
+      "signalF1": 1,
+      "truePositives": 4,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "errors": 0
+    },
+    "authorization-denied": {
+      "scenarios": 2,
+      "passed": 2,
+      "exactMatchAccuracy": 1,
+      "positiveScenarioAccuracy": 1,
+      "negativeScenarioAccuracy": 1,
+      "signalPrecision": 1,
+      "signalRecall": 1,
+      "signalF1": 1,
+      "truePositives": 2,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "errors": 0
+    },
+    "authorization-granted": {
+      "scenarios": 1,
+      "passed": 1,
+      "exactMatchAccuracy": 1,
+      "positiveScenarioAccuracy": 1,
+      "negativeScenarioAccuracy": 1,
+      "signalPrecision": 1,
+      "signalRecall": 1,
+      "signalF1": 1,
+      "truePositives": 1,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "errors": 0
+    },
+    "clear-do-not-disturb": {
+      "scenarios": 1,
+      "passed": 0,
+      "exactMatchAccuracy": 0,
+      "positiveScenarioAccuracy": 0,
+      "negativeScenarioAccuracy": 1,
+      "signalPrecision": 0.5,
+      "signalRecall": 1,
+      "signalF1": 0.6666666666666666,
+      "truePositives": 1,
+      "falsePositives": 1,
+      "falseNegatives": 0,
+      "errors": 0
+    },
+    "compound-restoration": {
+      "scenarios": 1,
+      "passed": 0,
+      "exactMatchAccuracy": 0,
+      "positiveScenarioAccuracy": 0,
+      "negativeScenarioAccuracy": 1,
+      "signalPrecision": 1,
+      "signalRecall": 0.5,
+      "signalF1": 0.6666666666666666,
+      "truePositives": 1,
+      "falsePositives": 0,
+      "falseNegatives": 1,
+      "errors": 0
+    },
+    "negative-busy": {
+      "scenarios": 1,
+      "passed": 1,
+      "exactMatchAccuracy": 1,
+      "positiveScenarioAccuracy": 1,
+      "negativeScenarioAccuracy": 1,
+      "signalPrecision": 1,
+      "signalRecall": 1,
+      "signalF1": 1,
+      "truePositives": 0,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "errors": 0
+    },
+    "negative-intent-specific": {
+      "scenarios": 2,
+      "passed": 2,
+      "exactMatchAccuracy": 1,
+      "positiveScenarioAccuracy": 1,
+      "negativeScenarioAccuracy": 1,
+      "signalPrecision": 1,
+      "signalRecall": 1,
+      "signalF1": 1,
+      "truePositives": 0,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "errors": 0
+    },
+    "negative-past-policy": {
+      "scenarios": 1,
+      "passed": 1,
+      "exactMatchAccuracy": 1,
+      "positiveScenarioAccuracy": 1,
+      "negativeScenarioAccuracy": 1,
+      "signalPrecision": 1,
+      "signalRecall": 1,
+      "signalF1": 1,
+      "truePositives": 0,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "errors": 0
+    },
+    "negative-third-party": {
+      "scenarios": 1,
+      "passed": 1,
+      "exactMatchAccuracy": 1,
+      "positiveScenarioAccuracy": 1,
+      "negativeScenarioAccuracy": 1,
+      "signalPrecision": 1,
+      "signalRecall": 1,
+      "signalF1": 1,
+      "truePositives": 0,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "errors": 0
+    },
+    "negative-reported-speech": {
+      "scenarios": 1,
+      "passed": 1,
+      "exactMatchAccuracy": 1,
+      "positiveScenarioAccuracy": 1,
+      "negativeScenarioAccuracy": 1,
+      "signalPrecision": 1,
+      "signalRecall": 1,
+      "signalF1": 1,
+      "truePositives": 0,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "errors": 0
+    },
+    "negative-hypothetical": {
+      "scenarios": 1,
+      "passed": 1,
+      "exactMatchAccuracy": 1,
+      "positiveScenarioAccuracy": 1,
+      "negativeScenarioAccuracy": 1,
+      "signalPrecision": 1,
+      "signalRecall": 1,
+      "signalF1": 1,
+      "truePositives": 0,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "errors": 0
+    },
+    "negative-assistant-evidence": {
+      "scenarios": 1,
+      "passed": 1,
+      "exactMatchAccuracy": 1,
+      "positiveScenarioAccuracy": 1,
+      "negativeScenarioAccuracy": 1,
+      "signalPrecision": 1,
+      "signalRecall": 1,
+      "signalF1": 1,
+      "truePositives": 0,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "errors": 0
+    },
+    "negative-preference": {
+      "scenarios": 1,
+      "passed": 1,
+      "exactMatchAccuracy": 1,
+      "positiveScenarioAccuracy": 1,
+      "negativeScenarioAccuracy": 1,
+      "signalPrecision": 1,
+      "signalRecall": 1,
+      "signalF1": 1,
+      "truePositives": 0,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "errors": 0
+    },
+    "negative-implicit": {
+      "scenarios": 1,
+      "passed": 1,
+      "exactMatchAccuracy": 1,
+      "positiveScenarioAccuracy": 1,
+      "negativeScenarioAccuracy": 1,
+      "signalPrecision": 1,
+      "signalRecall": 1,
+      "signalF1": 1,
+      "truePositives": 0,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "errors": 0
+    },
+    "negative-conversation-closing": {
+      "scenarios": 1,
+      "passed": 1,
+      "exactMatchAccuracy": 1,
+      "positiveScenarioAccuracy": 1,
+      "negativeScenarioAccuracy": 1,
+      "signalPrecision": 1,
+      "signalRecall": 1,
+      "signalF1": 1,
+      "truePositives": 0,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "errors": 0
+    }
+  },
+  "usage": {
+    "calls": 20,
+    "inputTokens": 7641,
+    "outputTokens": 3476,
+    "totalTokens": 11117,
+    "costUsd": null
+  },
+  "scenarios": [
+    {
+      "scenarioId": "quiet-tonight-until-ten",
+      "split": "development",
+      "category": "finite-do-not-disturb",
+      "passed": true,
+      "expected": [
+        {
+          "kind": "set-do-not-disturb",
+          "evidenceRef": "q1",
+          "doNotDisturbUntil": "2026-09-02T14:00:00.000Z"
+        }
+      ],
+      "actual": [
+        {
+          "kind": "set-do-not-disturb",
+          "evidenceRef": "q1",
+          "doNotDisturbUntil": "2026-09-02T14:00:00.000Z"
+        }
+      ],
+      "truePositives": 1,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "error": null,
+      "latencyMs": 10432,
+      "actualSignals": [
+        {
+          "schemaVersion": "0.1.0",
+          "id": "quiet-tonight-until-ten-policy-signal-1",
+          "evidenceRef": "q1",
+          "occurredAt": "2026-09-02T10:00:00.000Z",
+          "reason": "User asked not to be proactively contacted until 10 PM tonight in their local time.",
+          "kind": "set-do-not-disturb",
+          "doNotDisturbUntil": "2026-09-02T22:00:00+08:00"
+        }
+      ],
+      "modelCallRecords": [
+        {
+          "schemaName": "wakeintent_policy_signals",
+          "phase": "extraction",
+          "reasoningEffort": null,
+          "usage": {
+            "inputTokens": 377,
+            "outputTokens": 302,
+            "totalTokens": 679
+          },
+          "requestId": "c5c42a89-f1ea-4cf5-a801-18e96c10f0c7",
+          "attempts": 1,
+          "costUsd": null
+        }
+      ]
+    },
+    {
+      "scenarioId": "quiet-next-two-hours",
+      "split": "development",
+      "category": "finite-do-not-disturb",
+      "passed": true,
+      "expected": [
+        {
+          "kind": "set-do-not-disturb",
+          "evidenceRef": "q2",
+          "doNotDisturbUntil": "2026-09-02T12:00:00.000Z"
+        }
+      ],
+      "actual": [
+        {
+          "kind": "set-do-not-disturb",
+          "evidenceRef": "q2",
+          "doNotDisturbUntil": "2026-09-02T12:00:00.000Z"
+        }
+      ],
+      "truePositives": 1,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "error": null,
+      "latencyMs": 11103,
+      "actualSignals": [
+        {
+          "schemaVersion": "0.1.0",
+          "id": "quiet-next-two-hours-policy-signal-1",
+          "evidenceRef": "q2",
+          "occurredAt": "2026-09-02T10:00:00.000Z",
+          "reason": "User requested no proactive contact for the next two hours while taking an exam.",
+          "kind": "set-do-not-disturb",
+          "doNotDisturbUntil": "2026-09-02T12:00:00.000Z"
+        }
+      ],
+      "modelCallRecords": [
+        {
+          "schemaName": "wakeintent_policy_signals",
+          "phase": "extraction",
+          "reasoningEffort": null,
+          "usage": {
+            "inputTokens": 382,
+            "outputTokens": 304,
+            "totalTokens": 686
+          },
+          "requestId": "18c034ed-ff9d-4cf0-b9d1-0743bdab8fcc",
+          "attempts": 1,
+          "costUsd": null
+        }
+      ]
+    },
+    {
+      "scenarioId": "quiet-until-next-monday",
+      "split": "holdout",
+      "category": "finite-do-not-disturb",
+      "passed": true,
+      "expected": [
+        {
+          "kind": "set-do-not-disturb",
+          "evidenceRef": "q3",
+          "doNotDisturbUntil": "2026-09-07T01:00:00.000Z"
+        }
+      ],
+      "actual": [
+        {
+          "kind": "set-do-not-disturb",
+          "evidenceRef": "q3",
+          "doNotDisturbUntil": "2026-09-07T01:00:00.000Z"
+        }
+      ],
+      "truePositives": 1,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "error": null,
+      "latencyMs": 16578,
+      "actualSignals": [
+        {
+          "schemaVersion": "0.1.0",
+          "id": "quiet-until-next-monday-policy-signal-1",
+          "evidenceRef": "q3",
+          "occurredAt": "2026-09-02T10:00:00.000Z",
+          "reason": "用户明确要求这周剩余时间不要主动联系，并指定下周一上午9点以后再联系，构成一个有限静默窗口。",
+          "kind": "set-do-not-disturb",
+          "doNotDisturbUntil": "2026-09-07T01:00:00Z"
+        }
+      ],
+      "modelCallRecords": [
+        {
+          "schemaName": "wakeintent_policy_signals",
+          "phase": "extraction",
+          "reasoningEffort": null,
+          "usage": {
+            "inputTokens": 388,
+            "outputTokens": 420,
+            "totalTokens": 808
+          },
+          "requestId": "ac9f2a6d-3497-43f9-ab52-e61fa4ea3a42",
+          "attempts": 1,
+          "costUsd": null
+        }
+      ]
+    },
+    {
+      "scenarioId": "deny-indefinite-contact",
+      "split": "development",
+      "category": "authorization-denied",
+      "passed": true,
+      "expected": [
+        {
+          "kind": "set-authorization",
+          "evidenceRef": "q4",
+          "authorization": "denied"
+        }
+      ],
+      "actual": [
+        {
+          "kind": "set-authorization",
+          "evidenceRef": "q4",
+          "authorization": "denied"
+        }
+      ],
+      "truePositives": 1,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "error": null,
+      "latencyMs": 7653,
+      "actualSignals": [
+        {
+          "schemaVersion": "0.1.0",
+          "id": "deny-indefinite-contact-policy-signal-1",
+          "evidenceRef": "q4",
+          "occurredAt": "2026-09-02T10:00:00.000Z",
+          "reason": "User explicitly رفضs proactive contact unless they initiate first.",
+          "kind": "set-authorization",
+          "authorization": "denied"
+        }
+      ],
+      "modelCallRecords": [
+        {
+          "schemaName": "wakeintent_policy_signals",
+          "phase": "extraction",
+          "reasoningEffort": null,
+          "usage": {
+            "inputTokens": 383,
+            "outputTokens": 162,
+            "totalTokens": 545
+          },
+          "requestId": "6396dd1d-9653-4061-92b1-150a27b06f4d",
+          "attempts": 1,
+          "costUsd": null
+        }
+      ]
+    },
+    {
+      "scenarioId": "restore-proactive-permission",
+      "split": "development",
+      "category": "authorization-granted",
+      "passed": true,
+      "expected": [
+        {
+          "kind": "set-authorization",
+          "evidenceRef": "q5",
+          "authorization": "granted"
+        }
+      ],
+      "actual": [
+        {
+          "kind": "set-authorization",
+          "evidenceRef": "q5",
+          "authorization": "granted"
+        }
+      ],
+      "truePositives": 1,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "error": null,
+      "latencyMs": 7574,
+      "actualSignals": [
+        {
+          "schemaVersion": "0.1.0",
+          "id": "restore-proactive-permission-policy-signal-1",
+          "evidenceRef": "q5",
+          "occurredAt": "2026-09-02T10:00:00.000Z",
+          "reason": "用户明确表示以后可以主动联系他。",
+          "kind": "set-authorization",
+          "authorization": "granted"
+        }
+      ],
+      "modelCallRecords": [
+        {
+          "schemaName": "wakeintent_policy_signals",
+          "phase": "extraction",
+          "reasoningEffort": null,
+          "usage": {
+            "inputTokens": 381,
+            "outputTokens": 142,
+            "totalTokens": 523
+          },
+          "requestId": "8b385b2c-3ef9-4a5e-9312-846b4bc35ce3",
+          "attempts": 1,
+          "costUsd": null
+        }
+      ]
+    },
+    {
+      "scenarioId": "clear-quiet-window",
+      "split": "development",
+      "category": "clear-do-not-disturb",
+      "passed": false,
+      "expected": [
+        {
+          "kind": "clear-do-not-disturb",
+          "evidenceRef": "q6"
+        }
+      ],
+      "actual": [
+        {
+          "kind": "set-authorization",
+          "evidenceRef": "q6",
+          "authorization": "granted"
+        },
+        {
+          "kind": "clear-do-not-disturb",
+          "evidenceRef": "q6"
+        }
+      ],
+      "truePositives": 1,
+      "falsePositives": 1,
+      "falseNegatives": 0,
+      "error": null,
+      "latencyMs": 10012,
+      "actualSignals": [
+        {
+          "schemaVersion": "0.1.0",
+          "id": "clear-quiet-window-policy-signal-1",
+          "evidenceRef": "q6",
+          "occurredAt": "2026-09-02T10:00:00.000Z",
+          "reason": "User explicitly said contact is now normal again.",
+          "kind": "set-authorization",
+          "authorization": "granted"
+        },
+        {
+          "schemaVersion": "0.1.0",
+          "id": "clear-quiet-window-policy-signal-2",
+          "evidenceRef": "q6",
+          "occurredAt": "2026-09-02T10:00:00.000Z",
+          "reason": "User explicitly ended the earlier quiet window ending at 22:00.",
+          "kind": "clear-do-not-disturb"
+        }
+      ],
+      "modelCallRecords": [
+        {
+          "schemaName": "wakeintent_policy_signals",
+          "phase": "extraction",
+          "reasoningEffort": null,
+          "usage": {
+            "inputTokens": 381,
+            "outputTokens": 268,
+            "totalTokens": 649
+          },
+          "requestId": "1cf3993e-8fcc-468c-9124-e01b7cefae28",
+          "attempts": 1,
+          "costUsd": null
+        }
+      ]
+    },
+    {
+      "scenarioId": "restore-and-clear",
+      "split": "holdout",
+      "category": "compound-restoration",
+      "passed": false,
+      "expected": [
+        {
+          "kind": "clear-do-not-disturb",
+          "evidenceRef": "q7"
+        },
+        {
+          "kind": "set-authorization",
+          "evidenceRef": "q7",
+          "authorization": "granted"
+        }
+      ],
+      "actual": [
+        {
+          "kind": "set-authorization",
+          "evidenceRef": "q7",
+          "authorization": "granted"
+        }
+      ],
+      "truePositives": 1,
+      "falsePositives": 0,
+      "falseNegatives": 1,
+      "error": null,
+      "latencyMs": 12716,
+      "actualSignals": [
+        {
+          "schemaVersion": "0.1.0",
+          "id": "restore-and-clear-policy-signal-1",
+          "evidenceRef": "q7",
+          "occurredAt": "2026-09-02T10:00:00.000Z",
+          "reason": "User explicitly said the prior request not to contact them proactively is void and that proactive contact is now allowed.",
+          "kind": "set-authorization",
+          "authorization": "granted"
+        }
+      ],
+      "modelCallRecords": [
+        {
+          "schemaName": "wakeintent_policy_signals",
+          "phase": "extraction",
+          "reasoningEffort": null,
+          "usage": {
+            "inputTokens": 383,
+            "outputTokens": 243,
+            "totalTokens": 626
+          },
+          "requestId": "ad910ca3-4f13-4f2a-86c8-58277bb45bc2",
+          "attempts": 1,
+          "costUsd": null
+        }
+      ]
+    },
+    {
+      "scenarioId": "english-quiet-until-morning",
+      "split": "holdout",
+      "category": "finite-do-not-disturb",
+      "passed": true,
+      "expected": [
+        {
+          "kind": "set-do-not-disturb",
+          "evidenceRef": "q8",
+          "doNotDisturbUntil": "2026-09-03T01:00:00.000Z"
+        }
+      ],
+      "actual": [
+        {
+          "kind": "set-do-not-disturb",
+          "evidenceRef": "q8",
+          "doNotDisturbUntil": "2026-09-03T01:00:00.000Z"
+        }
+      ],
+      "truePositives": 1,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "error": null,
+      "latencyMs": 9065,
+      "actualSignals": [
+        {
+          "schemaVersion": "0.1.0",
+          "id": "english-quiet-until-morning-policy-signal-1",
+          "evidenceRef": "q8",
+          "occurredAt": "2026-09-02T10:00:00.000Z",
+          "reason": "User explicitly asked not to be proactively contacted until tomorrow at 9am.",
+          "kind": "set-do-not-disturb",
+          "doNotDisturbUntil": "2026-09-03T01:00:00.000Z"
+        }
+      ],
+      "modelCallRecords": [
+        {
+          "schemaName": "wakeintent_policy_signals",
+          "phase": "extraction",
+          "reasoningEffort": null,
+          "usage": {
+            "inputTokens": 380,
+            "outputTokens": 259,
+            "totalTokens": 639
+          },
+          "requestId": "c282b7ab-fef4-4f6f-9659-fb0acc4ab2ce",
+          "attempts": 1,
+          "costUsd": null
+        }
+      ]
+    },
+    {
+      "scenarioId": "english-deny-indefinite",
+      "split": "holdout",
+      "category": "authorization-denied",
+      "passed": true,
+      "expected": [
+        {
+          "kind": "set-authorization",
+          "evidenceRef": "q9",
+          "authorization": "denied"
+        }
+      ],
+      "actual": [
+        {
+          "kind": "set-authorization",
+          "evidenceRef": "q9",
+          "authorization": "denied"
+        }
+      ],
+      "truePositives": 1,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "error": null,
+      "latencyMs": 7538,
+      "actualSignals": [
+        {
+          "schemaVersion": "0.1.0",
+          "id": "english-deny-indefinite-policy-signal-1",
+          "evidenceRef": "q9",
+          "occurredAt": "2026-09-02T10:00:00.000Z",
+          "reason": "The user explicitly told the assistant to stop reaching out proactively and said they will message when needed, which is an indefinite refusal of proactive contact.",
+          "kind": "set-authorization",
+          "authorization": "denied"
+        }
+      ],
+      "modelCallRecords": [
+        {
+          "schemaName": "wakeintent_policy_signals",
+          "phase": "extraction",
+          "reasoningEffort": null,
+          "usage": {
+            "inputTokens": 381,
+            "outputTokens": 164,
+            "totalTokens": 545
+          },
+          "requestId": "319d6dce-c465-45b4-89b7-6abb22f67698",
+          "attempts": 1,
+          "costUsd": null
+        }
+      ]
+    },
+    {
+      "scenarioId": "busy-is-not-policy",
+      "split": "development",
+      "category": "negative-busy",
+      "passed": true,
+      "expected": [],
+      "actual": [],
+      "truePositives": 0,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "error": null,
+      "latencyMs": 11650,
+      "actualSignals": [],
+      "modelCallRecords": [
+        {
+          "schemaName": "wakeintent_policy_signals",
+          "phase": "extraction",
+          "reasoningEffort": null,
+          "usage": {
+            "inputTokens": 381,
+            "outputTokens": 63,
+            "totalTokens": 444
+          },
+          "requestId": "000458f2-3523-4ffa-9f9b-a2d078d6f276",
+          "attempts": 1,
+          "costUsd": null
+        }
+      ]
+    },
+    {
+      "scenarioId": "topic-specific-job-fair-cancel",
+      "split": "development",
+      "category": "negative-intent-specific",
+      "passed": true,
+      "expected": [],
+      "actual": [],
+      "truePositives": 0,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "error": null,
+      "latencyMs": 19193,
+      "actualSignals": [],
+      "modelCallRecords": [
+        {
+          "schemaName": "wakeintent_policy_signals",
+          "phase": "extraction",
+          "reasoningEffort": null,
+          "usage": {
+            "inputTokens": 380,
+            "outputTokens": 83,
+            "totalTokens": 463
+          },
+          "requestId": "17b6a8f1-29fa-4013-b3ed-883d5828ea5d",
+          "attempts": 2,
+          "costUsd": null
+        }
+      ]
+    },
+    {
+      "scenarioId": "topic-specific-parcel-cancel",
+      "split": "holdout",
+      "category": "negative-intent-specific",
+      "passed": true,
+      "expected": [],
+      "actual": [],
+      "truePositives": 0,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "error": null,
+      "latencyMs": 6889,
+      "actualSignals": [],
+      "modelCallRecords": [
+        {
+          "schemaName": "wakeintent_policy_signals",
+          "phase": "extraction",
+          "reasoningEffort": null,
+          "usage": {
+            "inputTokens": 382,
+            "outputTokens": 91,
+            "totalTokens": 473
+          },
+          "requestId": "f43ac43a-b924-446c-8a1b-c396e543cbc3",
+          "attempts": 1,
+          "costUsd": null
+        }
+      ]
+    },
+    {
+      "scenarioId": "past-quiet-window",
+      "split": "holdout",
+      "category": "negative-past-policy",
+      "passed": true,
+      "expected": [],
+      "actual": [],
+      "truePositives": 0,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "error": null,
+      "latencyMs": 11313,
+      "actualSignals": [],
+      "modelCallRecords": [
+        {
+          "schemaName": "wakeintent_policy_signals",
+          "phase": "extraction",
+          "reasoningEffort": null,
+          "usage": {
+            "inputTokens": 388,
+            "outputTokens": 248,
+            "totalTokens": 636
+          },
+          "requestId": "96caaa97-3c28-4168-881d-b23d17ab0564",
+          "attempts": 1,
+          "costUsd": null
+        }
+      ]
+    },
+    {
+      "scenarioId": "third-party-instruction",
+      "split": "development",
+      "category": "negative-third-party",
+      "passed": true,
+      "expected": [],
+      "actual": [],
+      "truePositives": 0,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "error": null,
+      "latencyMs": 19718,
+      "actualSignals": [],
+      "modelCallRecords": [
+        {
+          "schemaName": "wakeintent_policy_signals",
+          "phase": "extraction",
+          "reasoningEffort": null,
+          "usage": {
+            "inputTokens": 379,
+            "outputTokens": 100,
+            "totalTokens": 479
+          },
+          "requestId": "0e34fc40-83d0-4057-96a4-4d546fbe4c5f",
+          "attempts": 2,
+          "costUsd": null
+        }
+      ]
+    },
+    {
+      "scenarioId": "reported-speech",
+      "split": "holdout",
+      "category": "negative-reported-speech",
+      "passed": true,
+      "expected": [],
+      "actual": [],
+      "truePositives": 0,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "error": null,
+      "latencyMs": 6777,
+      "actualSignals": [],
+      "modelCallRecords": [
+        {
+          "schemaName": "wakeintent_policy_signals",
+          "phase": "extraction",
+          "reasoningEffort": null,
+          "usage": {
+            "inputTokens": 385,
+            "outputTokens": 86,
+            "totalTokens": 471
+          },
+          "requestId": "31fe6ec3-c9d4-4ab0-9d70-e80957530842",
+          "attempts": 1,
+          "costUsd": null
+        }
+      ]
+    },
+    {
+      "scenarioId": "hypothetical-contact-preference",
+      "split": "development",
+      "category": "negative-hypothetical",
+      "passed": true,
+      "expected": [],
+      "actual": [],
+      "truePositives": 0,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "error": null,
+      "latencyMs": 7612,
+      "actualSignals": [],
+      "modelCallRecords": [
+        {
+          "schemaName": "wakeintent_policy_signals",
+          "phase": "extraction",
+          "reasoningEffort": null,
+          "usage": {
+            "inputTokens": 385,
+            "outputTokens": 196,
+            "totalTokens": 581
+          },
+          "requestId": "af65b674-48fd-4983-bca7-79089b08ee48",
+          "attempts": 1,
+          "costUsd": null
+        }
+      ]
+    },
+    {
+      "scenarioId": "assistant-cannot-set-policy",
+      "split": "holdout",
+      "category": "negative-assistant-evidence",
+      "passed": true,
+      "expected": [],
+      "actual": [],
+      "truePositives": 0,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "error": null,
+      "latencyMs": 6964,
+      "actualSignals": [],
+      "modelCallRecords": [
+        {
+          "schemaName": "wakeintent_policy_signals",
+          "phase": "extraction",
+          "reasoningEffort": null,
+          "usage": {
+            "inputTokens": 379,
+            "outputTokens": 54,
+            "totalTokens": 433
+          },
+          "requestId": "2223d7a5-5744-488e-9b82-982831241667",
+          "attempts": 1,
+          "costUsd": null
+        }
+      ]
+    },
+    {
+      "scenarioId": "general-evening-busyness",
+      "split": "development",
+      "category": "negative-preference",
+      "passed": true,
+      "expected": [],
+      "actual": [],
+      "truePositives": 0,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "error": null,
+      "latencyMs": 7120,
+      "actualSignals": [],
+      "modelCallRecords": [
+        {
+          "schemaName": "wakeintent_policy_signals",
+          "phase": "extraction",
+          "reasoningEffort": null,
+          "usage": {
+            "inputTokens": 383,
+            "outputTokens": 82,
+            "totalTokens": 465
+          },
+          "requestId": "59d6356c-34cd-41bf-ab01-296b6ca48363",
+          "attempts": 1,
+          "costUsd": null
+        }
+      ]
+    },
+    {
+      "scenarioId": "message-overload-without-request",
+      "split": "holdout",
+      "category": "negative-implicit",
+      "passed": true,
+      "expected": [],
+      "actual": [],
+      "truePositives": 0,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "error": null,
+      "latencyMs": 7152,
+      "actualSignals": [],
+      "modelCallRecords": [
+        {
+          "schemaName": "wakeintent_policy_signals",
+          "phase": "extraction",
+          "reasoningEffort": null,
+          "usage": {
+            "inputTokens": 382,
+            "outputTokens": 100,
+            "totalTokens": 482
+          },
+          "requestId": "6646f13b-0791-42e6-a140-c94667453bd5",
+          "attempts": 1,
+          "costUsd": null
+        }
+      ]
+    },
+    {
+      "scenarioId": "conversation-closing",
+      "split": "holdout",
+      "category": "negative-conversation-closing",
+      "passed": true,
+      "expected": [],
+      "actual": [],
+      "truePositives": 0,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "error": null,
+      "latencyMs": 7455,
+      "actualSignals": [],
+      "modelCallRecords": [
+        {
+          "schemaName": "wakeintent_policy_signals",
+          "phase": "extraction",
+          "reasoningEffort": null,
+          "usage": {
+            "inputTokens": 381,
+            "outputTokens": 109,
+            "totalTokens": 490
+          },
+          "requestId": "9316d1fb-c8a3-4727-aef8-c71f6995c0ab",
+          "attempts": 1,
+          "costUsd": null
+        }
+      ]
+    }
+  ],
+  "warning": "This frozen extraction eval measures policy-signal classification and normalization only. It does not yet establish end-to-end product value or user preference."
+}

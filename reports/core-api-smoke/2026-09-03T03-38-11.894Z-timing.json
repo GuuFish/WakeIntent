@@ -1,0 +1,183 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "core-event-wakeup-api-smoke",
+  "mode": "timing",
+  "syntheticData": true,
+  "runAt": "2026-09-03T03:38:11.894Z",
+  "passed": true,
+  "model": "gpt-5.5",
+  "apiMode": "responses",
+  "maxHttpRequests": 3,
+  "initialEvent": {
+    "id": "synthetic-job-fair-plan",
+    "conversationId": "synthetic-conversation",
+    "actor": "user",
+    "occurredAt": "2026-09-01T09:00:00.000Z",
+    "content": "我周五准备去参加双选会，结束后可能想聊聊结果。",
+    "metadata": {
+      "synthetic": true
+    }
+  },
+  "invalidatingEvent": {
+    "id": "synthetic-job-fair-timing-update",
+    "conversationId": "synthetic-conversation",
+    "actor": "user",
+    "occurredAt": "2026-09-03T12:00:00.000Z",
+    "content": "双选会还会参加，不过主办方通知改到周五晚上才结束，结束前不用联系我。",
+    "metadata": {
+      "synthetic": true
+    }
+  },
+  "extractedIntent": {
+    "schemaVersion": "0.1.0",
+    "id": "core-smoke-intent-1",
+    "status": "active",
+    "subject": "聊聊周五双选会的结果",
+    "reason": "用户明确提到周五参加双选会后可能想聊聊结果，适合在双选会结束后跟进。",
+    "target": {
+      "kind": "user",
+      "id": "synthetic-user"
+    },
+    "evidence": [
+      {
+        "eventId": "synthetic-job-fair-plan",
+        "quote": "我周五准备去参加双选会，结束后可能想聊聊结果。"
+      }
+    ],
+    "notBefore": "2026-09-05T00:00:00.000Z",
+    "expiresAt": null,
+    "cancellationHints": [
+      "用户表示不想再聊双选会结果",
+      "已经聊过双选会结果",
+      "用户没有参加双选会或计划取消",
+      "相关求职/交流目标已完成或被其他安排取代"
+    ],
+    "priority": 0.62,
+    "interruptionCost": 0.35,
+    "confidence": 0.78,
+    "createdAt": "2026-09-01T09:01:00.000Z",
+    "updatedAt": "2026-09-01T09:01:00.000Z"
+  },
+  "routing": {
+    "selections": [
+      {
+        "confidence": 0.99,
+        "effect": "reevaluate",
+        "eventIds": [
+          "synthetic-job-fair-timing-update"
+        ],
+        "intentId": "core-smoke-intent-1",
+        "reason": "用户确认仍会参加双选会，但结束时间改为周五晚上，并明确结束前无需联系，因此后续跟进时间需要顺延。"
+      }
+    ],
+    "persistedRequests": [
+      {
+        "id": "evaluation-request:core-api-smoke-route:core-smoke-intent-1",
+        "intentId": "core-smoke-intent-1",
+        "requestedAt": "2026-09-03T12:01:00.000Z",
+        "eventIds": [
+          "synthetic-job-fair-timing-update"
+        ],
+        "effect": "reevaluate",
+        "reason": "用户确认仍会参加双选会，但结束时间改为周五晚上，并明确结束前无需联系，因此后续跟进时间需要顺延。",
+        "confidence": 0.99,
+        "nextEvaluationAt": "2026-09-03T12:01:00.000Z",
+        "policyVersion": "core-api-smoke-route-0.1",
+        "metadata": {
+          "source": "conversation-event-route"
+        }
+      }
+    ],
+    "audits": [
+      {
+        "at": "2026-09-03T12:01:00.000Z",
+        "source": "model",
+        "matches": [
+          {
+            "confidence": 0.99,
+            "effect": "reevaluate",
+            "eventIds": [
+              "synthetic-job-fair-timing-update"
+            ],
+            "intentId": "core-smoke-intent-1",
+            "reason": "用户确认仍会参加双选会，但结束时间改为周五晚上，并明确结束前无需联系，因此后续跟进时间需要顺延。"
+          }
+        ]
+      }
+    ]
+  },
+  "afterRestart": {
+    "result": {
+      "outcome": "committed",
+      "source": "hard-gate",
+      "decision": {
+        "id": "decision:evaluate:core-smoke-intent-1:revision:2",
+        "intentId": "core-smoke-intent-1",
+        "evaluatedAt": "2026-09-03T12:01:00.000Z",
+        "action": "defer",
+        "reason": "Contact is blocked by: not-before window.",
+        "evidenceRefs": [
+          "synthetic-job-fair-plan",
+          "synthetic-job-fair-timing-update"
+        ],
+        "counterEvidenceRefs": [],
+        "confidence": 1,
+        "nextEvaluationAt": "2026-09-05T00:00:00.000Z",
+        "policyVersion": "core-api-smoke-decision-0.1",
+        "metadata": {
+          "source": "deterministic-hard-gate",
+          "semanticProposalAction": "defer",
+          "semanticProposalNextEvaluationAt": "2026-09-05T00:00:00.000Z"
+        }
+      }
+    },
+    "finalStatus": "active",
+    "fallbackContextLoads": 1,
+    "evaluationWork": {
+      "dueIntents": 1,
+      "contextLoads": 1,
+      "semanticCalls": 1,
+      "hardGateDecisions": 1,
+      "semanticDecisions": 0,
+      "latePolicyDecisions": 0,
+      "routeClosureDecisions": 0,
+      "batchPolicyDecisions": 0,
+      "contactDecisions": 0,
+      "budgetSuppressed": 0,
+      "committed": 1,
+      "duplicates": 0,
+      "conflicts": 0,
+      "failures": 0,
+      "failureRecords": 0,
+      "retriesScheduled": 0,
+      "retriesExhausted": 0,
+      "failureRecordConflicts": 0,
+      "failureRecordFailures": 0
+    }
+  },
+  "usage": {
+    "extractionAndFallbackDecision": {
+      "calls": 2,
+      "inputTokens": 1023,
+      "outputTokens": 724,
+      "totalTokens": 1747,
+      "costUsd": null,
+      "attempts": 2,
+      "requestIds": [
+        "fe33986b-7257-4ca0-9aa8-8bcd5ad85b7c",
+        "db631ec1-1bbf-4850-8e48-43ad3b72ebc6"
+      ]
+    },
+    "relevanceRouting": {
+      "calls": 1,
+      "inputTokens": 824,
+      "outputTokens": 232,
+      "totalTokens": 1056,
+      "costUsd": null,
+      "attempts": 1,
+      "requestIds": [
+        "cc3301ea-a308-43a8-84cf-00405a392e53"
+      ]
+    }
+  }
+}

@@ -1,0 +1,376 @@
+{
+  "schemaVersion": "0.1.0",
+  "dataset": {
+    "name": "WakeIntent model-backed longitudinal fixtures",
+    "version": "0.1.0-dev.1",
+    "kind": "development-longitudinal-fixtures"
+  },
+  "scenarioId": "indirect-resolution-with-surviving-intent",
+  "model": "gpt-5.5",
+  "apiMode": "responses",
+  "modelSettings": {
+    "extractionReasoningEffort": "none",
+    "decisionReasoningEffort": "low",
+    "textVerbosity": "low"
+  },
+  "promptVersions": {
+    "wakeintent": "0.1.2",
+    "relevanceRouter": "0.1.0",
+    "dueGatedBaseline": "0.1.0"
+  },
+  "completedAt": "2026-09-01T13:59:58.226Z",
+  "scoringVersion": "0.1.1",
+  "passed": false,
+  "score": {
+    "wakeIntentCount": true,
+    "baselineMemoryCount": true,
+    "selectiveRoute": true,
+    "wakeEarlyTerminal": true,
+    "wakeSurvivingContact": true,
+    "wakeTerminalAction": true,
+    "baselineSurvivingContact": true,
+    "baselineTerminalAction": false,
+    "wakeNoFalseJobContact": true,
+    "baselineNoFalseJobContact": true
+  },
+  "staleStateAvoidedMilliseconds": 93600000,
+  "wakeintent": {
+    "usage": {
+      "calls": 4,
+      "inputTokens": 2138,
+      "outputTokens": 885,
+      "totalTokens": 3023,
+      "costUsd": null
+    },
+    "usageBySchema": {
+      "wakeintent_candidates": {
+        "calls": 1,
+        "inputTokens": 472,
+        "outputTokens": 285,
+        "totalTokens": 757,
+        "costUsd": null
+      },
+      "wakeintent_decision": {
+        "calls": 2,
+        "inputTokens": 1084,
+        "outputTokens": 521,
+        "totalTokens": 1605,
+        "costUsd": null
+      },
+      "wakeintent_relevance_route": {
+        "calls": 1,
+        "inputTokens": 582,
+        "outputTokens": 79,
+        "totalTokens": 661,
+        "costUsd": null
+      }
+    },
+    "result": {
+      "intents": [
+        {
+          "schemaVersion": "0.1.0",
+          "id": "indirect-resolution-with-surviving-intent-extract-intent-1",
+          "status": "cancelled",
+          "subject": "Job fair materials check",
+          "reason": "Check whether materials are ready before the 9/4 evening job fair.",
+          "target": {
+            "kind": "user",
+            "id": "user-indirect"
+          },
+          "evidence": [
+            {
+              "eventId": "indirect-job-plan",
+              "quote": "请在北京时间9月4日下午六点问问我材料准备好了没有。"
+            }
+          ],
+          "notBefore": "2026-09-04T10:00:00Z",
+          "expiresAt": null,
+          "cancellationHints": [
+            "If the job fair prep is no longer relevant or the user says not to ask.",
+            "If the user later says materials are already ready and no reminder is needed."
+          ],
+          "priority": 0.86,
+          "interruptionCost": 0.3,
+          "confidence": 0.98,
+          "createdAt": "2026-09-01T09:05:00.000Z",
+          "updatedAt": "2026-09-03T08:00:00.000Z"
+        },
+        {
+          "schemaVersion": "0.1.0",
+          "id": "indirect-resolution-with-surviving-intent-extract-intent-2",
+          "status": "active",
+          "subject": "Parcel pickup check",
+          "reason": "Check whether the package has been picked up after the expected delivery date.",
+          "target": {
+            "kind": "user",
+            "id": "user-indirect"
+          },
+          "evidence": [
+            {
+              "eventId": "indirect-parcel-plan",
+              "quote": "请在北京时间9月6日晚上八点问问我取到没有。"
+            }
+          ],
+          "notBefore": "2026-09-06T12:00:00Z",
+          "expiresAt": null,
+          "cancellationHints": [
+            "If the package arrives later than expected and the user wants to reschedule.",
+            "If the user says they already picked it up and no follow-up is needed."
+          ],
+          "priority": 0.78,
+          "interruptionCost": 0.2,
+          "confidence": 0.98,
+          "createdAt": "2026-09-01T09:05:00.000Z",
+          "updatedAt": "2026-09-06T12:00:00.000Z"
+        }
+      ],
+      "traces": [
+        {
+          "at": "2026-09-03T08:00:00.000Z",
+          "trigger": "context",
+          "intentId": "indirect-resolution-with-surviving-intent-extract-intent-1",
+          "decision": {
+            "id": "indirect-resolution-with-surviving-intent-timeline-decision-1",
+            "intentId": "indirect-resolution-with-surviving-intent-extract-intent-1",
+            "evaluatedAt": "2026-09-03T08:00:00.000Z",
+            "action": "cancel",
+            "reason": "The user explicitly ասաց they already signed a satisfactory internship offer and will not մասնակցate in any further recruiting activities, so the job-fair materials check is no longer relevant.",
+            "evidenceRefs": [
+              "offer-signed"
+            ],
+            "counterEvidenceRefs": [],
+            "confidence": 0.98,
+            "nextEvaluationAt": null,
+            "policyVersion": "longitudinal-eval-0.1"
+          },
+          "source": "semantic"
+        },
+        {
+          "at": "2026-09-06T12:00:00.000Z",
+          "trigger": "scheduled",
+          "intentId": "indirect-resolution-with-surviving-intent-extract-intent-2",
+          "decision": {
+            "id": "indirect-resolution-with-surviving-intent-timeline-decision-2",
+            "intentId": "indirect-resolution-with-surviving-intent-extract-intent-2",
+            "evaluatedAt": "2026-09-06T12:00:00.000Z",
+            "action": "contact",
+            "reason": "The scheduled time has arrived and there is no later user message about the parcel or any cancellation. The latest event ('offer-signed') is unrelated to the parcel follow-up and does not make the pickup check obsolete.",
+            "evidenceRefs": [
+              "indirect-parcel-plan"
+            ],
+            "counterEvidenceRefs": [],
+            "confidence": 0.9,
+            "nextEvaluationAt": null,
+            "policyVersion": "longitudinal-eval-0.1"
+          },
+          "source": "semantic"
+        }
+      ],
+      "metrics": {
+        "extractionModelCalls": 1,
+        "routingCalls": 1,
+        "reevaluationAttempts": 2,
+        "semanticDecisionModelCalls": 2,
+        "contactDecisions": 1,
+        "terminalDecisions": 1
+      },
+      "pendingEvaluationAt": {}
+    },
+    "routeAudits": [
+      {
+        "at": "2026-09-03T08:00:00.000Z",
+        "source": "model",
+        "matches": [
+          {
+            "confidence": 0.98,
+            "eventIds": [
+              "offer-signed"
+            ],
+            "intentId": "indirect-resolution-with-surviving-intent-extract-intent-1",
+            "reason": "User says they signed a satisfactory internship offer and will not participate in upcoming recruiting events, which directly supersedes the job fair materials check."
+          }
+        ]
+      }
+    ],
+    "modelCallRecords": [
+      {
+        "schemaName": "wakeintent_candidates",
+        "phase": "extraction",
+        "reasoningEffort": "none",
+        "usage": {
+          "inputTokens": 472,
+          "outputTokens": 285,
+          "totalTokens": 757
+        },
+        "requestId": "3b82b65a-774f-448f-9120-3d81e7279da0",
+        "attempts": 1,
+        "costUsd": null
+      },
+      {
+        "schemaName": "wakeintent_decision",
+        "phase": "decision",
+        "reasoningEffort": "low",
+        "usage": {
+          "inputTokens": 543,
+          "outputTokens": 129,
+          "totalTokens": 672
+        },
+        "requestId": "0d3632e7-1805-4b2b-8b33-af577d535f5c",
+        "attempts": 1,
+        "costUsd": null
+      },
+      {
+        "schemaName": "wakeintent_decision",
+        "phase": "decision",
+        "reasoningEffort": "low",
+        "usage": {
+          "inputTokens": 541,
+          "outputTokens": 392,
+          "totalTokens": 933
+        },
+        "requestId": "c6df82e4-b2cf-4ccb-b688-da4c6873cdfc",
+        "attempts": 1,
+        "costUsd": null
+      },
+      {
+        "schemaName": "wakeintent_relevance_route",
+        "phase": "extraction",
+        "reasoningEffort": "none",
+        "usage": {
+          "inputTokens": 582,
+          "outputTokens": 79,
+          "totalTokens": 661
+        },
+        "requestId": "189570cf-9a20-4e4f-89e2-a5adf8cd60ed",
+        "attempts": 1,
+        "costUsd": null
+      }
+    ]
+  },
+  "dueGatedBaseline": {
+    "usage": {
+      "calls": 3,
+      "inputTokens": 1356,
+      "outputTokens": 544,
+      "totalTokens": 1900,
+      "costUsd": null
+    },
+    "usageBySchema": {
+      "longitudinal_baseline_memories": {
+        "calls": 1,
+        "inputTokens": 342,
+        "outputTokens": 110,
+        "totalTokens": 452,
+        "costUsd": null
+      },
+      "longitudinal_baseline_decisions": {
+        "calls": 2,
+        "inputTokens": 1014,
+        "outputTokens": 434,
+        "totalTokens": 1448,
+        "costUsd": null
+      }
+    },
+    "initialMemories": [
+      {
+        "id": "baseline-memory-1",
+        "summary": "Ask whether materials are ready for the Sept 4 evening job fair.",
+        "evidenceRefs": [
+          "indirect-job-plan"
+        ],
+        "dueAt": "2026-09-04T18:00:00+08:00"
+      },
+      {
+        "id": "baseline-memory-2",
+        "summary": "Ask whether the expected parcel has been picked up.",
+        "evidenceRefs": [
+          "indirect-parcel-plan"
+        ],
+        "dueAt": "2026-09-06T20:00:00+08:00"
+      }
+    ],
+    "result": {
+      "memories": [],
+      "traces": [
+        {
+          "at": "2026-09-04T10:00:00.000Z",
+          "decisions": [
+            {
+              "action": "expire",
+              "evidenceRefs": [
+                "offer-signed",
+                "indirect-job-plan"
+              ],
+              "memoryId": "baseline-memory-1",
+              "nextEvaluationAt": null,
+              "reason": "用户已在 offer-signed 中说明已签满意的实习 offer，后续招聘活动都不参加；原先关于 9 月 4 日双选会材料准备的提醒已被间接取代，不再需要联系。"
+            }
+          ]
+        },
+        {
+          "at": "2026-09-06T12:00:00.000Z",
+          "decisions": [
+            {
+              "action": "contact",
+              "evidenceRefs": [
+                "indirect-parcel-plan"
+              ],
+              "memoryId": "baseline-memory-2",
+              "nextEvaluationAt": null,
+              "reason": "按北京时间已到约定时间，且用户明确要求在今晚8点询问快递是否取到；现在联系仍然有用。"
+            }
+          ]
+        }
+      ],
+      "metrics": {
+        "extractionModelCalls": 1,
+        "deterministicChecks": 2,
+        "decisionModelCalls": 2,
+        "contactDecisions": 1,
+        "terminalDecisions": 1
+      }
+    },
+    "modelCallRecords": [
+      {
+        "schemaName": "longitudinal_baseline_memories",
+        "phase": "extraction",
+        "reasoningEffort": "none",
+        "usage": {
+          "inputTokens": 342,
+          "outputTokens": 110,
+          "totalTokens": 452
+        },
+        "requestId": "ba4ecb9b-4786-413c-9a03-e62beb7812b8",
+        "attempts": 1,
+        "costUsd": null
+      },
+      {
+        "schemaName": "longitudinal_baseline_decisions",
+        "phase": "decision",
+        "reasoningEffort": "low",
+        "usage": {
+          "inputTokens": 539,
+          "outputTokens": 236,
+          "totalTokens": 775
+        },
+        "requestId": "e9bee7f0-a412-4ac7-8ad3-8ad3ad55134c",
+        "attempts": 1,
+        "costUsd": null
+      },
+      {
+        "schemaName": "longitudinal_baseline_decisions",
+        "phase": "decision",
+        "reasoningEffort": "low",
+        "usage": {
+          "inputTokens": 475,
+          "outputTokens": 198,
+          "totalTokens": 673
+        },
+        "requestId": "f0ff265f-507f-48a7-9f14-076afd3f2f19",
+        "attempts": 1,
+        "costUsd": null
+      }
+    ]
+  },
+  "warning": "One development timeline validates the pipeline only. It cannot establish product value without a frozen multi-scenario evaluation."
+}
