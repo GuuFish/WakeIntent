@@ -4,8 +4,9 @@ import type {
   ConversationEvent,
 } from "@wakeintent/core";
 import {
+  OpenAICompatibleRelevanceRouter as ModelRelevanceRouter,
   OpenAICompatibleStructuredClient,
-  type StructuredRequest,
+  WAKEINTENT_RELEVANCE_ROUTER_PROMPT_VERSION,
 } from "@wakeintent/model-openai-compatible";
 import type {
   BaselineTimelineDecider,
@@ -16,8 +17,10 @@ import type {
   RelevanceRoutingSelection,
 } from "./longitudinal.js";
 
-export const RELEVANCE_ROUTER_PROMPT_VERSION = "0.2.0";
+export const RELEVANCE_ROUTER_PROMPT_VERSION =
+  WAKEINTENT_RELEVANCE_ROUTER_PROMPT_VERSION;
 export const LONGITUDINAL_BASELINE_PROMPT_VERSION = "0.1.0";
+export { ModelRelevanceRouter };
 
 type StructuredClient = Pick<OpenAICompatibleStructuredClient, "generate">;
 
@@ -27,136 +30,6 @@ export interface RelevanceRouteAudit {
   at: string;
   source: "deterministic" | "model";
   matches: RelevanceMatch[];
-}
-
-interface RelevanceResponse {
-  matches: RelevanceMatch[];
-}
-
-const relevanceInstructions =
-  "Route new conversation events to active contact intents whose validity, timing, priority, interruption cost, cancellation, or resolution may have changed. Detect indirect goal supersession, not only explicit reminder cancellation. For each match, use effect cancel only when the user withdrew the follow-up or abandoned the underlying plan, resolve only when the intended outcome is already known or completed, and reevaluate for timing, policy, priority, interruption, mixed, or uncertain changes. Do not select an intent for superficial topic overlap that cannot change a future contact decision. Use only supplied intent IDs and event IDs. Return an empty match list when no intent needs early reevaluation.";
-
-function relevanceSchema(
-  intentIds: string[],
-  eventIds: string[],
-): Record<string, unknown> {
-  return {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      matches: {
-        type: "array",
-        items: {
-          type: "object",
-          additionalProperties: false,
-          properties: {
-            intentId: { type: "string", enum: intentIds },
-            eventIds: {
-              type: "array",
-              minItems: 1,
-              items: { type: "string", enum: eventIds },
-            },
-            effect: {
-              type: "string",
-              enum: ["reevaluate", "cancel", "resolve"],
-            },
-            reason: { type: "string", maxLength: 180 },
-            confidence: { type: "number", minimum: 0, maximum: 1 },
-          },
-          required: [
-            "intentId",
-            "eventIds",
-            "effect",
-            "reason",
-            "confidence",
-          ],
-        },
-      },
-    },
-    required: ["matches"],
-  };
-}
-
-export class ModelRelevanceRouter implements RelevanceRouter {
-  readonly #client: StructuredClient;
-  readonly #audits: RelevanceRouteAudit[] = [];
-
-  constructor(client: StructuredClient) {
-    this.#client = client;
-  }
-
-  getAudits(): readonly RelevanceRouteAudit[] {
-    return this.#audits.map((audit) => ({
-      at: audit.at,
-      source: audit.source,
-      matches: audit.matches.map((match) => ({
-        ...match,
-        eventIds: [...match.eventIds],
-      })),
-    }));
-  }
-
-  async selectRelevant(
-    input: RelevanceRoutingInput,
-  ): Promise<RelevanceRoutingSelection[]> {
-    if (input.intents.length === 0 || input.events.length === 0) return [];
-    const intentIds = input.intents.map((intent) => intent.id);
-    const eventIds = input.events.map((event) => event.id);
-    const response = await this.#client.generate<RelevanceResponse>({
-      schemaName: "wakeintent_relevance_route",
-      schema: relevanceSchema(intentIds, eventIds),
-      instructions: relevanceInstructions,
-      input: {
-        now: input.now,
-        intents: input.intents.map((intent) => ({
-          id: intent.id,
-          subject: intent.subject,
-          reason: intent.reason,
-          evidence: intent.evidence,
-          notBefore: intent.notBefore,
-          expiresAt: intent.expiresAt,
-          cancellationHints: intent.cancellationHints,
-          priority: intent.priority,
-          interruptionCost: intent.interruptionCost,
-        })),
-        events: input.events,
-      },
-      phase: "extraction",
-    } satisfies StructuredRequest);
-    const matches = consolidateMatches(response.matches);
-    this.#audits.push({
-      at: input.now,
-      source: "model",
-      matches: matches.map((match) => ({
-        ...match,
-        eventIds: [...match.eventIds],
-      })),
-    });
-    return matches;
-  }
-}
-
-function consolidateMatches(matches: RelevanceMatch[]): RelevanceMatch[] {
-  const consolidated = new Map<string, RelevanceMatch>();
-  for (const match of matches) {
-    const previous = consolidated.get(match.intentId);
-    if (!previous) {
-      consolidated.set(match.intentId, {
-        ...match,
-        eventIds: [...new Set(match.eventIds)],
-      });
-      continue;
-    }
-    consolidated.set(match.intentId, {
-      intentId: match.intentId,
-      eventIds: [...new Set([...previous.eventIds, ...match.eventIds])],
-      effect:
-        previous.effect === match.effect ? match.effect : "reevaluate",
-      reason: `${previous.reason}; ${match.reason}`.slice(0, 180),
-      confidence: Math.min(previous.confidence, match.confidence),
-    });
-  }
-  return [...consolidated.values()];
 }
 
 const impactCuePattern =

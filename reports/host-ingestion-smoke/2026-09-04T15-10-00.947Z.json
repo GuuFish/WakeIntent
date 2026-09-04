@@ -1,0 +1,262 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "reference-host-conversation-ingestion-smoke",
+  "syntheticData": true,
+  "runAt": "2026-09-04T15:10:00.947Z",
+  "passed": true,
+  "model": "gpt-5.5",
+  "apiMode": "responses",
+  "maxHttpRequests": 3,
+  "firstTurn": {
+    "outcome": "created",
+    "extractedIntent": {
+      "schemaVersion": "0.1.0",
+      "id": "intent:ingestion:4cfe1e46c7323968b9bb:1",
+      "status": "active",
+      "subject": "关心操作系统第三章的学习进度",
+      "reason": "用户明确希望在完成操作系统第三章后得到一次进度关心，适合在明天之后跟进。",
+      "target": {
+        "kind": "user",
+        "id": "student:synthetic"
+      },
+      "evidence": [
+        {
+          "eventId": "event:study-plan-smoke",
+          "quote": "我打算明天学完操作系统第三章，但进程同步一直没搞懂。学完后可以关心一下我的进度。"
+        }
+      ],
+      "notBefore": "2026-09-05T00:00:00+08:00",
+      "expiresAt": null,
+      "cancellationHints": [
+        "用户明确表示不需要再跟进",
+        "学习计划已经完成并且进度已确认",
+        "原来的学习目标被取消或改为别的安排"
+      ],
+      "priority": 0.58,
+      "interruptionCost": 0.2,
+      "confidence": 0.81,
+      "createdAt": "2026-09-04T09:01:00.000Z",
+      "updatedAt": "2026-09-04T09:01:00.000Z",
+      "metadata": {
+        "sourceConversationId": "conversation:study-smoke",
+        "sourceIngestionId": "4cfe1e46c7323968b9bb"
+      }
+    },
+    "modelCalls": {
+      "candidateAndDecisionCalls": [
+        {
+          "schemaName": "wakeintent_candidates",
+          "phase": "extraction",
+          "reasoningEffort": null,
+          "usage": {
+            "inputTokens": 467,
+            "outputTokens": 707,
+            "totalTokens": 1174
+          },
+          "requestId": "f77273bc-531b-45f1-a6e4-c97bfb1b3a53",
+          "attempts": 1,
+          "costUsd": null
+        }
+      ],
+      "relevanceCalls": []
+    }
+  },
+  "invalidatingTurn": {
+    "outcome": "created",
+    "selection": {
+      "confidence": 0.99,
+      "effect": "resolve",
+      "eventIds": [
+        "event:study-finished-smoke"
+      ],
+      "intentId": "intent:ingestion:4cfe1e46c7323968b9bb:1",
+      "reason": "用户已说明第三章学习完成，进程同步也已弄懂，且明确表示不用再问这件事，目标已完成并不需要后续关心。"
+    },
+    "modelCalls": {
+      "candidateAndDecisionCalls": [
+        {
+          "schemaName": "wakeintent_candidates",
+          "phase": "extraction",
+          "reasoningEffort": null,
+          "usage": {
+            "inputTokens": 461,
+            "outputTokens": 66,
+            "totalTokens": 527
+          },
+          "requestId": "f7e9928e-da39-470c-8278-da68f93ae2a3",
+          "attempts": 1,
+          "costUsd": null
+        }
+      ],
+      "relevanceCalls": [
+        {
+          "schemaName": "wakeintent_relevance_route",
+          "phase": "extraction",
+          "reasoningEffort": null,
+          "usage": {
+            "inputTokens": 557,
+            "outputTokens": 174,
+            "totalTokens": 731
+          },
+          "requestId": "0b53565d-75fe-462e-a70c-303c19c94f6b",
+          "attempts": 1,
+          "costUsd": null
+        }
+      ]
+    }
+  },
+  "evaluation": {
+    "result": {
+      "outcome": "committed",
+      "intentId": "intent:ingestion:4cfe1e46c7323968b9bb:1",
+      "previousRevision": 2,
+      "source": "route-closure",
+      "decision": {
+        "id": "decision:evaluate:intent:ingestion:4cfe1e46c7323968b9bb:1:revision:2",
+        "intentId": "intent:ingestion:4cfe1e46c7323968b9bb:1",
+        "evaluatedAt": "2026-09-04T15:01:00.000Z",
+        "action": "resolve",
+        "reason": "用户已说明第三章学习完成，进程同步也已弄懂，且明确表示不用再问这件事，目标已完成并不需要后续关心。",
+        "evidenceRefs": [
+          "event:study-plan-smoke"
+        ],
+        "counterEvidenceRefs": [
+          "event:study-finished-smoke"
+        ],
+        "confidence": 0.99,
+        "nextEvaluationAt": null,
+        "policyVersion": "host-smoke-decision-0.1",
+        "metadata": {
+          "source": "relevance-route-closure",
+          "evaluationRequestId": "evaluation-request:ingestion:2e8ef7c4f2bcdbe4e0a0:intent:ingestion:4cfe1e46c7323968b9bb:1",
+          "routePolicyVersion": "host-smoke-route-0.1"
+        }
+      },
+      "commit": {
+        "outcome": "committed",
+        "record": {
+          "intent": {
+            "schemaVersion": "0.1.0",
+            "id": "intent:ingestion:4cfe1e46c7323968b9bb:1",
+            "status": "resolved",
+            "subject": "关心操作系统第三章的学习进度",
+            "reason": "用户明确希望在完成操作系统第三章后得到一次进度关心，适合在明天之后跟进。",
+            "target": {
+              "kind": "user",
+              "id": "student:synthetic"
+            },
+            "evidence": [
+              {
+                "eventId": "event:study-plan-smoke",
+                "quote": "我打算明天学完操作系统第三章，但进程同步一直没搞懂。学完后可以关心一下我的进度。"
+              }
+            ],
+            "notBefore": "2026-09-05T00:00:00+08:00",
+            "expiresAt": null,
+            "cancellationHints": [
+              "用户明确表示不需要再跟进",
+              "学习计划已经完成并且进度已确认",
+              "原来的学习目标被取消或改为别的安排"
+            ],
+            "priority": 0.58,
+            "interruptionCost": 0.2,
+            "confidence": 0.81,
+            "createdAt": "2026-09-04T09:01:00.000Z",
+            "updatedAt": "2026-09-04T15:01:00.000Z",
+            "metadata": {
+              "sourceConversationId": "conversation:study-smoke",
+              "sourceIngestionId": "4cfe1e46c7323968b9bb"
+            }
+          },
+          "revision": 3,
+          "nextEvaluationAt": null
+        },
+        "decision": {
+          "id": "decision:evaluate:intent:ingestion:4cfe1e46c7323968b9bb:1:revision:2",
+          "intentId": "intent:ingestion:4cfe1e46c7323968b9bb:1",
+          "evaluatedAt": "2026-09-04T15:01:00.000Z",
+          "action": "resolve",
+          "reason": "用户已说明第三章学习完成，进程同步也已弄懂，且明确表示不用再问这件事，目标已完成并不需要后续关心。",
+          "evidenceRefs": [
+            "event:study-plan-smoke"
+          ],
+          "counterEvidenceRefs": [
+            "event:study-finished-smoke"
+          ],
+          "confidence": 0.99,
+          "nextEvaluationAt": null,
+          "policyVersion": "host-smoke-decision-0.1",
+          "metadata": {
+            "source": "relevance-route-closure",
+            "evaluationRequestId": "evaluation-request:ingestion:2e8ef7c4f2bcdbe4e0a0:intent:ingestion:4cfe1e46c7323968b9bb:1",
+            "routePolicyVersion": "host-smoke-route-0.1"
+          }
+        }
+      }
+    },
+    "work": {
+      "dueIntents": 1,
+      "contextLoads": 0,
+      "semanticCalls": 0,
+      "hardGateDecisions": 0,
+      "semanticDecisions": 0,
+      "latePolicyDecisions": 0,
+      "routeClosureDecisions": 1,
+      "batchPolicyDecisions": 0,
+      "contactDecisions": 0,
+      "budgetSuppressed": 0,
+      "committed": 1,
+      "duplicates": 0,
+      "conflicts": 0,
+      "failures": 0,
+      "failureRecords": 0,
+      "retriesScheduled": 0,
+      "retriesExhausted": 0,
+      "failureRecordConflicts": 0,
+      "failureRecordFailures": 0
+    },
+    "modelCalls": {
+      "candidateAndDecisionCalls": [],
+      "relevanceCalls": []
+    }
+  },
+  "idempotentReplay": {
+    "outcome": "duplicate",
+    "modelWorkPerformed": false,
+    "modelCalls": {
+      "candidateAndDecisionCalls": [],
+      "relevanceCalls": []
+    }
+  },
+  "outboxCount": 0,
+  "usage": {
+    "calls": 3,
+    "attempts": 3,
+    "inputTokens": 1485,
+    "outputTokens": 947,
+    "totalTokens": 2432,
+    "costUsd": null,
+    "requestIds": [
+      "f77273bc-531b-45f1-a6e4-c97bfb1b3a53",
+      "f7e9928e-da39-470c-8278-da68f93ae2a3",
+      "0b53565d-75fe-462e-a70c-303c19c94f6b"
+    ],
+    "phases": [
+      {
+        "schemaName": "wakeintent_candidates",
+        "phase": "extraction",
+        "reasoningEffort": null
+      },
+      {
+        "schemaName": "wakeintent_candidates",
+        "phase": "extraction",
+        "reasoningEffort": null
+      },
+      {
+        "schemaName": "wakeintent_relevance_route",
+        "phase": "extraction",
+        "reasoningEffort": null
+      }
+    ]
+  }
+}

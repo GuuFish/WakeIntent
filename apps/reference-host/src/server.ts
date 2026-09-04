@@ -10,8 +10,19 @@ import {
   InvalidStoreInputError,
   InvalidUseCaseInputError,
   type ContactIntent,
+  type ConversationEvent,
 } from "@wakeintent/core";
+import {
+  configFromEnv,
+  OpenAICompatibleModelAdapter,
+  OpenAICompatibleRelevanceRouter,
+  OpenAICompatibleStructuredClient,
+} from "@wakeintent/model-openai-compatible";
 
+import {
+  ConversationEventStoreConflictError,
+  InvalidConversationEventStoreInputError,
+} from "./event-store.js";
 import {
   InvalidOutboxInputError,
   OutboxConflictError,
@@ -20,8 +31,11 @@ import {
 } from "./outbox.js";
 import {
   InvalidReferenceHostInputError,
+  ReferenceHostCapabilityError,
   ReferenceHostService,
+  type ProcessConversationInput,
   type RunEvaluationInput,
+  type RunModelEvaluationInput,
 } from "./service.js";
 
 const DEFAULT_PORT = 8787;
@@ -79,12 +93,14 @@ function sendJson(response: ServerResponse, status: number, body: unknown): void
 }
 
 function errorStatus(error: unknown): number {
+  if (error instanceof ReferenceHostCapabilityError) return 503;
   if (error instanceof ContactIntentNotFoundError || error instanceof OutboxNotFoundError) {
     return 404;
   }
   if (
     error instanceof ContactIntentStoreConflictError ||
     error instanceof IdempotencyConflictError ||
+    error instanceof ConversationEventStoreConflictError ||
     error instanceof OutboxConflictError
   ) {
     return 409;
@@ -92,6 +108,7 @@ function errorStatus(error: unknown): number {
   if (
     error instanceof InvalidHttpRequestError ||
     error instanceof InvalidReferenceHostInputError ||
+    error instanceof InvalidConversationEventStoreInputError ||
     error instanceof InvalidOutboxInputError ||
     error instanceof InvalidEngineInputError ||
     error instanceof InvalidStoreInputError ||
@@ -128,6 +145,7 @@ export function createReferenceHostHttpServer(
           status: "ok",
           service: "wakeintent-reference-host",
           apiVersion: "v1",
+          conversationProcessingEnabled: service.conversationCapabilityEnabled,
         });
         return;
       }
@@ -171,6 +189,47 @@ export function createReferenceHostHttpServer(
         return;
       }
 
+      if (method === "POST" && url.pathname === "/v1/model-evaluations") {
+        const body = await readJsonBody(request, maxBodyBytes);
+        if (!isObject(body)) throw new InvalidHttpRequestError("Body must be an object");
+        const result = await service.runModelEvaluation(
+          body as unknown as RunModelEvaluationInput,
+        );
+        sendJson(response, 200, result);
+        return;
+      }
+
+      const conversationEventsMatch =
+        /^\/v1\/conversations\/([^/]+)\/events$/.exec(url.pathname);
+      if (conversationEventsMatch) {
+        const conversationId = decodeURIComponent(
+          conversationEventsMatch[1] ?? "",
+        );
+        if (method === "GET") {
+          sendJson(response, 200, {
+            events: await service.listConversationEvents(conversationId),
+          });
+          return;
+        }
+        if (method === "POST") {
+          const body = await readJsonBody(request, maxBodyBytes);
+          if (!isObject(body)) {
+            throw new InvalidHttpRequestError("Body must be an object");
+          }
+          const result = await service.processConversation({
+            ...body,
+            conversationId,
+            events: body.events as ConversationEvent[],
+          } as unknown as ProcessConversationInput);
+          sendJson(
+            response,
+            result.outcome === "created" ? 201 : 200,
+            result,
+          );
+          return;
+        }
+      }
+
       if (method === "GET" && url.pathname === "/v1/outbox") {
         sendJson(response, 200, { items: await service.listOutbox() });
         return;
@@ -201,9 +260,29 @@ async function main(): Promise<void> {
   const dataDirectory = resolve(
     process.env.WAKEINTENT_HOST_DIR ?? ".wakeintent/reference-host-api",
   );
+  const modelEnabled =
+    process.argv.includes("--model") ||
+    process.env.WAKEINTENT_HOST_MODEL_ENABLED === "true";
+  let conversationRuntime;
+  if (modelEnabled) {
+    const config = configFromEnv();
+    const modelAdapter = new OpenAICompatibleModelAdapter(config);
+    const routingClient = new OpenAICompatibleStructuredClient(config);
+    conversationRuntime = {
+      candidateGenerator: modelAdapter,
+      semanticReevaluator: modelAdapter,
+      relevanceRouter: new OpenAICompatibleRelevanceRouter(routingClient),
+      getTelemetrySnapshot: () => ({
+        candidateAndDecisionCalls: [...modelAdapter.getCallRecords()],
+        relevanceCalls: [...routingClient.getCallRecords()],
+      }),
+    };
+  }
   const service = await ReferenceHostService.open({
     intentStorePath: resolve(dataDirectory, "intents.json"),
     outboxPath: resolve(dataDirectory, "outbox.json"),
+    eventStorePath: resolve(dataDirectory, "events.json"),
+    ...(conversationRuntime === undefined ? {} : { conversationRuntime }),
   });
   const server = createReferenceHostHttpServer(service);
   const host = process.env.WAKEINTENT_HOST_BIND ?? DEFAULT_HOST;
@@ -211,7 +290,12 @@ async function main(): Promise<void> {
   server.listen(port, host, () => {
     console.log(`WakeIntent reference host listening on http://${host}:${port}`);
     console.log(`Persistent data directory: ${dataDirectory}`);
-    console.log("This Alpha host accepts structured intents and decisions; it does not generate or send messages.");
+    console.log(
+      modelEnabled
+        ? "Natural-language extraction, relevance routing, and model reevaluation are enabled."
+        : "Structured mode only. Set WAKEINTENT_HOST_MODEL_ENABLED=true and use host:start:model to enable model processing.",
+    );
+    console.log("This Alpha host does not generate or send messages.");
   });
 }
 

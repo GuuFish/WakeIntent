@@ -88,7 +88,7 @@ WakeIntent 把这些职责拆开：
 - 授权、免打扰、过期、迟到唤醒和联系预算策略；
 - 幂等决策、乐观版本控制、失败退避和审计事件；
 - 支持快照迁移和重启恢复的本地 JSON 存储；
-- 带持久化 outbox 和投递回执的本地结构化 HTTP 参考宿主；
+- 支持持久化对话接入、可选模型处理、outbox 和投递回执的本地 HTTP 参考宿主；
 - 兼容 OpenAI Responses API 和 Chat Completions API 的模型适配器；
 - 确定性测试时钟、评测数据集、对照基线和 Token 遥测。
 
@@ -158,7 +158,16 @@ pnpm demo:host
 pnpm host:start
 ```
 
-它默认监听 `127.0.0.1:8787`，提供结构化意图、重评、状态、outbox 和投递回执接口。当前版本刻意不接收自然语言聊天、不调用模型、不生成消息，也不进行真实投递；这一层的目的，是让核心与宿主之间的契约真正可运行，并能恢复“`contact` 决策已经提交、outbox 尚未写入”这一崩溃窗口。详见[参考宿主 HTTP API 指南](docs/22-reference-host-api.md)。
+它默认监听 `127.0.0.1:8787`，提供结构化意图、重评、状态、outbox 和投递回执接口。默认模式不调用模型；这一层的目的，是让核心与宿主之间的契约真正可运行，并能恢复“`contact` 决策已经提交、outbox 尚未写入”这一崩溃窗口。
+
+如需主动启用自然语言事件接入和已配置模型：
+
+```bash
+Copy-Item .env.example .env
+pnpm host:start:model
+```
+
+该模式可以持久化对话事件、提取新意图、把相关更新路由到已有意图，并利用已保存的上下文重评到期任务。已经完成的幂等事件重放不会再次调用模型；中途退出的批次会复用已经保存的处理计划。宿主依然不会生成或真实发送消息。详见[参考宿主 HTTP API 指南](docs/22-reference-host-api.md)和[对话接入设计](docs/23-conversation-ingestion.md)。
 
 ## 使用真实模型
 
@@ -189,6 +198,14 @@ pnpm smoke:core-api -- --mode=timing
 
 这两项测试使用合成对话，但会调用你配置的真实模型，并把完整、可审计的报告写入 `reports/core-api-smoke/`。`cancellation` 模式最多请求两次，`timing` 模式最多请求三次。
 
+验证完整的 HTTP 对话接入、理由失效和幂等重放路径：
+
+```bash
+pnpm smoke:host-ingestion-api
+```
+
+该合成冒烟通过时恰好执行三次模型请求：首次对话进行一次意图提取，失效对话进行一次相关性路由和一次候选提取。脚本会断言关闭意图时不再进行后续语义模型调用、不产生联系和 outbox 项，并断言重复上报同一事件不会执行任何模型工作。报告写入 `reports/host-ingestion-smoke/`。
+
 ## 包结构
 
 | 包 | 职责 |
@@ -209,7 +226,11 @@ pnpm smoke:core-api -- --mode=timing
 - 联系理由失效后取消：2 次模型调用、1,452 Token、0 次联系决策；
 - 联系时间变化后推迟：3 次模型调用、2,627 Token，推迟到新的事件窗口后，0 次联系决策。
 
+首轮参考宿主对话接入冒烟也已使用 `gpt-5.5` 通过：自然语言学习计划创建活跃意图，后续“已经完成且不用再问”的消息将其标记为已解决；最终评估没有调用语义模型、没有主动联系，重复重放也没有模型调用。完整路径共 3 次请求、2,432 Token。这是合成回归结果，不是真实用户研究，也不是成本对比结论。
+
 原始报告保存在 [`reports/core-api-smoke`](reports/core-api-smoke)；早期可行性结果及其局限记录在 [`docs/10-feasibility-conclusion.md`](docs/10-feasibility-conclusion.md)。
+
+参考宿主对话接入证据保存在 [`reports/host-ingestion-smoke`](reports/host-ingestion-smoke)。
 
 独立安装结果及其发现的问题保存在 [`reports/external-verification/2026-09-04-clean-clone.md`](reports/external-verification/2026-09-04-clean-clone.md)。
 
@@ -261,6 +282,7 @@ WakeIntent 目前不提供：
 - [宿主集成与投递边界](docs/20-host-integration.md)
 - [招聘跟进试点计划](docs/21-recruitment-pilot.md)
 - [参考宿主 HTTP API](docs/22-reference-host-api.md)
+- [对话接入与模型模式](docs/23-conversation-ingestion.md)
 
 ## 参与贡献
 

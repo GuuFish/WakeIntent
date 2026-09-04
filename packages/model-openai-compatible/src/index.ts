@@ -6,6 +6,9 @@ import type {
   ContactPolicySignalDraft,
   PolicySignalGenerationInput,
   PolicySignalGenerator,
+  RelevanceRouter,
+  RelevanceRoutingInput,
+  RelevanceRoutingSelection,
   SemanticDecisionProposal,
   SemanticReevaluationInput,
   SemanticReevaluator,
@@ -21,6 +24,7 @@ export type OpenAICompatibleReasoningEffort =
 export type OpenAICompatibleTextVerbosity = "low" | "medium" | "high";
 export const WAKEINTENT_MODEL_PROMPT_VERSION = "0.1.3";
 export const WAKEINTENT_POLICY_SIGNAL_PROMPT_VERSION = "0.3.0";
+export const WAKEINTENT_RELEVANCE_ROUTER_PROMPT_VERSION = "0.2.0";
 
 export interface ModelUsage {
   inputTokens: number | null;
@@ -851,5 +855,143 @@ export class OpenAICompatiblePolicySignalAdapter
         }),
       ),
     ];
+  }
+}
+
+export interface ModelRelevanceRouteAudit {
+  at: string;
+  source: "model";
+  matches: RelevanceRoutingSelection[];
+}
+
+interface RelevanceResponse {
+  matches: RelevanceRoutingSelection[];
+}
+
+const relevanceInstructions =
+  "Route new conversation events to active contact intents whose validity, timing, priority, interruption cost, cancellation, or resolution may have changed. Detect indirect goal supersession, not only explicit reminder cancellation. For each match, use effect cancel only when the user withdrew the follow-up or abandoned the underlying plan, resolve only when the intended outcome is already known or completed, and reevaluate for timing, policy, priority, interruption, mixed, or uncertain changes. Do not select an intent for superficial topic overlap that cannot change a future contact decision. Use only supplied intent IDs and event IDs. Return an empty match list when no intent needs early reevaluation.";
+
+function relevanceSchema(
+  intentIds: string[],
+  eventIds: string[],
+): Record<string, unknown> {
+  return {
+    type: "object",
+    additionalProperties: false,
+    properties: {
+      matches: {
+        type: "array",
+        items: {
+          type: "object",
+          additionalProperties: false,
+          properties: {
+            intentId: { type: "string", enum: intentIds },
+            eventIds: {
+              type: "array",
+              minItems: 1,
+              items: { type: "string", enum: eventIds },
+            },
+            effect: {
+              type: "string",
+              enum: ["reevaluate", "cancel", "resolve"],
+            },
+            reason: { type: "string", maxLength: 180 },
+            confidence: { type: "number", minimum: 0, maximum: 1 },
+          },
+          required: [
+            "intentId",
+            "eventIds",
+            "effect",
+            "reason",
+            "confidence",
+          ],
+        },
+      },
+    },
+    required: ["matches"],
+  };
+}
+
+function consolidateRelevanceMatches(
+  matches: RelevanceRoutingSelection[],
+): RelevanceRoutingSelection[] {
+  const consolidated = new Map<string, RelevanceRoutingSelection>();
+  for (const match of matches) {
+    const previous = consolidated.get(match.intentId);
+    if (!previous) {
+      consolidated.set(match.intentId, {
+        ...match,
+        eventIds: [...new Set(match.eventIds)],
+      });
+      continue;
+    }
+    consolidated.set(match.intentId, {
+      intentId: match.intentId,
+      eventIds: [...new Set([...previous.eventIds, ...match.eventIds])],
+      effect: previous.effect === match.effect ? match.effect : "reevaluate",
+      reason: `${previous.reason}; ${match.reason}`.slice(0, 180),
+      confidence: Math.min(previous.confidence, match.confidence),
+    });
+  }
+  return [...consolidated.values()];
+}
+
+/** Production adapter for the core RelevanceRouter port. */
+export class OpenAICompatibleRelevanceRouter implements RelevanceRouter {
+  readonly #client: Pick<OpenAICompatibleStructuredClient, "generate">;
+  readonly #audits: ModelRelevanceRouteAudit[] = [];
+
+  constructor(client: Pick<OpenAICompatibleStructuredClient, "generate">) {
+    this.#client = client;
+  }
+
+  getAudits(): readonly ModelRelevanceRouteAudit[] {
+    return this.#audits.map((audit) => ({
+      at: audit.at,
+      source: audit.source,
+      matches: audit.matches.map((match) => ({
+        ...match,
+        eventIds: [...match.eventIds],
+      })),
+    }));
+  }
+
+  async selectRelevant(
+    input: RelevanceRoutingInput,
+  ): Promise<RelevanceRoutingSelection[]> {
+    if (input.intents.length === 0 || input.events.length === 0) return [];
+    const intentIds = input.intents.map((intent) => intent.id);
+    const eventIds = input.events.map((event) => event.id);
+    const response = await this.#client.generate<RelevanceResponse>({
+      schemaName: "wakeintent_relevance_route",
+      schema: relevanceSchema(intentIds, eventIds),
+      instructions: relevanceInstructions,
+      input: {
+        now: input.now,
+        intents: input.intents.map((intent) => ({
+          id: intent.id,
+          subject: intent.subject,
+          reason: intent.reason,
+          evidence: intent.evidence,
+          notBefore: intent.notBefore,
+          expiresAt: intent.expiresAt,
+          cancellationHints: intent.cancellationHints,
+          priority: intent.priority,
+          interruptionCost: intent.interruptionCost,
+        })),
+        events: input.events,
+      },
+      phase: "extraction",
+    });
+    const matches = consolidateRelevanceMatches(response.matches);
+    this.#audits.push({
+      at: input.now,
+      source: "model",
+      matches: matches.map((match) => ({
+        ...match,
+        eventIds: [...match.eventIds],
+      })),
+    });
+    return matches;
   }
 }

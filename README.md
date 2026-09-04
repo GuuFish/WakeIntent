@@ -117,7 +117,8 @@ nothing when contact is no longer justified.
 - authorization, do-not-disturb, expiry, late-wakeup, and contact-budget policy;
 - idempotent decisions, optimistic revisions, failure backoff, and audit events;
 - recoverable local JSON storage with snapshot migrations;
-- a local structured HTTP reference host with a persistent, receipt-aware outbox;
+- a local HTTP reference host with durable conversation ingestion, optional
+  model processing, and a receipt-aware outbox;
 - OpenAI-compatible Responses and Chat Completions adapter;
 - deterministic test clock, evaluation datasets, baselines, and token telemetry.
 
@@ -210,11 +211,24 @@ pnpm host:start
 ```
 
 It binds to `127.0.0.1:8787` by default and exposes structured intent,
-evaluation, state, outbox, and delivery-receipt endpoints. It deliberately does
-not accept natural-language chat, call a model, generate a message, or deliver
-one yet. Its purpose is to make the core's host contract runnable and to recover
-the crash window between a committed `contact` decision and outbox enqueue.
-See the [reference host API guide](docs/22-reference-host-api.md).
+evaluation, state, outbox, and delivery-receipt endpoints. This default mode
+makes no model calls. Its purpose is to make the core's host contract runnable
+and to recover the crash window between a committed `contact` decision and
+outbox enqueue.
+
+To opt into natural-language event ingestion with the configured model:
+
+```bash
+cp .env.example .env
+pnpm host:start:model
+```
+
+That mode can persist conversation events, extract new intents, route relevant
+updates to existing intents, and reevaluate due work from stored context. A
+completed idempotent event replay performs no model work; an interrupted batch
+reuses its persisted processing plan. The host still does not generate or send
+messages. See the [reference host API guide](docs/22-reference-host-api.md) and
+[conversation ingestion design](docs/23-conversation-ingestion.md).
 
 ## Try a real model
 
@@ -251,6 +265,20 @@ These tests use synthetic conversations but call the configured model. They
 write detailed, auditable reports under `reports/core-api-smoke/`. The
 `cancellation` mode makes at most two requests; `timing` makes at most three.
 
+To verify the complete HTTP conversation-ingestion path, including invalidation
+and idempotent replay:
+
+```bash
+pnpm smoke:host-ingestion-api
+```
+
+This synthetic smoke makes exactly three model requests when it passes: one
+initial extraction, then one relevance route and one extraction for the
+invalidating turn. It asserts that closure requires no later semantic model
+call, produces no contact or outbox item, and that replaying the same event
+performs no model work. Reports are written under
+`reports/host-ingestion-smoke/`.
+
 ## Packages
 
 | Package | Responsibility |
@@ -280,10 +308,19 @@ runs performed during development using `gpt-5.5` also passed:
 - timing change: 3 model calls, 2,627 tokens, deferred until after the updated
   event window, 0 contact decisions.
 
+The first reference-host ingestion smoke also passed with `gpt-5.5`: a natural
+language study plan created an active intent, a later completion-and-withdrawal
+message resolved it, final evaluation made no semantic model call and produced
+no contact, and duplicate replay made no model call. The full path used 3 model
+requests and 2,432 tokens. This is a synthetic regression result, not a user
+study or a cost comparison.
+
 The reports are preserved in
 [`reports/core-api-smoke`](reports/core-api-smoke). Earlier feasibility results
 and their limitations are documented in
 [`docs/10-feasibility-conclusion.md`](docs/10-feasibility-conclusion.md).
+The host-ingestion evidence is preserved in
+[`reports/host-ingestion-smoke`](reports/host-ingestion-smoke).
 The independent installation result, including the issues it found, is preserved
 in [`reports/external-verification/2026-09-04-clean-clone.md`](reports/external-verification/2026-09-04-clean-clone.md).
 
@@ -346,6 +383,7 @@ Start with:
 - [Host integration and delivery boundary](docs/20-host-integration.md)
 - [Recruitment pilot plan](docs/21-recruitment-pilot.md)
 - [Reference host HTTP API](docs/22-reference-host-api.md)
+- [Conversation ingestion and model mode](docs/23-conversation-ingestion.md)
 
 ## Contributing
 

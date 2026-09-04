@@ -26,6 +26,7 @@ async function temporaryPaths() {
   return {
     intentStorePath: join(directory, "intents.json"),
     outboxPath: join(directory, "outbox.json"),
+    eventStorePath: join(directory, "events.json"),
   };
 }
 
@@ -78,6 +79,209 @@ async function jsonRequest(url: string, method: string, body?: unknown) {
 }
 
 describe("ReferenceHostService", () => {
+  it("exposes idempotent natural-language event ingestion over HTTP", async () => {
+    const paths = await temporaryPaths();
+    let candidateCalls = 0;
+    const service = await ReferenceHostService.open({
+      ...paths,
+      conversationRuntime: {
+        candidateGenerator: {
+          async generate() {
+            candidateCalls += 1;
+            return [];
+          },
+        },
+        relevanceRouter: {
+          async selectRelevant() {
+            throw new Error("No active intent means the router must not run");
+          },
+        },
+        semanticReevaluator: {
+          async evaluate() {
+            throw new Error("No due intent means reevaluation must not run");
+          },
+        },
+      },
+    });
+    const server = createReferenceHostHttpServer(service);
+    const baseUrl = await listen(server);
+    const body = {
+      events: [
+        {
+          id: "event:small-talk",
+          conversationId: "conversation:small-talk",
+          actor: "user",
+          occurredAt: "2026-09-04T10:00:00.000Z",
+          content: "Lunch was pretty good today.",
+        },
+      ],
+      target: { kind: "user", id: "user:1" },
+      now: "2026-09-04T10:01:00.000Z",
+      idempotencyKey: "turn:small-talk:1",
+      activationThreshold: 0.8,
+      routePolicyVersion: "route-0.1",
+    };
+    try {
+      const created = await jsonRequest(
+        `${baseUrl}/v1/conversations/${encodeURIComponent("conversation:small-talk")}/events`,
+        "POST",
+        body,
+      );
+      expect(created.response.status).toBe(201);
+      expect(created.body).toMatchObject({
+        outcome: "created",
+        modelWorkPerformed: true,
+        plan: { intents: [], selections: [] },
+      });
+
+      const duplicate = await jsonRequest(
+        `${baseUrl}/v1/conversations/${encodeURIComponent("conversation:small-talk")}/events`,
+        "POST",
+        body,
+      );
+      expect(duplicate.response.status).toBe(200);
+      expect(duplicate.body).toMatchObject({
+        outcome: "duplicate",
+        modelWorkPerformed: false,
+      });
+
+      const listed = await jsonRequest(
+        `${baseUrl}/v1/conversations/${encodeURIComponent("conversation:small-talk")}/events`,
+        "GET",
+      );
+      expect(listed.response.status).toBe(200);
+      expect(listed.body.events).toMatchObject([{ id: "event:small-talk" }]);
+      expect(candidateCalls).toBe(1);
+      expect(await service.listIntents()).toEqual([]);
+    } finally {
+      await close(server);
+    }
+  });
+
+  it("turns natural conversation into an intent and cancels it on a later invalidating event", async () => {
+    const paths = await temporaryPaths();
+    let candidateCalls = 0;
+    let routingCalls = 0;
+    let semanticCalls = 0;
+    const service = await ReferenceHostService.open({
+      ...paths,
+      conversationRuntime: {
+        candidateGenerator: {
+          async generate(input) {
+            candidateCalls += 1;
+            if (input.events[0]?.id !== "event:study-plan") return [];
+            return [
+              {
+                subject: "Chapter three progress",
+                reason: "The user plans to finish a difficult chapter tomorrow.",
+                evidence: [{ eventId: "event:study-plan" }],
+                notBefore: "2026-09-05T12:00:00.000Z",
+                expiresAt: "2026-09-08T12:00:00.000Z",
+                cancellationHints: ["The user already finished the chapter"],
+                priority: 0.7,
+                interruptionCost: 0.25,
+                confidence: 0.95,
+              },
+            ];
+          },
+        },
+        relevanceRouter: {
+          async selectRelevant(input) {
+            routingCalls += 1;
+            if (input.events[0]?.id !== "event:study-finished") return [];
+            return [
+              {
+                intentId: input.intents[0]?.id ?? "missing",
+                eventIds: ["event:study-finished"],
+                effect: "resolve",
+                reason: "The user already completed the planned chapter.",
+                confidence: 0.99,
+              },
+            ];
+          },
+        },
+        semanticReevaluator: {
+          async evaluate() {
+            semanticCalls += 1;
+            throw new Error("Route closure should avoid semantic reevaluation");
+          },
+        },
+      },
+    });
+    const firstInput = {
+      conversationId: "conversation:study",
+      events: [
+        {
+          id: "event:study-plan",
+          conversationId: "conversation:study",
+          actor: "user" as const,
+          occurredAt: "2026-09-04T09:00:00.000Z",
+          content: "I will finish chapter three tomorrow, but synchronization is hard.",
+        },
+      ],
+      target: { kind: "user" as const, id: "user:student" },
+      now: "2026-09-04T09:01:00.000Z",
+      idempotencyKey: "turn:study:1",
+      activationThreshold: 0.8,
+      routePolicyVersion: "study-route-0.1",
+    };
+    const first = await service.processConversation(firstInput);
+    expect(first.outcome).toBe("created");
+    expect(first.plan.intents).toHaveLength(1);
+    expect(first.plan.intents[0]?.metadata).toMatchObject({
+      sourceConversationId: "conversation:study",
+    });
+
+    const duplicate = await service.processConversation(firstInput);
+    expect(duplicate).toMatchObject({
+      outcome: "duplicate",
+      modelWorkPerformed: false,
+      registrations: null,
+      routing: null,
+    });
+    expect(candidateCalls).toBe(1);
+
+    const second = await service.processConversation({
+      ...firstInput,
+      events: [
+        {
+          id: "event:study-finished",
+          conversationId: "conversation:study",
+          actor: "user",
+          occurredAt: "2026-09-04T15:00:00.000Z",
+          content: "I already understood synchronization and finished the chapter.",
+        },
+      ],
+      now: "2026-09-04T15:01:00.000Z",
+      idempotencyKey: "turn:study:2",
+    });
+    expect(second.plan.selections).toMatchObject([
+      { effect: "resolve", eventIds: ["event:study-finished"] },
+    ]);
+
+    const evaluation = await service.runModelEvaluation({
+      now: "2026-09-04T15:01:00.000Z",
+      policyVersion: "study-decision-0.1",
+      routeClosureThreshold: 0.9,
+      userStates: {
+        "user:user:student": {
+          authorization: "granted",
+          remainingContactBudget: 1,
+        },
+      },
+    });
+    expect(evaluation.evaluation.results[0]).toMatchObject({
+      source: "route-closure",
+      decision: { action: "resolve" },
+    });
+    expect((await service.listIntents())[0]?.intent.status).toBe("resolved");
+    expect(await service.listOutbox()).toEqual([]);
+    expect(await service.listConversationEvents("conversation:study")).toHaveLength(2);
+    expect(routingCalls).toBe(1);
+    expect(candidateCalls).toBe(2);
+    expect(semanticCalls).toBe(0);
+  });
+
   it("recovers a contact decision committed before an outbox write", async () => {
     const paths = await temporaryPaths();
     const store = await openJsonContactIntentStore(paths.intentStorePath);
