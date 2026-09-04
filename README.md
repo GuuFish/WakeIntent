@@ -2,6 +2,8 @@
 
 [English](README.md) | [简体中文](README.zh-CN.md)
 
+[![CI](https://github.com/GuuFish/wakeintent/actions/workflows/ci.yml/badge.svg)](https://github.com/GuuFish/wakeintent/actions/workflows/ci.yml)
+
 WakeIntent is a framework-agnostic contact-intent engine for conversational AI.
 It turns a conversational reason to follow up later into a durable `ContactIntent`,
 then revalidates that reason against newer context before deciding to contact,
@@ -95,10 +97,37 @@ nothing when contact is no longer justified.
 
 Requirements: Node.js 22.14 or newer and pnpm 11.19.
 
+Check your tools first:
+
+```bash
+node --version
+pnpm --version
+```
+
+If `pnpm` is missing, install the version pinned by this repository and verify
+it. This command works in PowerShell, Command Prompt, and common Unix shells:
+
+```bash
+npm install --global pnpm@11.19.0
+pnpm --version
+```
+
+Then install and verify the repository:
+
 ```bash
 pnpm install --frozen-lockfile
-pnpm demo:alpha -- .wakeintent/my-alpha-demo.json
 pnpm check
+```
+
+`pnpm check` builds and type-checks all five packages, then runs their tests. At
+the independently verified commit `53d5e49`, the expected summary is 178 passing
+tests across 22 test files. The exact count may grow as the project changes.
+
+Now run the local Alpha demo twice with the same state file:
+
+```bash
+pnpm demo:alpha -- .wakeintent/my-alpha-demo.json
+pnpm demo:alpha -- .wakeintent/my-alpha-demo.json
 ```
 
 The Alpha demo is fully local. It uses a deterministic fake semantic model,
@@ -106,10 +135,36 @@ persists state, simulates a restart, cancels an invalidated job-fair follow-up,
 and silences an excessively late low-value check-in. It does not need an API
 key and does not spend tokens.
 
-Run the same command again with the same state path to see idempotent restart
-behavior: no old intent is contacted or evaluated twice.
+On the first run, expect two `created` registrations, `dueCount: 2`, one
+`cancel` decision, one `silent` decision, and `contactDecisions: 0`. On the
+second run, expect two `duplicate` registrations, `dueCount: 0`,
+`semanticModelCalls: 0`, no new decisions, and an unchanged audit count.
+
+### Decision, lifecycle, and schedule are different
+
+The demo's late low-value intent deliberately ends with `action: "silent"`,
+`status: "active"`, and `nextEvaluationAt: null`:
+
+- `silent` is the result of this evaluation: do not contact now;
+- `active` means the reason was not declared resolved, cancelled, or expired;
+- `nextEvaluationAt: null` means there is no pending time-based wakeup.
+
+This is a dormant, non-terminal intent. It will not wake again merely because
+of its old schedule, but a later relevant conversation event or an explicit
+host request may schedule another evaluation. Terminal actions are `cancel`,
+`resolve`, and `expire`.
+
+`contact` is also only a decision. WakeIntent does not generate or send a
+message in this flow; the host application owns generation, delivery, receipts,
+and any user-facing error handling.
 
 ## Try a real model
+
+This section is opt-in and spends tokens. `pnpm demo:api` makes at most two
+model requests: candidate extraction, followed by latest-context reevaluation
+when an active intent was extracted. It can stop after the first request when
+no active intent exists. Token usage and price depend on the configured model
+and provider.
 
 Copy the safe template and edit the local `.env` file:
 
@@ -135,7 +190,8 @@ pnpm smoke:core-api -- --mode=timing
 ```
 
 These tests use synthetic conversations but call the configured model. They
-write detailed, auditable reports under `reports/core-api-smoke/`.
+write detailed, auditable reports under `reports/core-api-smoke/`. The
+`cancellation` mode makes at most two requests; `timing` makes at most three.
 
 ## Packages
 
@@ -148,12 +204,17 @@ write detailed, auditable reports under `reports/core-api-smoke/`.
 | `@wakeintent/eval` | Baselines, datasets, scoring, and longitudinal evaluation tools |
 
 Packages are currently private workspace packages and are not published to
-npm. They can be embedded from this monorepo while the public API stabilizes.
+npm. The currently supported integration path is to add a host package to this
+pnpm workspace and depend on the packages through `workspace:*`. A separate
+application cannot yet install a stable registry release. See the
+[host integration guide](docs/20-host-integration.md) and the runnable
+[`examples/minimal.mjs`](examples/minimal.mjs) reference.
 
 ## Current evidence
 
-On 2026-09-03, the complete repository check passed with 178 tests across five
-packages. Two fresh real-model smoke runs using `gpt-5.5` also passed:
+An independent clean-clone verification reproduced the complete repository
+check at commit `53d5e49`: 178 tests across five packages. Two real-model smoke
+runs performed during development using `gpt-5.5` also passed:
 
 - cancellation after the follow-up reason became invalid: 2 model calls, 1,452
   tokens, 0 contact decisions;
@@ -164,6 +225,8 @@ The reports are preserved in
 [`reports/core-api-smoke`](reports/core-api-smoke). Earlier feasibility results
 and their limitations are documented in
 [`docs/10-feasibility-conclusion.md`](docs/10-feasibility-conclusion.md).
+The independent installation result, including the issues it found, is preserved
+in [`reports/external-verification/2026-09-04-clean-clone.md`](reports/external-verification/2026-09-04-clean-clone.md).
 
 This evidence shows that the mechanism runs end to end. It does **not** yet show
 that WakeIntent is cheaper than a strong due-gated heartbeat or that it improves
@@ -184,6 +247,30 @@ WakeIntent currently does not provide:
 a message was generated, attempted, or delivered. A host application must own
 delivery and feed receipts back through a future delivery contract.
 
+### Terminology
+
+| API term | Meaning |
+| --- | --- |
+| `contact` | Contact decision; no message has been delivered |
+| `silent` | Do not contact in this evaluation; not necessarily terminal |
+| `defer` | Keep the intent active and evaluate it later |
+| `cancel` | Invalidate the reason and move to `cancelled` |
+| `resolve` | Mark the reason as handled and move to `resolved` |
+| `expire` | Move an out-of-window reason to `expired` |
+| `nextEvaluationAt` | The store's next scheduled evaluation projection, or `null` |
+
+## Troubleshooting
+
+- `pnpm` is not recognized: run `npm install --global pnpm@11.19.0` and open a
+  new terminal if necessary.
+- Node.js is too old: install Node.js 22.14 or newer, then verify with
+  `node --version`.
+- Dependency download fails or is slow: retry on a stable network; a registry
+  timeout is separate from a WakeIntent test failure.
+- A real-model run returns 401/403, 404, a `json_schema` error, or times out:
+  follow [the API troubleshooting guide](docs/08-api-local-testing.md). Never
+  paste a credential into an issue.
+
 ## Documentation
 
 Start with:
@@ -196,6 +283,7 @@ Start with:
 - [Alpha 0.1 scope](docs/12-alpha-0.1-scope.md)
 - [Engine orchestration](docs/13-alpha-engine-orchestration.md)
 - [Unified execution trace](docs/19-unified-execution-trace.md)
+- [Host integration and delivery boundary](docs/20-host-integration.md)
 
 ## Contributing
 
