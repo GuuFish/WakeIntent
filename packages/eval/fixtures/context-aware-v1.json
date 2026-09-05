@@ -1,0 +1,800 @@
+{
+  "version": "1.0.0",
+  "synthetic": true,
+  "timeZone": "UTC",
+  "recentEventLimit": 8,
+  "maxRequestBytes": 64000,
+  "maxOutputTokens": 2048,
+  "maxHttpRequests": 120,
+  "maxRetries": 1,
+  "repetitions": 1,
+  "scenarios": [
+    {
+      "id": "normal",
+      "title": "未来事件正常到达",
+      "kind": "intent_driven",
+      "steps": [
+        {
+          "id": "initial",
+          "now": "2026-09-05T09:00:00Z",
+          "events": [
+            {
+              "id": "normal:source1",
+              "conversationId": "normal",
+              "actor": "user",
+              "occurredAt": "2026-09-05T09:00:00Z",
+              "content": "我明天（9月6日）08:00 UTC参加面试，09:00 UTC结束。请在09:00 UTC问问我面试情况，帮我复盘，只问一次。"
+            }
+          ],
+          "expected": {
+            "contacts": [],
+            "allowedActions": [
+              "silent",
+              "defer"
+            ]
+          }
+        },
+        {
+          "id": "due",
+          "now": "2026-09-06T09:00:00Z",
+          "events": [],
+          "expected": {
+            "contacts": [
+              {
+                "kind": "intent_driven",
+                "evidenceRefs": [
+                  "normal:source1"
+                ]
+              }
+            ],
+            "allowedActions": [
+              "contact"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "resolved",
+      "title": "提前完成",
+      "kind": "intent_driven",
+      "steps": [
+        {
+          "id": "initial",
+          "now": "2026-09-05T09:00:00Z",
+          "events": [
+            {
+              "id": "resolved:source1",
+              "conversationId": "resolved",
+              "actor": "user",
+              "occurredAt": "2026-09-05T09:00:00Z",
+              "content": "我明天09:00 UTC前学完第三章，请到时问一次我是否弄懂了进程同步。"
+            }
+          ],
+          "expected": {
+            "contacts": [],
+            "allowedActions": [
+              "silent",
+              "defer"
+            ]
+          }
+        },
+        {
+          "id": "update",
+          "now": "2026-09-05T15:00:00Z",
+          "events": [
+            {
+              "id": "resolved:update",
+              "conversationId": "resolved",
+              "actor": "user",
+              "occurredAt": "2026-09-05T15:00:00Z",
+              "content": "我提前学完第三章了，进程同步也弄懂了，问题已解决。"
+            }
+          ],
+          "expected": {
+            "contacts": [],
+            "allowedActions": [
+              "silent",
+              "defer"
+            ],
+            "recognition": "resolved",
+            "evidenceRefs": [
+              "resolved:update"
+            ]
+          }
+        },
+        {
+          "id": "due",
+          "now": "2026-09-06T09:00:00Z",
+          "events": [],
+          "expected": {
+            "contacts": [],
+            "allowedActions": [
+              "silent",
+              "defer"
+            ],
+            "recognition": "resolved",
+            "evidenceRefs": [
+              "resolved:update"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "cancelled",
+      "title": "明确取消",
+      "kind": "intent_driven",
+      "steps": [
+        {
+          "id": "initial",
+          "now": "2026-09-05T09:00:00Z",
+          "events": [
+            {
+              "id": "cancelled:source1",
+              "conversationId": "cancelled",
+              "actor": "user",
+              "occurredAt": "2026-09-05T09:00:00Z",
+              "content": "我明天09:00 UTC跑完五公里，可以到时问一次跑步感受。"
+            }
+          ],
+          "expected": {
+            "contacts": [],
+            "allowedActions": [
+              "silent",
+              "defer"
+            ]
+          }
+        },
+        {
+          "id": "update",
+          "now": "2026-09-05T15:00:00Z",
+          "events": [
+            {
+              "id": "cancelled:update",
+              "conversationId": "cancelled",
+              "actor": "user",
+              "occurredAt": "2026-09-05T15:00:00Z",
+              "content": "跑步计划还在，但不要再问我跑步这件事。"
+            }
+          ],
+          "expected": {
+            "contacts": [],
+            "allowedActions": [
+              "silent",
+              "defer"
+            ],
+            "recognition": "cancelled",
+            "evidenceRefs": [
+              "cancelled:update"
+            ]
+          }
+        },
+        {
+          "id": "due",
+          "now": "2026-09-06T09:00:00Z",
+          "events": [],
+          "expected": {
+            "contacts": [],
+            "allowedActions": [
+              "silent",
+              "defer"
+            ],
+            "recognition": "cancelled",
+            "evidenceRefs": [
+              "cancelled:update"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "expired",
+      "title": "自然失效",
+      "kind": "intent_driven",
+      "steps": [
+        {
+          "id": "initial",
+          "now": "2026-09-05T09:00:00Z",
+          "events": [
+            {
+              "id": "expired:source1",
+              "conversationId": "expired",
+              "actor": "user",
+              "occurredAt": "2026-09-05T09:00:00Z",
+              "content": "明天09:00 UTC到10:00 UTC我在线选课，请09:00 UTC问我是否需要比较课程。10:00 UTC系统关闭后再联系就没有意义，不要联系。"
+            }
+          ],
+          "expected": {
+            "contacts": [],
+            "allowedActions": [
+              "silent",
+              "defer"
+            ]
+          }
+        },
+        {
+          "id": "due",
+          "now": "2026-09-06T11:00:00Z",
+          "events": [],
+          "expected": {
+            "contacts": [],
+            "allowedActions": [
+              "silent",
+              "defer"
+            ],
+            "recognition": "expired",
+            "evidenceRefs": [
+              "expired:source1"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "busy",
+      "title": "忙碌后延期",
+      "kind": "intent_driven",
+      "steps": [
+        {
+          "id": "initial",
+          "now": "2026-09-05T09:00:00Z",
+          "events": [
+            {
+              "id": "busy:source1",
+              "conversationId": "busy",
+              "actor": "user",
+              "occurredAt": "2026-09-05T09:00:00Z",
+              "content": "我明天09:00 UTC完成项目演示，到时请问一次演示感受。"
+            }
+          ],
+          "expected": {
+            "contacts": [],
+            "allowedActions": [
+              "silent",
+              "defer"
+            ]
+          }
+        },
+        {
+          "id": "due",
+          "now": "2026-09-06T09:00:00Z",
+          "events": [],
+          "expected": {
+            "contacts": [],
+            "allowedActions": [
+              "defer"
+            ],
+            "evidenceRefs": []
+          },
+          "userState": {
+            "authorization": "granted",
+            "remainingContactBudget": 2,
+            "doNotDisturbUntil": "2026-09-06T11:00:00Z"
+          }
+        },
+        {
+          "id": "available",
+          "now": "2026-09-06T11:01:00Z",
+          "events": [],
+          "expected": {
+            "contacts": [
+              {
+                "kind": "intent_driven",
+                "evidenceRefs": [
+                  "busy:source1"
+                ]
+              }
+            ],
+            "allowedActions": [
+              "contact"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "unanswered",
+      "title": "连续不回复",
+      "kind": "intent_driven",
+      "steps": [
+        {
+          "id": "initial",
+          "now": "2026-09-05T09:00:00Z",
+          "events": [
+            {
+              "id": "unanswered:source1",
+              "conversationId": "unanswered",
+              "actor": "user",
+              "occurredAt": "2026-09-05T09:00:00Z",
+              "content": "明天09:00 UTC可以问问我的练琴进度。如果之前已经连续两次主动找我而我没回复，就保持沉默，别再追问，也别安排追问。"
+            }
+          ],
+          "expected": {
+            "contacts": [],
+            "allowedActions": [
+              "silent",
+              "defer"
+            ]
+          }
+        },
+        {
+          "id": "history",
+          "now": "2026-09-06T08:00:00Z",
+          "events": [
+            {
+              "id": "unanswered:a1",
+              "conversationId": "unanswered",
+              "actor": "assistant",
+              "occurredAt": "2026-09-06T07:00:00Z",
+              "content": "最近练琴怎么样？"
+            },
+            {
+              "id": "unanswered:a2",
+              "conversationId": "unanswered",
+              "actor": "assistant",
+              "occurredAt": "2026-09-06T08:00:00Z",
+              "content": "有空聊聊吗？"
+            }
+          ],
+          "expected": {
+            "contacts": [],
+            "allowedActions": [
+              "silent",
+              "defer"
+            ]
+          }
+        },
+        {
+          "id": "due",
+          "now": "2026-09-06T09:00:00Z",
+          "events": [],
+          "expected": {
+            "contacts": [],
+            "allowedActions": [
+              "silent"
+            ],
+            "evidenceRefs": [
+              "unanswered:a1",
+              "unanswered:a2"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "multiple",
+      "title": "多理由分别处理",
+      "kind": "intent_driven",
+      "steps": [
+        {
+          "id": "initial",
+          "now": "2026-09-05T09:00:00Z",
+          "events": [
+            {
+              "id": "multiple:source1",
+              "conversationId": "multiple",
+              "actor": "user",
+              "occurredAt": "2026-09-05T09:00:00Z",
+              "content": "我明天09:00 UTC提交论文，到时问一次提交情况。"
+            },
+            {
+              "id": "multiple:source2",
+              "conversationId": "multiple",
+              "actor": "user",
+              "occurredAt": "2026-09-05T09:00:00Z",
+              "content": "我明天09:00 UTC参加完摄影课程，到时问一次学到了什么。"
+            }
+          ],
+          "expected": {
+            "contacts": [],
+            "allowedActions": [
+              "silent",
+              "defer"
+            ]
+          }
+        },
+        {
+          "id": "update",
+          "now": "2026-09-05T15:00:00Z",
+          "events": [
+            {
+              "id": "multiple:update",
+              "conversationId": "multiple",
+              "actor": "user",
+              "occurredAt": "2026-09-05T15:00:00Z",
+              "content": "论文已经提交成功，论文这件事已解决。摄影课仍按原计划。"
+            }
+          ],
+          "expected": {
+            "contacts": [],
+            "allowedActions": [
+              "silent",
+              "defer"
+            ],
+            "recognition": "resolved",
+            "evidenceRefs": [
+              "multiple:update"
+            ]
+          }
+        },
+        {
+          "id": "due",
+          "now": "2026-09-06T09:00:00Z",
+          "events": [],
+          "expected": {
+            "contacts": [
+              {
+                "kind": "intent_driven",
+                "evidenceRefs": [
+                  "multiple:source2"
+                ]
+              }
+            ],
+            "allowedActions": [
+              "contact"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "long",
+      "title": "早期理由退出近期上下文",
+      "kind": "intent_driven",
+      "steps": [
+        {
+          "id": "initial",
+          "now": "2026-09-05T09:00:00Z",
+          "events": [
+            {
+              "id": "long:source1",
+              "conversationId": "long",
+              "actor": "user",
+              "occurredAt": "2026-09-05T09:00:00Z",
+              "content": "我明天09:00 UTC结束志愿活动，请到时问一次活动感受。"
+            }
+          ],
+          "expected": {
+            "contacts": [],
+            "allowedActions": [
+              "silent",
+              "defer"
+            ]
+          }
+        },
+        {
+          "id": "long-chat",
+          "now": "2026-09-05T16:00:00Z",
+          "events": [
+            {
+              "id": "long:filler0",
+              "conversationId": "long",
+              "actor": "user",
+              "occurredAt": "2026-09-05T15:00:00Z",
+              "content": "我们在聊画面的蓝色和绿色。只是随便聊聊。"
+            },
+            {
+              "id": "long:filler1",
+              "conversationId": "long",
+              "actor": "assistant",
+              "occurredAt": "2026-09-05T15:01:00Z",
+              "content": "这个颜色搭配很舒服。"
+            },
+            {
+              "id": "long:filler2",
+              "conversationId": "long",
+              "actor": "user",
+              "occurredAt": "2026-09-05T15:02:00Z",
+              "content": "我们在聊画面的蓝色和绿色。只是随便聊聊。"
+            },
+            {
+              "id": "long:filler3",
+              "conversationId": "long",
+              "actor": "assistant",
+              "occurredAt": "2026-09-05T15:03:00Z",
+              "content": "这个颜色搭配很舒服。"
+            },
+            {
+              "id": "long:filler4",
+              "conversationId": "long",
+              "actor": "user",
+              "occurredAt": "2026-09-05T15:04:00Z",
+              "content": "我们在聊画面的蓝色和绿色。只是随便聊聊。"
+            },
+            {
+              "id": "long:filler5",
+              "conversationId": "long",
+              "actor": "assistant",
+              "occurredAt": "2026-09-05T15:05:00Z",
+              "content": "这个颜色搭配很舒服。"
+            },
+            {
+              "id": "long:filler6",
+              "conversationId": "long",
+              "actor": "user",
+              "occurredAt": "2026-09-05T15:06:00Z",
+              "content": "我们在聊画面的蓝色和绿色。只是随便聊聊。"
+            },
+            {
+              "id": "long:filler7",
+              "conversationId": "long",
+              "actor": "assistant",
+              "occurredAt": "2026-09-05T15:07:00Z",
+              "content": "这个颜色搭配很舒服。"
+            },
+            {
+              "id": "long:filler8",
+              "conversationId": "long",
+              "actor": "user",
+              "occurredAt": "2026-09-05T15:08:00Z",
+              "content": "我们在聊画面的蓝色和绿色。只是随便聊聊。"
+            },
+            {
+              "id": "long:filler9",
+              "conversationId": "long",
+              "actor": "assistant",
+              "occurredAt": "2026-09-05T15:09:00Z",
+              "content": "这个颜色搭配很舒服。"
+            },
+            {
+              "id": "long:filler10",
+              "conversationId": "long",
+              "actor": "user",
+              "occurredAt": "2026-09-05T15:10:00Z",
+              "content": "我们在聊画面的蓝色和绿色。只是随便聊聊。"
+            },
+            {
+              "id": "long:filler11",
+              "conversationId": "long",
+              "actor": "assistant",
+              "occurredAt": "2026-09-05T15:11:00Z",
+              "content": "这个颜色搭配很舒服。"
+            }
+          ],
+          "expected": {
+            "contacts": [],
+            "allowedActions": [
+              "silent",
+              "defer"
+            ]
+          }
+        },
+        {
+          "id": "due",
+          "now": "2026-09-06T09:00:00Z",
+          "events": [],
+          "expected": {
+            "contacts": [
+              {
+                "kind": "intent_driven",
+                "evidenceRefs": [
+                  "long:source1"
+                ]
+              }
+            ],
+            "allowedActions": [
+              "contact"
+            ]
+          },
+          "archiveDiagnostic": true
+        }
+      ]
+    },
+    {
+      "id": "restart",
+      "title": "进程重启后恢复",
+      "kind": "intent_driven",
+      "steps": [
+        {
+          "id": "initial",
+          "now": "2026-09-05T09:00:00Z",
+          "events": [
+            {
+              "id": "restart:source1",
+              "conversationId": "restart",
+              "actor": "user",
+              "occurredAt": "2026-09-05T09:00:00Z",
+              "content": "我明天09:00 UTC完成第一次陶艺课，请到时问一次感受。"
+            }
+          ],
+          "expected": {
+            "contacts": [],
+            "allowedActions": [
+              "silent",
+              "defer"
+            ]
+          }
+        },
+        {
+          "id": "due",
+          "now": "2026-09-06T09:00:00Z",
+          "events": [],
+          "expected": {
+            "contacts": [
+              {
+                "kind": "intent_driven",
+                "evidenceRefs": [
+                  "restart:source1"
+                ]
+              }
+            ],
+            "allowedActions": [
+              "contact"
+            ]
+          },
+          "restart": true
+        }
+      ]
+    },
+    {
+      "id": "duplicate",
+      "title": "重复输入和评估",
+      "kind": "intent_driven",
+      "steps": [
+        {
+          "id": "initial",
+          "now": "2026-09-05T09:00:00Z",
+          "events": [
+            {
+              "id": "duplicate:source1",
+              "conversationId": "duplicate",
+              "actor": "user",
+              "occurredAt": "2026-09-05T09:00:00Z",
+              "content": "我明天09:00 UTC结束读书会，请到时问一次感受，只联系一次。"
+            }
+          ],
+          "expected": {
+            "contacts": [],
+            "allowedActions": [
+              "silent",
+              "defer"
+            ]
+          }
+        },
+        {
+          "id": "replay-initial",
+          "now": "2026-09-05T09:00:00Z",
+          "events": [],
+          "replay": "initial",
+          "expected": {
+            "contacts": [],
+            "allowedActions": [
+              "silent",
+              "defer"
+            ]
+          }
+        },
+        {
+          "id": "due",
+          "now": "2026-09-06T09:00:00Z",
+          "events": [],
+          "expected": {
+            "contacts": [
+              {
+                "kind": "intent_driven",
+                "evidenceRefs": [
+                  "duplicate:source1"
+                ]
+              }
+            ],
+            "allowedActions": [
+              "contact"
+            ]
+          }
+        },
+        {
+          "id": "replay-due",
+          "now": "2026-09-06T09:00:00Z",
+          "events": [],
+          "expected": {
+            "contacts": [],
+            "allowedActions": [
+              "silent",
+              "defer"
+            ]
+          }
+        },
+        {
+          "id": "later-repeat",
+          "now": "2026-09-06T09:01:00Z",
+          "events": [],
+          "expected": {
+            "contacts": [],
+            "allowedActions": [
+              "silent",
+              "defer"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "negative",
+      "title": "相似内容负例",
+      "kind": "intent_driven",
+      "expectNoIntent": true,
+      "steps": [
+        {
+          "id": "initial",
+          "now": "2026-09-05T09:00:00Z",
+          "events": [
+            {
+              "id": "negative:source1",
+              "conversationId": "negative",
+              "actor": "user",
+              "occurredAt": "2026-09-05T09:00:00Z",
+              "content": "我在翻译一句例句：‘我明天完成论文，你到时问问我。’这是教材里的假设，不是我的计划，也不是让你以后联系我。"
+            }
+          ],
+          "expected": {
+            "contacts": [],
+            "allowedActions": [
+              "silent",
+              "defer"
+            ]
+          }
+        },
+        {
+          "id": "due",
+          "now": "2026-09-06T09:00:00Z",
+          "events": [],
+          "expected": {
+            "contacts": [],
+            "allowedActions": [
+              "silent",
+              "defer"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "spontaneous",
+      "title": "无长期理由的随口闲聊",
+      "kind": "spontaneous",
+      "expectNoIntent": true,
+      "steps": [
+        {
+          "id": "initial",
+          "now": "2026-09-05T09:00:00Z",
+          "events": [
+            {
+              "id": "spontaneous:source1",
+              "conversationId": "spontaneous",
+              "actor": "user",
+              "occurredAt": "2026-09-05T09:00:00Z",
+              "content": "我喜欢冷笑话，咱们现在是轻松随意的聊天氛围，你可以偶尔主动接个梗。我没有要你以后跟进的事情，也没有安排未来提醒。"
+            }
+          ],
+          "expected": {
+            "contacts": [],
+            "allowedActions": [
+              "silent",
+              "contact"
+            ],
+            "spontaneousOpportunity": true
+          }
+        },
+        {
+          "id": "due",
+          "now": "2026-09-06T09:00:00Z",
+          "events": [],
+          "expected": {
+            "contacts": [],
+            "allowedActions": [
+              "silent",
+              "contact"
+            ],
+            "spontaneousOpportunity": true
+          }
+        }
+      ]
+    }
+  ],
+  "conclusionRule": {
+    "independentModule": "WakeIntent intent-driven pass rate >= baseline + 0.10; false outreach no worse; restart and duplicate scenarios pass; lifecycle traceability >= 0.90; known token ratio <= 2.0.",
+    "internalSubsystem": "Independent threshold not met; lifecycle traceability >= 0.90; intent-driven pass rate within 0.10 of baseline; at least one hard-scenario win or baseline has no lifecycle trace; known token ratio <= 3.0.",
+    "shrinkOrMerge": "Neither threshold above is met."
+  }
+}

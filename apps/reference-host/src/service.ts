@@ -119,6 +119,8 @@ export interface RunModelEvaluationInput {
   policyVersion: string;
   userStates: Record<string, ContactPolicyState>;
   limit?: number;
+  /** Maximum raw conversation events exposed to each semantic reevaluation. */
+  contextEventLimit?: number;
   routeClosureThreshold?: number;
 }
 
@@ -576,6 +578,14 @@ export class ReferenceHostService {
     if (input.limit !== undefined && (!Number.isInteger(input.limit) || input.limit <= 0)) {
       throw new InvalidReferenceHostInputError("limit must be a positive integer");
     }
+    if (
+      input.contextEventLimit !== undefined &&
+      (!Number.isInteger(input.contextEventLimit) || input.contextEventLimit <= 0)
+    ) {
+      throw new InvalidReferenceHostInputError(
+        "contextEventLimit must be a positive integer",
+      );
+    }
     const due = await this.intentStore.listIntents({
       dueAtOrBefore: input.now,
       ...(input.limit === undefined ? {} : { limit: input.limit }),
@@ -599,7 +609,7 @@ export class ReferenceHostService {
         latestEvents: await eventStore.listEvents({
           conversationId,
           atOrBefore: input.now,
-          limit: 100,
+          limit: input.contextEventLimit ?? 100,
         }),
         userState,
       });

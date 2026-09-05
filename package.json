@@ -38,7 +38,9 @@
     "eval:alpha-closure:api": "pnpm --filter @wakeintent/core build && pnpm --filter @wakeintent/model-openai-compatible build && pnpm --filter @wakeintent/eval build && node --env-file=.env scripts/run-alpha-closure-eval.mjs --execute",
     "eval:longitudinal-api": "pnpm --filter @wakeintent/core build && pnpm --filter @wakeintent/model-openai-compatible build && pnpm --filter @wakeintent/eval build && node --env-file=.env scripts/run-longitudinal-api-eval.mjs",
     "eval:policy-api": "pnpm --filter @wakeintent/core build && pnpm --filter @wakeintent/model-openai-compatible build && pnpm --filter @wakeintent/eval build && node --env-file=.env scripts/run-policy-signal-api-eval.mjs",
-    "eval:relevance-api": "pnpm --filter @wakeintent/core build && pnpm --filter @wakeintent/model-openai-compatible build && pnpm --filter @wakeintent/eval build && node --env-file=.env scripts/run-relevance-api-eval.mjs"
+    "eval:relevance-api": "pnpm --filter @wakeintent/core build && pnpm --filter @wakeintent/model-openai-compatible build && pnpm --filter @wakeintent/eval build && node --env-file=.env scripts/run-relevance-api-eval.mjs",
+    "eval:context-aware:plan": "pnpm --filter @wakeintent/core build && pnpm --filter @wakeintent/model-openai-compatible build && pnpm --filter @wakeintent/eval build && pnpm --filter @wakeintent/reference-host build && node scripts/run-context-aware-comparison.mjs",
+    "eval:context-aware:api": "pnpm --filter @wakeintent/core build && pnpm --filter @wakeintent/model-openai-compatible build && pnpm --filter @wakeintent/eval build && pnpm --filter @wakeintent/reference-host build && node --env-file=.env scripts/run-context-aware-comparison.mjs --execute"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

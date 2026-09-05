@@ -1,0 +1,5055 @@
+{
+  "schemaVersion": "1.0.0",
+  "kind": "context-aware-comparison",
+  "syntheticData": true,
+  "frozenFixture": "packages/eval/fixtures/context-aware-v1.json",
+  "runAt": "2026-09-05T05:26:02.490Z",
+  "model": "gpt-5.5",
+  "apiMode": "responses",
+  "plan": {
+    "frozenScenarios": 12,
+    "checkpoints": 33,
+    "primaryBaselineCalls": 32,
+    "diagnosticBaselineCalls": 1,
+    "wakeIntentCandidateCalls": 17,
+    "wakeIntentRouterUpperBound": 5,
+    "wakeIntentSemanticUpperBound": 20,
+    "estimatedLogicalCallsUpperBound": 75,
+    "maxHttpAttempts": 120
+  },
+  "attemptedHttpRequests": 63,
+  "primaryMetrics": {
+    "wakeIntent": {
+      "scoredCheckpoints": 20,
+      "passed": 17,
+      "passRate": 0.85,
+      "intentDrivenPassRate": 0.8421052631578947,
+      "effectiveContactRate": 1,
+      "falseOutreachRate": 0,
+      "silenceOrDeferAccuracy": 1,
+      "reasoningBehaviorConsistency": 1,
+      "evidenceAccuracy": 0.85,
+      "lifecycleTraceability": 1,
+      "usage": {
+        "calls": 29,
+        "attempts": 30,
+        "inputTokens": 15991,
+        "outputTokens": 8436,
+        "totalTokens": 24427,
+        "costUsd": null
+      }
+    },
+    "contextAware": {
+      "scoredCheckpoints": 20,
+      "passed": 17,
+      "passRate": 0.85,
+      "intentDrivenPassRate": 0.8421052631578947,
+      "effectiveContactRate": 1,
+      "falseOutreachRate": 0,
+      "silenceOrDeferAccuracy": 1,
+      "reasoningBehaviorConsistency": 1,
+      "evidenceAccuracy": 0.95,
+      "lifecycleTraceability": null,
+      "usage": {
+        "calls": 32,
+        "attempts": 32,
+        "inputTokens": 16954,
+        "outputTokens": 8409,
+        "totalTokens": 25363,
+        "costUsd": null
+      }
+    }
+  },
+  "diagnosticUsage": {
+    "calls": 1,
+    "attempts": 1,
+    "inputTokens": 1052,
+    "outputTokens": 121,
+    "totalTokens": 1173,
+    "costUsd": null
+  },
+  "tokenRatio": 0.9630958482829318,
+  "wakeHardWins": [
+    "long"
+  ],
+  "conclusion": 2,
+  "conclusionLabels": {
+    "1": "WakeIntent 显示出足以支持独立 ContactIntent 模块的价值",
+    "2": "WakeIntent 有工程价值，但目前更适合作为主动聊天应用的内部子系统，与 Context-aware 层组合",
+    "3": "WakeIntent 没有显示出足以抵消复杂度与 Token 成本的优势，应收缩或合并实现"
+  },
+  "results": [
+    {
+      "id": "normal",
+      "title": "未来事件正常到达",
+      "kind": "intent_driven",
+      "wakeIntent": {
+        "rows": [
+          {
+            "stepId": "initial",
+            "decisions": [],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "process": {
+              "outcome": "created",
+              "modelWorkPerformed": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "wakeintent_candidates",
+                "phase": "extraction",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 461,
+                  "outputTokens": 321,
+                  "totalTokens": 782
+                },
+                "requestId": "8e489eb0-87a1-4261-bf4c-a143c680ce61",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ],
+            "state": [
+              {
+                "intent": {
+                  "schemaVersion": "0.1.0",
+                  "id": "intent:ingestion:5336e7f6552bbf891c91:1",
+                  "status": "active",
+                  "subject": "询问面试情况并帮助复盘",
+                  "reason": "用户明确要求在面试结束后于指定时间询问面试情况并帮助复盘，且只需一次。",
+                  "target": {
+                    "kind": "user",
+                    "id": "synthetic:normal"
+                  },
+                  "evidence": [
+                    {
+                      "eventId": "normal:source1",
+                      "quote": "我明天（9月6日）08:00 UTC参加面试，09:00 UTC结束。请在09:00 UTC问问我面试情况，帮我复盘，只问一次。"
+                    }
+                  ],
+                  "notBefore": "2026-09-06T09:00:00Z",
+                  "expiresAt": null,
+                  "cancellationHints": [
+                    "用户取消或撤回该提醒",
+                    "已经询问并完成面试复盘",
+                    "面试取消、改期或不再需要复盘"
+                  ],
+                  "priority": 0.9,
+                  "interruptionCost": 0.3,
+                  "confidence": 0.99,
+                  "createdAt": "2026-09-05T09:00:00.000Z",
+                  "updatedAt": "2026-09-05T09:00:00.000Z",
+                  "metadata": {
+                    "sourceConversationId": "normal",
+                    "sourceIngestionId": "5336e7f6552bbf891c91"
+                  }
+                },
+                "revision": 1,
+                "nextEvaluationAt": "2026-09-06T09:00:00Z",
+                "audit": []
+              }
+            ]
+          },
+          {
+            "stepId": "due",
+            "decisions": [
+              {
+                "action": "contact",
+                "kind": "intent_driven",
+                "recognition": "none",
+                "reason": "已到用户指定的 2026-09-06T09:00:00Z；用户明确要求在面试结束后于该时间询问面试情况并帮助复盘，且没有更新事件显示取消、改期、已完成复盘或拒绝打扰。",
+                "evidenceRefs": [
+                  "normal:source1"
+                ],
+                "nextEvaluationAt": null,
+                "intentId": "intent:ingestion:5336e7f6552bbf891c91:1",
+                "source": "semantic"
+              }
+            ],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "process": null,
+            "modelCalls": [
+              {
+                "schemaName": "wakeintent_decision",
+                "phase": "decision",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 633,
+                  "outputTokens": 134,
+                  "totalTokens": 767
+                },
+                "requestId": "871e8980-cf94-4199-816d-493d52725c99",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ],
+            "state": [
+              {
+                "intent": {
+                  "schemaVersion": "0.1.0",
+                  "id": "intent:ingestion:5336e7f6552bbf891c91:1",
+                  "status": "active",
+                  "subject": "询问面试情况并帮助复盘",
+                  "reason": "用户明确要求在面试结束后于指定时间询问面试情况并帮助复盘，且只需一次。",
+                  "target": {
+                    "kind": "user",
+                    "id": "synthetic:normal"
+                  },
+                  "evidence": [
+                    {
+                      "eventId": "normal:source1",
+                      "quote": "我明天（9月6日）08:00 UTC参加面试，09:00 UTC结束。请在09:00 UTC问问我面试情况，帮我复盘，只问一次。"
+                    }
+                  ],
+                  "notBefore": "2026-09-06T09:00:00Z",
+                  "expiresAt": null,
+                  "cancellationHints": [
+                    "用户取消或撤回该提醒",
+                    "已经询问并完成面试复盘",
+                    "面试取消、改期或不再需要复盘"
+                  ],
+                  "priority": 0.9,
+                  "interruptionCost": 0.3,
+                  "confidence": 0.99,
+                  "createdAt": "2026-09-05T09:00:00.000Z",
+                  "updatedAt": "2026-09-06T09:00:00.000Z",
+                  "metadata": {
+                    "sourceConversationId": "normal",
+                    "sourceIngestionId": "5336e7f6552bbf891c91"
+                  }
+                },
+                "revision": 2,
+                "nextEvaluationAt": null,
+                "audit": [
+                  {
+                    "kind": "decision",
+                    "decision": {
+                      "id": "decision:evaluate:intent:ingestion:5336e7f6552bbf891c91:1:revision:1",
+                      "intentId": "intent:ingestion:5336e7f6552bbf891c91:1",
+                      "evaluatedAt": "2026-09-06T09:00:00.000Z",
+                      "action": "contact",
+                      "reason": "已到用户指定的 2026-09-06T09:00:00Z；用户明确要求在面试结束后于该时间询问面试情况并帮助复盘，且没有更新事件显示取消、改期、已完成复盘或拒绝打扰。",
+                      "evidenceRefs": [
+                        "normal:source1"
+                      ],
+                      "counterEvidenceRefs": [],
+                      "confidence": 0.99,
+                      "nextEvaluationAt": null,
+                      "policyVersion": "context-comparison-decision-v1"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "trace": {
+          "applicable": true,
+          "passed": true,
+          "establishedIntents": [
+            {
+              "intentId": "intent:ingestion:5336e7f6552bbf891c91:1",
+              "evidenceRefs": [
+                "normal:source1"
+              ],
+              "transitions": [
+                {
+                  "kind": "decision",
+                  "decision": {
+                    "id": "decision:evaluate:intent:ingestion:5336e7f6552bbf891c91:1:revision:1",
+                    "intentId": "intent:ingestion:5336e7f6552bbf891c91:1",
+                    "evaluatedAt": "2026-09-06T09:00:00.000Z",
+                    "action": "contact",
+                    "reason": "已到用户指定的 2026-09-06T09:00:00Z；用户明确要求在面试结束后于该时间询问面试情况并帮助复盘，且没有更新事件显示取消、改期、已完成复盘或拒绝打扰。",
+                    "evidenceRefs": [
+                      "normal:source1"
+                    ],
+                    "counterEvidenceRefs": [],
+                    "confidence": 0.99,
+                    "nextEvaluationAt": null,
+                    "policyVersion": "context-comparison-decision-v1"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "contextAware": {
+        "rows": [
+          {
+            "stepId": "initial",
+            "decisions": [
+              {
+                "action": "defer",
+                "evidenceRefs": [
+                  "normal:source1"
+                ],
+                "kind": "intent_driven",
+                "nextEvaluationAt": "2026-09-06T09:00:00Z",
+                "reason": "User explicitly asked for a single follow-up at 2026-09-06 09:00 UTC after the interview ends.",
+                "recognition": "open"
+              }
+            ],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "context_aware_decisions",
+                "phase": "decision",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 494,
+                  "outputTokens": 213,
+                  "totalTokens": 707
+                },
+                "requestId": "f8ce3988-d3ce-41bd-b378-4cc721217de3",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ]
+          },
+          {
+            "stepId": "due",
+            "decisions": [
+              {
+                "action": "contact",
+                "evidenceRefs": [
+                  "normal:source1"
+                ],
+                "kind": "intent_driven",
+                "nextEvaluationAt": null,
+                "reason": "用户明确要求在 2026-09-06 09:00 UTC 面试结束后只询问一次面试情况并帮忙复盘；当前时间正好符合，且尚未发送过。",
+                "recognition": "open"
+              }
+            ],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "context_aware_decisions",
+                "phase": "decision",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 494,
+                  "outputTokens": 114,
+                  "totalTokens": 608
+                },
+                "requestId": "9a4ab9d8-2e9c-4ecf-a12a-59d66ed384f4",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ]
+          }
+        ],
+        "trace": {
+          "applicable": false,
+          "passed": true,
+          "reason": "Context-aware baseline has decision evidence but no persistent intent lifecycle to audit."
+        }
+      },
+      "diagnostics": []
+    },
+    {
+      "id": "resolved",
+      "title": "提前完成",
+      "kind": "intent_driven",
+      "wakeIntent": {
+        "rows": [
+          {
+            "stepId": "initial",
+            "decisions": [],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "process": {
+              "outcome": "created",
+              "modelWorkPerformed": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "wakeintent_candidates",
+                "phase": "extraction",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 443,
+                  "outputTokens": 603,
+                  "totalTokens": 1046
+                },
+                "requestId": "a854eeae-d4f3-432c-9ada-6a6e55e80d01",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ],
+            "state": [
+              {
+                "intent": {
+                  "schemaVersion": "0.1.0",
+                  "id": "intent:ingestion:d895836547a73bdc8432:1",
+                  "status": "active",
+                  "subject": "询问是否弄懂了进程同步",
+                  "reason": "用户明确请求在指定时间进行一次学习理解确认。",
+                  "target": {
+                    "kind": "user",
+                    "id": "synthetic:resolved"
+                  },
+                  "evidence": [
+                    {
+                      "eventId": "resolved:source1",
+                      "quote": "我明天09:00 UTC前学完第三章，请到时问一次我是否弄懂了进程同步。"
+                    }
+                  ],
+                  "notBefore": "2026-09-06T09:00:00Z",
+                  "expiresAt": null,
+                  "cancellationHints": [
+                    "如果用户随后取消了这个检查点，就不需要再问。",
+                    "如果用户已经明确说自己弄懂了进程同步，就不需要再问。",
+                    "如果“第三章学习完毕”这一前提已经不再相关或已被其他安排取代，就不需要再问。"
+                  ],
+                  "priority": 0.7,
+                  "interruptionCost": 0.2,
+                  "confidence": 0.97,
+                  "createdAt": "2026-09-05T09:00:00.000Z",
+                  "updatedAt": "2026-09-05T09:00:00.000Z",
+                  "metadata": {
+                    "sourceConversationId": "resolved",
+                    "sourceIngestionId": "d895836547a73bdc8432"
+                  }
+                },
+                "revision": 1,
+                "nextEvaluationAt": "2026-09-06T09:00:00Z",
+                "audit": []
+              }
+            ]
+          },
+          {
+            "stepId": "update",
+            "decisions": [
+              {
+                "action": "resolve",
+                "kind": "none",
+                "recognition": "resolved",
+                "reason": "用户明确表示已提前学完第三章，并且“进程同步也弄懂了，问题已解决”，因此原本到 2026-09-06 09:00 UTC 询问是否弄懂的预期结果已经明确，无需届时再联系。",
+                "evidenceRefs": [
+                  "resolved:source1",
+                  "resolved:update"
+                ],
+                "nextEvaluationAt": null,
+                "intentId": "intent:ingestion:d895836547a73bdc8432:1",
+                "source": "route-closure"
+              }
+            ],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "process": {
+              "outcome": "created",
+              "modelWorkPerformed": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "wakeintent_candidates",
+                "phase": "extraction",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 435,
+                  "outputTokens": 42,
+                  "totalTokens": 477
+                },
+                "requestId": "046d28c2-f58d-4160-bafa-ba37e0c9d8dc",
+                "attempts": 2,
+                "costUsd": null
+              },
+              {
+                "schemaName": "wakeintent_relevance_route",
+                "phase": "extraction",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 525,
+                  "outputTokens": 165,
+                  "totalTokens": 690
+                },
+                "requestId": "ed1673ea-add8-4695-8a21-162210b2cf46",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ],
+            "state": [
+              {
+                "intent": {
+                  "schemaVersion": "0.1.0",
+                  "id": "intent:ingestion:d895836547a73bdc8432:1",
+                  "status": "resolved",
+                  "subject": "询问是否弄懂了进程同步",
+                  "reason": "用户明确请求在指定时间进行一次学习理解确认。",
+                  "target": {
+                    "kind": "user",
+                    "id": "synthetic:resolved"
+                  },
+                  "evidence": [
+                    {
+                      "eventId": "resolved:source1",
+                      "quote": "我明天09:00 UTC前学完第三章，请到时问一次我是否弄懂了进程同步。"
+                    }
+                  ],
+                  "notBefore": "2026-09-06T09:00:00Z",
+                  "expiresAt": null,
+                  "cancellationHints": [
+                    "如果用户随后取消了这个检查点，就不需要再问。",
+                    "如果用户已经明确说自己弄懂了进程同步，就不需要再问。",
+                    "如果“第三章学习完毕”这一前提已经不再相关或已被其他安排取代，就不需要再问。"
+                  ],
+                  "priority": 0.7,
+                  "interruptionCost": 0.2,
+                  "confidence": 0.97,
+                  "createdAt": "2026-09-05T09:00:00.000Z",
+                  "updatedAt": "2026-09-05T15:00:00.000Z",
+                  "metadata": {
+                    "sourceConversationId": "resolved",
+                    "sourceIngestionId": "d895836547a73bdc8432"
+                  }
+                },
+                "revision": 3,
+                "nextEvaluationAt": null,
+                "audit": [
+                  {
+                    "kind": "evaluation-requested",
+                    "request": {
+                      "id": "evaluation-request:ingestion:579920756e45edcba5bf:intent:ingestion:d895836547a73bdc8432:1",
+                      "intentId": "intent:ingestion:d895836547a73bdc8432:1",
+                      "requestedAt": "2026-09-05T15:00:00Z",
+                      "eventIds": [
+                        "resolved:update"
+                      ],
+                      "effect": "resolve",
+                      "reason": "用户明确表示已提前学完第三章，并且“进程同步也弄懂了，问题已解决”，因此原本到 2026-09-06 09:00 UTC 询问是否弄懂的预期结果已经明确，无需届时再联系。",
+                      "confidence": 0.98,
+                      "nextEvaluationAt": "2026-09-05T15:00:00Z",
+                      "policyVersion": "context-comparison-route-v1",
+                      "metadata": {
+                        "source": "conversation-event-route"
+                      }
+                    }
+                  },
+                  {
+                    "kind": "decision",
+                    "decision": {
+                      "id": "decision:evaluate:intent:ingestion:d895836547a73bdc8432:1:revision:2",
+                      "intentId": "intent:ingestion:d895836547a73bdc8432:1",
+                      "evaluatedAt": "2026-09-05T15:00:00.000Z",
+                      "action": "resolve",
+                      "reason": "用户明确表示已提前学完第三章，并且“进程同步也弄懂了，问题已解决”，因此原本到 2026-09-06 09:00 UTC 询问是否弄懂的预期结果已经明确，无需届时再联系。",
+                      "evidenceRefs": [
+                        "resolved:source1"
+                      ],
+                      "counterEvidenceRefs": [
+                        "resolved:update"
+                      ],
+                      "confidence": 0.98,
+                      "nextEvaluationAt": null,
+                      "policyVersion": "context-comparison-decision-v1",
+                      "metadata": {
+                        "source": "relevance-route-closure",
+                        "evaluationRequestId": "evaluation-request:ingestion:579920756e45edcba5bf:intent:ingestion:d895836547a73bdc8432:1",
+                        "routePolicyVersion": "context-comparison-route-v1"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "stepId": "due",
+            "decisions": [],
+            "score": {
+              "passed": false,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": false,
+              "recognitionCorrect": false,
+              "explanationConsistent": true
+            },
+            "process": null,
+            "modelCalls": [],
+            "state": [
+              {
+                "intent": {
+                  "schemaVersion": "0.1.0",
+                  "id": "intent:ingestion:d895836547a73bdc8432:1",
+                  "status": "resolved",
+                  "subject": "询问是否弄懂了进程同步",
+                  "reason": "用户明确请求在指定时间进行一次学习理解确认。",
+                  "target": {
+                    "kind": "user",
+                    "id": "synthetic:resolved"
+                  },
+                  "evidence": [
+                    {
+                      "eventId": "resolved:source1",
+                      "quote": "我明天09:00 UTC前学完第三章，请到时问一次我是否弄懂了进程同步。"
+                    }
+                  ],
+                  "notBefore": "2026-09-06T09:00:00Z",
+                  "expiresAt": null,
+                  "cancellationHints": [
+                    "如果用户随后取消了这个检查点，就不需要再问。",
+                    "如果用户已经明确说自己弄懂了进程同步，就不需要再问。",
+                    "如果“第三章学习完毕”这一前提已经不再相关或已被其他安排取代，就不需要再问。"
+                  ],
+                  "priority": 0.7,
+                  "interruptionCost": 0.2,
+                  "confidence": 0.97,
+                  "createdAt": "2026-09-05T09:00:00.000Z",
+                  "updatedAt": "2026-09-05T15:00:00.000Z",
+                  "metadata": {
+                    "sourceConversationId": "resolved",
+                    "sourceIngestionId": "d895836547a73bdc8432"
+                  }
+                },
+                "revision": 3,
+                "nextEvaluationAt": null,
+                "audit": [
+                  {
+                    "kind": "evaluation-requested",
+                    "request": {
+                      "id": "evaluation-request:ingestion:579920756e45edcba5bf:intent:ingestion:d895836547a73bdc8432:1",
+                      "intentId": "intent:ingestion:d895836547a73bdc8432:1",
+                      "requestedAt": "2026-09-05T15:00:00Z",
+                      "eventIds": [
+                        "resolved:update"
+                      ],
+                      "effect": "resolve",
+                      "reason": "用户明确表示已提前学完第三章，并且“进程同步也弄懂了，问题已解决”，因此原本到 2026-09-06 09:00 UTC 询问是否弄懂的预期结果已经明确，无需届时再联系。",
+                      "confidence": 0.98,
+                      "nextEvaluationAt": "2026-09-05T15:00:00Z",
+                      "policyVersion": "context-comparison-route-v1",
+                      "metadata": {
+                        "source": "conversation-event-route"
+                      }
+                    }
+                  },
+                  {
+                    "kind": "decision",
+                    "decision": {
+                      "id": "decision:evaluate:intent:ingestion:d895836547a73bdc8432:1:revision:2",
+                      "intentId": "intent:ingestion:d895836547a73bdc8432:1",
+                      "evaluatedAt": "2026-09-05T15:00:00.000Z",
+                      "action": "resolve",
+                      "reason": "用户明确表示已提前学完第三章，并且“进程同步也弄懂了，问题已解决”，因此原本到 2026-09-06 09:00 UTC 询问是否弄懂的预期结果已经明确，无需届时再联系。",
+                      "evidenceRefs": [
+                        "resolved:source1"
+                      ],
+                      "counterEvidenceRefs": [
+                        "resolved:update"
+                      ],
+                      "confidence": 0.98,
+                      "nextEvaluationAt": null,
+                      "policyVersion": "context-comparison-decision-v1",
+                      "metadata": {
+                        "source": "relevance-route-closure",
+                        "evaluationRequestId": "evaluation-request:ingestion:579920756e45edcba5bf:intent:ingestion:d895836547a73bdc8432:1",
+                        "routePolicyVersion": "context-comparison-route-v1"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "trace": {
+          "applicable": true,
+          "passed": true,
+          "establishedIntents": [
+            {
+              "intentId": "intent:ingestion:d895836547a73bdc8432:1",
+              "evidenceRefs": [
+                "resolved:source1"
+              ],
+              "transitions": [
+                {
+                  "kind": "evaluation-requested",
+                  "request": {
+                    "id": "evaluation-request:ingestion:579920756e45edcba5bf:intent:ingestion:d895836547a73bdc8432:1",
+                    "intentId": "intent:ingestion:d895836547a73bdc8432:1",
+                    "requestedAt": "2026-09-05T15:00:00Z",
+                    "eventIds": [
+                      "resolved:update"
+                    ],
+                    "effect": "resolve",
+                    "reason": "用户明确表示已提前学完第三章，并且“进程同步也弄懂了，问题已解决”，因此原本到 2026-09-06 09:00 UTC 询问是否弄懂的预期结果已经明确，无需届时再联系。",
+                    "confidence": 0.98,
+                    "nextEvaluationAt": "2026-09-05T15:00:00Z",
+                    "policyVersion": "context-comparison-route-v1",
+                    "metadata": {
+                      "source": "conversation-event-route"
+                    }
+                  }
+                },
+                {
+                  "kind": "decision",
+                  "decision": {
+                    "id": "decision:evaluate:intent:ingestion:d895836547a73bdc8432:1:revision:2",
+                    "intentId": "intent:ingestion:d895836547a73bdc8432:1",
+                    "evaluatedAt": "2026-09-05T15:00:00.000Z",
+                    "action": "resolve",
+                    "reason": "用户明确表示已提前学完第三章，并且“进程同步也弄懂了，问题已解决”，因此原本到 2026-09-06 09:00 UTC 询问是否弄懂的预期结果已经明确，无需届时再联系。",
+                    "evidenceRefs": [
+                      "resolved:source1"
+                    ],
+                    "counterEvidenceRefs": [
+                      "resolved:update"
+                    ],
+                    "confidence": 0.98,
+                    "nextEvaluationAt": null,
+                    "policyVersion": "context-comparison-decision-v1",
+                    "metadata": {
+                      "source": "relevance-route-closure",
+                      "evaluationRequestId": "evaluation-request:ingestion:579920756e45edcba5bf:intent:ingestion:d895836547a73bdc8432:1",
+                      "routePolicyVersion": "context-comparison-route-v1"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "contextAware": {
+        "rows": [
+          {
+            "stepId": "initial",
+            "decisions": [
+              {
+                "action": "defer",
+                "evidenceRefs": [
+                  "resolved:source1"
+                ],
+                "kind": "intent_driven",
+                "nextEvaluationAt": "2026-09-06T09:00:00Z",
+                "reason": "用户明确要求在明天09:00 UTC询问一次是否弄懂了进程同步；当前尚未到该时间。",
+                "recognition": "open"
+              }
+            ],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "context_aware_decisions",
+                "phase": "decision",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 476,
+                  "outputTokens": 169,
+                  "totalTokens": 645
+                },
+                "requestId": "d98d25f4-0820-4eca-a1ed-619a23dada98",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ]
+          },
+          {
+            "stepId": "update",
+            "decisions": [
+              {
+                "action": "silent",
+                "evidenceRefs": [
+                  "resolved:source1",
+                  "resolved:update"
+                ],
+                "kind": "intent_driven",
+                "nextEvaluationAt": null,
+                "reason": "用户原本要求在次日09:00 UTC询问是否弄懂进程同步，但随后明确表示已提前学完且问题已解决，因此不再需要后续联系。",
+                "recognition": "resolved"
+              }
+            ],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "context_aware_decisions",
+                "phase": "decision",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 531,
+                  "outputTokens": 196,
+                  "totalTokens": 727
+                },
+                "requestId": "254a231d-f82d-45f3-b4bc-e2250b9213bc",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ]
+          },
+          {
+            "stepId": "due",
+            "decisions": [
+              {
+                "action": "silent",
+                "evidenceRefs": [
+                  "resolved:update",
+                  "resolved:source1"
+                ],
+                "kind": "intent_driven",
+                "nextEvaluationAt": null,
+                "reason": "用户已在提前更新中说明第三章已学完且进程同步已弄懂，问题已解决；原定明天09:00的询问不再需要执行。",
+                "recognition": "resolved"
+              }
+            ],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "context_aware_decisions",
+                "phase": "decision",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 531,
+                  "outputTokens": 236,
+                  "totalTokens": 767
+                },
+                "requestId": "5b51f86c-7152-4d98-82c8-c4b8ab69631f",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ]
+          }
+        ],
+        "trace": {
+          "applicable": false,
+          "passed": true,
+          "reason": "Context-aware baseline has decision evidence but no persistent intent lifecycle to audit."
+        }
+      },
+      "diagnostics": []
+    },
+    {
+      "id": "cancelled",
+      "title": "明确取消",
+      "kind": "intent_driven",
+      "wakeIntent": {
+        "rows": [
+          {
+            "stepId": "initial",
+            "decisions": [],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "process": {
+              "outcome": "created",
+              "modelWorkPerformed": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "wakeintent_candidates",
+                "phase": "extraction",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 441,
+                  "outputTokens": 431,
+                  "totalTokens": 872
+                },
+                "requestId": "ea29930d-0adf-4949-ac4d-1f9425d40f3c",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ],
+            "state": [
+              {
+                "intent": {
+                  "schemaVersion": "0.1.0",
+                  "id": "intent:ingestion:507982d729d20bebc545:1",
+                  "status": "active",
+                  "subject": "跑步感受",
+                  "reason": "用户明确请求在五公里跑完后再询问一次跑步感受。",
+                  "target": {
+                    "kind": "user",
+                    "id": "synthetic:cancelled"
+                  },
+                  "evidence": [
+                    {
+                      "eventId": "cancelled:source1",
+                      "quote": "我明天09:00 UTC跑完五公里，可以到时问一次跑步感受。"
+                    }
+                  ],
+                  "notBefore": "2026-09-06T09:00:00Z",
+                  "expiresAt": null,
+                  "cancellationHints": [
+                    "用户主动取消这次跟进",
+                    "用户已经分享了跑完后的感受",
+                    "跑步计划未进行或已改期"
+                  ],
+                  "priority": 0.72,
+                  "interruptionCost": 0.2,
+                  "confidence": 0.95,
+                  "createdAt": "2026-09-05T09:00:00.000Z",
+                  "updatedAt": "2026-09-05T09:00:00.000Z",
+                  "metadata": {
+                    "sourceConversationId": "cancelled",
+                    "sourceIngestionId": "507982d729d20bebc545"
+                  }
+                },
+                "revision": 1,
+                "nextEvaluationAt": "2026-09-06T09:00:00Z",
+                "audit": []
+              }
+            ]
+          },
+          {
+            "stepId": "update",
+            "decisions": [
+              {
+                "action": "cancel",
+                "kind": "none",
+                "recognition": "cancelled",
+                "reason": "用户明确表示跑步计划还在，但不要再问这件事，等同于撤回了后续关于跑步感受的跟进。",
+                "evidenceRefs": [
+                  "cancelled:source1",
+                  "cancelled:update"
+                ],
+                "nextEvaluationAt": null,
+                "intentId": "intent:ingestion:507982d729d20bebc545:1",
+                "source": "route-closure"
+              }
+            ],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "process": {
+              "outcome": "created",
+              "modelWorkPerformed": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "wakeintent_candidates",
+                "phase": "extraction",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 434,
+                  "outputTokens": 30,
+                  "totalTokens": 464
+                },
+                "requestId": "d9c3fefa-0666-46df-b4ed-307cc25d5008",
+                "attempts": 1,
+                "costUsd": null
+              },
+              {
+                "schemaName": "wakeintent_relevance_route",
+                "phase": "extraction",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 486,
+                  "outputTokens": 162,
+                  "totalTokens": 648
+                },
+                "requestId": "384852b8-2606-47cd-a935-5114edc25c4c",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ],
+            "state": [
+              {
+                "intent": {
+                  "schemaVersion": "0.1.0",
+                  "id": "intent:ingestion:507982d729d20bebc545:1",
+                  "status": "cancelled",
+                  "subject": "跑步感受",
+                  "reason": "用户明确请求在五公里跑完后再询问一次跑步感受。",
+                  "target": {
+                    "kind": "user",
+                    "id": "synthetic:cancelled"
+                  },
+                  "evidence": [
+                    {
+                      "eventId": "cancelled:source1",
+                      "quote": "我明天09:00 UTC跑完五公里，可以到时问一次跑步感受。"
+                    }
+                  ],
+                  "notBefore": "2026-09-06T09:00:00Z",
+                  "expiresAt": null,
+                  "cancellationHints": [
+                    "用户主动取消这次跟进",
+                    "用户已经分享了跑完后的感受",
+                    "跑步计划未进行或已改期"
+                  ],
+                  "priority": 0.72,
+                  "interruptionCost": 0.2,
+                  "confidence": 0.95,
+                  "createdAt": "2026-09-05T09:00:00.000Z",
+                  "updatedAt": "2026-09-05T15:00:00.000Z",
+                  "metadata": {
+                    "sourceConversationId": "cancelled",
+                    "sourceIngestionId": "507982d729d20bebc545"
+                  }
+                },
+                "revision": 3,
+                "nextEvaluationAt": null,
+                "audit": [
+                  {
+                    "kind": "evaluation-requested",
+                    "request": {
+                      "id": "evaluation-request:ingestion:6310558b80d2fca4f1fb:intent:ingestion:507982d729d20bebc545:1",
+                      "intentId": "intent:ingestion:507982d729d20bebc545:1",
+                      "requestedAt": "2026-09-05T15:00:00Z",
+                      "eventIds": [
+                        "cancelled:update"
+                      ],
+                      "effect": "cancel",
+                      "reason": "用户明确表示跑步计划还在，但不要再问这件事，等同于撤回了后续关于跑步感受的跟进。",
+                      "confidence": 0.98,
+                      "nextEvaluationAt": "2026-09-05T15:00:00Z",
+                      "policyVersion": "context-comparison-route-v1",
+                      "metadata": {
+                        "source": "conversation-event-route"
+                      }
+                    }
+                  },
+                  {
+                    "kind": "decision",
+                    "decision": {
+                      "id": "decision:evaluate:intent:ingestion:507982d729d20bebc545:1:revision:2",
+                      "intentId": "intent:ingestion:507982d729d20bebc545:1",
+                      "evaluatedAt": "2026-09-05T15:00:00.000Z",
+                      "action": "cancel",
+                      "reason": "用户明确表示跑步计划还在，但不要再问这件事，等同于撤回了后续关于跑步感受的跟进。",
+                      "evidenceRefs": [
+                        "cancelled:source1"
+                      ],
+                      "counterEvidenceRefs": [
+                        "cancelled:update"
+                      ],
+                      "confidence": 0.98,
+                      "nextEvaluationAt": null,
+                      "policyVersion": "context-comparison-decision-v1",
+                      "metadata": {
+                        "source": "relevance-route-closure",
+                        "evaluationRequestId": "evaluation-request:ingestion:6310558b80d2fca4f1fb:intent:ingestion:507982d729d20bebc545:1",
+                        "routePolicyVersion": "context-comparison-route-v1"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "stepId": "due",
+            "decisions": [],
+            "score": {
+              "passed": false,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": false,
+              "recognitionCorrect": false,
+              "explanationConsistent": true
+            },
+            "process": null,
+            "modelCalls": [],
+            "state": [
+              {
+                "intent": {
+                  "schemaVersion": "0.1.0",
+                  "id": "intent:ingestion:507982d729d20bebc545:1",
+                  "status": "cancelled",
+                  "subject": "跑步感受",
+                  "reason": "用户明确请求在五公里跑完后再询问一次跑步感受。",
+                  "target": {
+                    "kind": "user",
+                    "id": "synthetic:cancelled"
+                  },
+                  "evidence": [
+                    {
+                      "eventId": "cancelled:source1",
+                      "quote": "我明天09:00 UTC跑完五公里，可以到时问一次跑步感受。"
+                    }
+                  ],
+                  "notBefore": "2026-09-06T09:00:00Z",
+                  "expiresAt": null,
+                  "cancellationHints": [
+                    "用户主动取消这次跟进",
+                    "用户已经分享了跑完后的感受",
+                    "跑步计划未进行或已改期"
+                  ],
+                  "priority": 0.72,
+                  "interruptionCost": 0.2,
+                  "confidence": 0.95,
+                  "createdAt": "2026-09-05T09:00:00.000Z",
+                  "updatedAt": "2026-09-05T15:00:00.000Z",
+                  "metadata": {
+                    "sourceConversationId": "cancelled",
+                    "sourceIngestionId": "507982d729d20bebc545"
+                  }
+                },
+                "revision": 3,
+                "nextEvaluationAt": null,
+                "audit": [
+                  {
+                    "kind": "evaluation-requested",
+                    "request": {
+                      "id": "evaluation-request:ingestion:6310558b80d2fca4f1fb:intent:ingestion:507982d729d20bebc545:1",
+                      "intentId": "intent:ingestion:507982d729d20bebc545:1",
+                      "requestedAt": "2026-09-05T15:00:00Z",
+                      "eventIds": [
+                        "cancelled:update"
+                      ],
+                      "effect": "cancel",
+                      "reason": "用户明确表示跑步计划还在，但不要再问这件事，等同于撤回了后续关于跑步感受的跟进。",
+                      "confidence": 0.98,
+                      "nextEvaluationAt": "2026-09-05T15:00:00Z",
+                      "policyVersion": "context-comparison-route-v1",
+                      "metadata": {
+                        "source": "conversation-event-route"
+                      }
+                    }
+                  },
+                  {
+                    "kind": "decision",
+                    "decision": {
+                      "id": "decision:evaluate:intent:ingestion:507982d729d20bebc545:1:revision:2",
+                      "intentId": "intent:ingestion:507982d729d20bebc545:1",
+                      "evaluatedAt": "2026-09-05T15:00:00.000Z",
+                      "action": "cancel",
+                      "reason": "用户明确表示跑步计划还在，但不要再问这件事，等同于撤回了后续关于跑步感受的跟进。",
+                      "evidenceRefs": [
+                        "cancelled:source1"
+                      ],
+                      "counterEvidenceRefs": [
+                        "cancelled:update"
+                      ],
+                      "confidence": 0.98,
+                      "nextEvaluationAt": null,
+                      "policyVersion": "context-comparison-decision-v1",
+                      "metadata": {
+                        "source": "relevance-route-closure",
+                        "evaluationRequestId": "evaluation-request:ingestion:6310558b80d2fca4f1fb:intent:ingestion:507982d729d20bebc545:1",
+                        "routePolicyVersion": "context-comparison-route-v1"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "trace": {
+          "applicable": true,
+          "passed": true,
+          "establishedIntents": [
+            {
+              "intentId": "intent:ingestion:507982d729d20bebc545:1",
+              "evidenceRefs": [
+                "cancelled:source1"
+              ],
+              "transitions": [
+                {
+                  "kind": "evaluation-requested",
+                  "request": {
+                    "id": "evaluation-request:ingestion:6310558b80d2fca4f1fb:intent:ingestion:507982d729d20bebc545:1",
+                    "intentId": "intent:ingestion:507982d729d20bebc545:1",
+                    "requestedAt": "2026-09-05T15:00:00Z",
+                    "eventIds": [
+                      "cancelled:update"
+                    ],
+                    "effect": "cancel",
+                    "reason": "用户明确表示跑步计划还在，但不要再问这件事，等同于撤回了后续关于跑步感受的跟进。",
+                    "confidence": 0.98,
+                    "nextEvaluationAt": "2026-09-05T15:00:00Z",
+                    "policyVersion": "context-comparison-route-v1",
+                    "metadata": {
+                      "source": "conversation-event-route"
+                    }
+                  }
+                },
+                {
+                  "kind": "decision",
+                  "decision": {
+                    "id": "decision:evaluate:intent:ingestion:507982d729d20bebc545:1:revision:2",
+                    "intentId": "intent:ingestion:507982d729d20bebc545:1",
+                    "evaluatedAt": "2026-09-05T15:00:00.000Z",
+                    "action": "cancel",
+                    "reason": "用户明确表示跑步计划还在，但不要再问这件事，等同于撤回了后续关于跑步感受的跟进。",
+                    "evidenceRefs": [
+                      "cancelled:source1"
+                    ],
+                    "counterEvidenceRefs": [
+                      "cancelled:update"
+                    ],
+                    "confidence": 0.98,
+                    "nextEvaluationAt": null,
+                    "policyVersion": "context-comparison-decision-v1",
+                    "metadata": {
+                      "source": "relevance-route-closure",
+                      "evaluationRequestId": "evaluation-request:ingestion:6310558b80d2fca4f1fb:intent:ingestion:507982d729d20bebc545:1",
+                      "routePolicyVersion": "context-comparison-route-v1"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "contextAware": {
+        "rows": [
+          {
+            "stepId": "initial",
+            "decisions": [
+              {
+                "action": "defer",
+                "evidenceRefs": [
+                  "cancelled:source1"
+                ],
+                "kind": "intent_driven",
+                "nextEvaluationAt": "2026-09-06T09:00:00Z",
+                "reason": "用户明确允许在明天09:00 UTC跑完五公里后询问一次跑步感受；现在尚未到约定时间。",
+                "recognition": "open"
+              }
+            ],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "context_aware_decisions",
+                "phase": "decision",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 473,
+                  "outputTokens": 177,
+                  "totalTokens": 650
+                },
+                "requestId": "5e2bbd11-7145-4265-a426-59d6714a46b3",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ]
+          },
+          {
+            "stepId": "update",
+            "decisions": [
+              {
+                "action": "silent",
+                "evidenceRefs": [
+                  "cancelled:source1",
+                  "cancelled:update"
+                ],
+                "kind": "intent_driven",
+                "nextEvaluationAt": null,
+                "reason": "用户虽曾允许在跑完五公里后询问感受，但最新明确要求不要再问跑步，因此不应联系。",
+                "recognition": "cancelled"
+              }
+            ],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "context_aware_decisions",
+                "phase": "decision",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 526,
+                  "outputTokens": 148,
+                  "totalTokens": 674
+                },
+                "requestId": "4abd972c-81c5-4ddd-88d8-1a0f9c7236c6",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ]
+          },
+          {
+            "stepId": "due",
+            "decisions": [
+              {
+                "action": "silent",
+                "evidenceRefs": [
+                  "cancelled:source1",
+                  "cancelled:update"
+                ],
+                "kind": "intent_driven",
+                "nextEvaluationAt": null,
+                "reason": "用户先前允许在此时询问跑步感受，但随后明确撤回，要求不要再问跑步这件事，因此不联系。",
+                "recognition": "cancelled"
+              }
+            ],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "context_aware_decisions",
+                "phase": "decision",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 526,
+                  "outputTokens": 158,
+                  "totalTokens": 684
+                },
+                "requestId": "177fbdb4-65f6-42f9-9d42-fadcdf9f1a15",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ]
+          }
+        ],
+        "trace": {
+          "applicable": false,
+          "passed": true,
+          "reason": "Context-aware baseline has decision evidence but no persistent intent lifecycle to audit."
+        }
+      },
+      "diagnostics": []
+    },
+    {
+      "id": "expired",
+      "title": "自然失效",
+      "kind": "intent_driven",
+      "wakeIntent": {
+        "rows": [
+          {
+            "stepId": "initial",
+            "decisions": [],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "process": {
+              "outcome": "created",
+              "modelWorkPerformed": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "wakeintent_candidates",
+                "phase": "extraction",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 460,
+                  "outputTokens": 482,
+                  "totalTokens": 942
+                },
+                "requestId": "4e97934b-6475-4e6b-8977-87e6d9a75fa9",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ],
+            "state": [
+              {
+                "intent": {
+                  "schemaVersion": "0.1.0",
+                  "id": "intent:ingestion:b5d2cb4a09e812aeed0f:1",
+                  "status": "active",
+                  "subject": "Ask whether they need help comparing courses",
+                  "reason": "User requested a check-in at the start of the course-selection window and said it is pointless after the system closes.",
+                  "target": {
+                    "kind": "user",
+                    "id": "synthetic:expired"
+                  },
+                  "evidence": [
+                    {
+                      "eventId": "expired:source1",
+                      "quote": "明天09:00 UTC到10:00 UTC我在线选课，请09:00 UTC问我是否需要比较课程。10:00 UTC系统关闭后再联系就没有意义，不要联系。"
+                    }
+                  ],
+                  "notBefore": "2026-09-06T09:00:00Z",
+                  "expiresAt": "2026-09-06T10:00:00Z",
+                  "cancellationHints": [
+                    "If the user says they no longer need help comparing courses.",
+                    "If course selection is finished or the need has passed.",
+                    "If the user asks not to be contacted about this anymore."
+                  ],
+                  "priority": 0.93,
+                  "interruptionCost": 0.2,
+                  "confidence": 0.98,
+                  "createdAt": "2026-09-05T09:00:00.000Z",
+                  "updatedAt": "2026-09-05T09:00:00.000Z",
+                  "metadata": {
+                    "sourceConversationId": "expired",
+                    "sourceIngestionId": "b5d2cb4a09e812aeed0f"
+                  }
+                },
+                "revision": 1,
+                "nextEvaluationAt": "2026-09-06T09:00:00Z",
+                "audit": []
+              }
+            ]
+          },
+          {
+            "stepId": "due",
+            "decisions": [
+              {
+                "action": "expire",
+                "kind": "none",
+                "recognition": "expired",
+                "reason": "The contact intent has reached its expiry boundary.",
+                "evidenceRefs": [
+                  "expired:source1"
+                ],
+                "nextEvaluationAt": null,
+                "intentId": "intent:ingestion:b5d2cb4a09e812aeed0f:1",
+                "source": "hard-gate"
+              }
+            ],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "process": null,
+            "modelCalls": [],
+            "state": [
+              {
+                "intent": {
+                  "schemaVersion": "0.1.0",
+                  "id": "intent:ingestion:b5d2cb4a09e812aeed0f:1",
+                  "status": "expired",
+                  "subject": "Ask whether they need help comparing courses",
+                  "reason": "User requested a check-in at the start of the course-selection window and said it is pointless after the system closes.",
+                  "target": {
+                    "kind": "user",
+                    "id": "synthetic:expired"
+                  },
+                  "evidence": [
+                    {
+                      "eventId": "expired:source1",
+                      "quote": "明天09:00 UTC到10:00 UTC我在线选课，请09:00 UTC问我是否需要比较课程。10:00 UTC系统关闭后再联系就没有意义，不要联系。"
+                    }
+                  ],
+                  "notBefore": "2026-09-06T09:00:00Z",
+                  "expiresAt": "2026-09-06T10:00:00Z",
+                  "cancellationHints": [
+                    "If the user says they no longer need help comparing courses.",
+                    "If course selection is finished or the need has passed.",
+                    "If the user asks not to be contacted about this anymore."
+                  ],
+                  "priority": 0.93,
+                  "interruptionCost": 0.2,
+                  "confidence": 0.98,
+                  "createdAt": "2026-09-05T09:00:00.000Z",
+                  "updatedAt": "2026-09-06T11:00:00.000Z",
+                  "metadata": {
+                    "sourceConversationId": "expired",
+                    "sourceIngestionId": "b5d2cb4a09e812aeed0f"
+                  }
+                },
+                "revision": 2,
+                "nextEvaluationAt": null,
+                "audit": [
+                  {
+                    "kind": "decision",
+                    "decision": {
+                      "id": "decision:evaluate:intent:ingestion:b5d2cb4a09e812aeed0f:1:revision:1",
+                      "intentId": "intent:ingestion:b5d2cb4a09e812aeed0f:1",
+                      "evaluatedAt": "2026-09-06T11:00:00.000Z",
+                      "action": "expire",
+                      "reason": "The contact intent has reached its expiry boundary.",
+                      "evidenceRefs": [
+                        "expired:source1"
+                      ],
+                      "counterEvidenceRefs": [],
+                      "confidence": 1,
+                      "nextEvaluationAt": null,
+                      "policyVersion": "context-comparison-decision-v1",
+                      "metadata": {
+                        "source": "deterministic-hard-gate"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "trace": {
+          "applicable": true,
+          "passed": true,
+          "establishedIntents": [
+            {
+              "intentId": "intent:ingestion:b5d2cb4a09e812aeed0f:1",
+              "evidenceRefs": [
+                "expired:source1"
+              ],
+              "transitions": [
+                {
+                  "kind": "decision",
+                  "decision": {
+                    "id": "decision:evaluate:intent:ingestion:b5d2cb4a09e812aeed0f:1:revision:1",
+                    "intentId": "intent:ingestion:b5d2cb4a09e812aeed0f:1",
+                    "evaluatedAt": "2026-09-06T11:00:00.000Z",
+                    "action": "expire",
+                    "reason": "The contact intent has reached its expiry boundary.",
+                    "evidenceRefs": [
+                      "expired:source1"
+                    ],
+                    "counterEvidenceRefs": [],
+                    "confidence": 1,
+                    "nextEvaluationAt": null,
+                    "policyVersion": "context-comparison-decision-v1",
+                    "metadata": {
+                      "source": "deterministic-hard-gate"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "contextAware": {
+        "rows": [
+          {
+            "stepId": "initial",
+            "decisions": [
+              {
+                "action": "contact",
+                "evidenceRefs": [
+                  "expired:source1"
+                ],
+                "kind": "intent_driven",
+                "nextEvaluationAt": null,
+                "reason": "User asked to be contacted at 09:00 UTC to check whether they want help comparing courses, and the requested time is now.",
+                "recognition": "open"
+              }
+            ],
+            "score": {
+              "passed": false,
+              "actionCorrect": false,
+              "contactsCorrect": false,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "context_aware_decisions",
+                "phase": "decision",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 493,
+                  "outputTokens": 201,
+                  "totalTokens": 694
+                },
+                "requestId": "a336a8f2-a99a-46c0-a79d-be7a4e9a946d",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ]
+          },
+          {
+            "stepId": "due",
+            "decisions": [
+              {
+                "action": "silent",
+                "evidenceRefs": [
+                  "expired:source1"
+                ],
+                "kind": "intent_driven",
+                "nextEvaluationAt": null,
+                "reason": "The requested contact window ended at 10:00 UTC on 2026-09-05, and it is now 2026-09-06 11:00 UTC, so the opportunity has expired and further contact would not be useful.",
+                "recognition": "expired"
+              }
+            ],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "context_aware_decisions",
+                "phase": "decision",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 550,
+                  "outputTokens": 327,
+                  "totalTokens": 877
+                },
+                "requestId": "55cd44a9-bfe0-411e-b83c-84205ce45a23",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ]
+          }
+        ],
+        "trace": {
+          "applicable": false,
+          "passed": true,
+          "reason": "Context-aware baseline has decision evidence but no persistent intent lifecycle to audit."
+        }
+      },
+      "diagnostics": []
+    },
+    {
+      "id": "busy",
+      "title": "忙碌后延期",
+      "kind": "intent_driven",
+      "wakeIntent": {
+        "rows": [
+          {
+            "stepId": "initial",
+            "decisions": [],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "process": {
+              "outcome": "created",
+              "modelWorkPerformed": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "wakeintent_candidates",
+                "phase": "extraction",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 438,
+                  "outputTokens": 470,
+                  "totalTokens": 908
+                },
+                "requestId": "1267e5d6-2240-46dc-a278-7e0e15ba3346",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ],
+            "state": [
+              {
+                "intent": {
+                  "schemaVersion": "0.1.0",
+                  "id": "intent:ingestion:0a065b098b8462f1f2c5:1",
+                  "status": "active",
+                  "subject": "Ask about the project demo experience",
+                  "reason": "The user explicitly asked to be prompted once after completing a project demo.",
+                  "target": {
+                    "kind": "user",
+                    "id": "synthetic:busy"
+                  },
+                  "evidence": [
+                    {
+                      "eventId": "busy:source1",
+                      "quote": "我明天09:00 UTC完成项目演示，到时请问一次演示感受。"
+                    }
+                  ],
+                  "notBefore": "2026-09-06T09:00:00Z",
+                  "expiresAt": null,
+                  "cancellationHints": [
+                    "If the demo has already been discussed.",
+                    "If the user has already shared their demo feedback.",
+                    "If the follow-up was completed or no longer needed."
+                  ],
+                  "priority": 0.74,
+                  "interruptionCost": 0.2,
+                  "confidence": 0.96,
+                  "createdAt": "2026-09-05T09:00:00.000Z",
+                  "updatedAt": "2026-09-05T09:00:00.000Z",
+                  "metadata": {
+                    "sourceConversationId": "busy",
+                    "sourceIngestionId": "0a065b098b8462f1f2c5"
+                  }
+                },
+                "revision": 1,
+                "nextEvaluationAt": "2026-09-06T09:00:00Z",
+                "audit": []
+              }
+            ]
+          },
+          {
+            "stepId": "due",
+            "decisions": [
+              {
+                "action": "defer",
+                "kind": "none",
+                "recognition": "none",
+                "reason": "Contact is blocked by: do-not-disturb window.",
+                "evidenceRefs": [
+                  "busy:source1"
+                ],
+                "nextEvaluationAt": "2026-09-06T11:00:00.000Z",
+                "intentId": "intent:ingestion:0a065b098b8462f1f2c5:1",
+                "source": "hard-gate"
+              }
+            ],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "process": null,
+            "modelCalls": [
+              {
+                "schemaName": "wakeintent_decision",
+                "phase": "decision",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 573,
+                  "outputTokens": 225,
+                  "totalTokens": 798
+                },
+                "requestId": "133856b2-4620-43b8-a7d8-9867b1e1f689",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ],
+            "state": [
+              {
+                "intent": {
+                  "schemaVersion": "0.1.0",
+                  "id": "intent:ingestion:0a065b098b8462f1f2c5:1",
+                  "status": "active",
+                  "subject": "Ask about the project demo experience",
+                  "reason": "The user explicitly asked to be prompted once after completing a project demo.",
+                  "target": {
+                    "kind": "user",
+                    "id": "synthetic:busy"
+                  },
+                  "evidence": [
+                    {
+                      "eventId": "busy:source1",
+                      "quote": "我明天09:00 UTC完成项目演示，到时请问一次演示感受。"
+                    }
+                  ],
+                  "notBefore": "2026-09-06T09:00:00Z",
+                  "expiresAt": null,
+                  "cancellationHints": [
+                    "If the demo has already been discussed.",
+                    "If the user has already shared their demo feedback.",
+                    "If the follow-up was completed or no longer needed."
+                  ],
+                  "priority": 0.74,
+                  "interruptionCost": 0.2,
+                  "confidence": 0.96,
+                  "createdAt": "2026-09-05T09:00:00.000Z",
+                  "updatedAt": "2026-09-06T09:00:00.000Z",
+                  "metadata": {
+                    "sourceConversationId": "busy",
+                    "sourceIngestionId": "0a065b098b8462f1f2c5"
+                  }
+                },
+                "revision": 2,
+                "nextEvaluationAt": "2026-09-06T11:00:00.000Z",
+                "audit": [
+                  {
+                    "kind": "decision",
+                    "decision": {
+                      "id": "decision:evaluate:intent:ingestion:0a065b098b8462f1f2c5:1:revision:1",
+                      "intentId": "intent:ingestion:0a065b098b8462f1f2c5:1",
+                      "evaluatedAt": "2026-09-06T09:00:00.000Z",
+                      "action": "defer",
+                      "reason": "Contact is blocked by: do-not-disturb window.",
+                      "evidenceRefs": [
+                        "busy:source1"
+                      ],
+                      "counterEvidenceRefs": [],
+                      "confidence": 1,
+                      "nextEvaluationAt": "2026-09-06T11:00:00.000Z",
+                      "policyVersion": "context-comparison-decision-v1",
+                      "metadata": {
+                        "source": "deterministic-hard-gate",
+                        "semanticProposalAction": "contact"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "stepId": "available",
+            "decisions": [
+              {
+                "action": "contact",
+                "kind": "intent_driven",
+                "recognition": "none",
+                "reason": "The user explicitly asked to be prompted once after completing the project demo, and the scheduled time has passed. The latest event is the original request with no later reply indicating the demo feedback was already discussed or no longer needed, so contacting now remains useful.",
+                "evidenceRefs": [
+                  "busy:source1"
+                ],
+                "nextEvaluationAt": null,
+                "intentId": "intent:ingestion:0a065b098b8462f1f2c5:1",
+                "source": "semantic"
+              }
+            ],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "process": null,
+            "modelCalls": [
+              {
+                "schemaName": "wakeintent_decision",
+                "phase": "decision",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 573,
+                  "outputTokens": 225,
+                  "totalTokens": 798
+                },
+                "requestId": "e4e64adc-055e-4525-bb9a-bbd2c9645321",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ],
+            "state": [
+              {
+                "intent": {
+                  "schemaVersion": "0.1.0",
+                  "id": "intent:ingestion:0a065b098b8462f1f2c5:1",
+                  "status": "active",
+                  "subject": "Ask about the project demo experience",
+                  "reason": "The user explicitly asked to be prompted once after completing a project demo.",
+                  "target": {
+                    "kind": "user",
+                    "id": "synthetic:busy"
+                  },
+                  "evidence": [
+                    {
+                      "eventId": "busy:source1",
+                      "quote": "我明天09:00 UTC完成项目演示，到时请问一次演示感受。"
+                    }
+                  ],
+                  "notBefore": "2026-09-06T09:00:00Z",
+                  "expiresAt": null,
+                  "cancellationHints": [
+                    "If the demo has already been discussed.",
+                    "If the user has already shared their demo feedback.",
+                    "If the follow-up was completed or no longer needed."
+                  ],
+                  "priority": 0.74,
+                  "interruptionCost": 0.2,
+                  "confidence": 0.96,
+                  "createdAt": "2026-09-05T09:00:00.000Z",
+                  "updatedAt": "2026-09-06T11:01:00.000Z",
+                  "metadata": {
+                    "sourceConversationId": "busy",
+                    "sourceIngestionId": "0a065b098b8462f1f2c5"
+                  }
+                },
+                "revision": 3,
+                "nextEvaluationAt": null,
+                "audit": [
+                  {
+                    "kind": "decision",
+                    "decision": {
+                      "id": "decision:evaluate:intent:ingestion:0a065b098b8462f1f2c5:1:revision:1",
+                      "intentId": "intent:ingestion:0a065b098b8462f1f2c5:1",
+                      "evaluatedAt": "2026-09-06T09:00:00.000Z",
+                      "action": "defer",
+                      "reason": "Contact is blocked by: do-not-disturb window.",
+                      "evidenceRefs": [
+                        "busy:source1"
+                      ],
+                      "counterEvidenceRefs": [],
+                      "confidence": 1,
+                      "nextEvaluationAt": "2026-09-06T11:00:00.000Z",
+                      "policyVersion": "context-comparison-decision-v1",
+                      "metadata": {
+                        "source": "deterministic-hard-gate",
+                        "semanticProposalAction": "contact"
+                      }
+                    }
+                  },
+                  {
+                    "kind": "decision",
+                    "decision": {
+                      "id": "decision:evaluate:intent:ingestion:0a065b098b8462f1f2c5:1:revision:2",
+                      "intentId": "intent:ingestion:0a065b098b8462f1f2c5:1",
+                      "evaluatedAt": "2026-09-06T11:01:00.000Z",
+                      "action": "contact",
+                      "reason": "The user explicitly asked to be prompted once after completing the project demo, and the scheduled time has passed. The latest event is the original request with no later reply indicating the demo feedback was already discussed or no longer needed, so contacting now remains useful.",
+                      "evidenceRefs": [
+                        "busy:source1"
+                      ],
+                      "counterEvidenceRefs": [],
+                      "confidence": 0.98,
+                      "nextEvaluationAt": null,
+                      "policyVersion": "context-comparison-decision-v1"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "trace": {
+          "applicable": true,
+          "passed": true,
+          "establishedIntents": [
+            {
+              "intentId": "intent:ingestion:0a065b098b8462f1f2c5:1",
+              "evidenceRefs": [
+                "busy:source1"
+              ],
+              "transitions": [
+                {
+                  "kind": "decision",
+                  "decision": {
+                    "id": "decision:evaluate:intent:ingestion:0a065b098b8462f1f2c5:1:revision:1",
+                    "intentId": "intent:ingestion:0a065b098b8462f1f2c5:1",
+                    "evaluatedAt": "2026-09-06T09:00:00.000Z",
+                    "action": "defer",
+                    "reason": "Contact is blocked by: do-not-disturb window.",
+                    "evidenceRefs": [
+                      "busy:source1"
+                    ],
+                    "counterEvidenceRefs": [],
+                    "confidence": 1,
+                    "nextEvaluationAt": "2026-09-06T11:00:00.000Z",
+                    "policyVersion": "context-comparison-decision-v1",
+                    "metadata": {
+                      "source": "deterministic-hard-gate",
+                      "semanticProposalAction": "contact"
+                    }
+                  }
+                },
+                {
+                  "kind": "decision",
+                  "decision": {
+                    "id": "decision:evaluate:intent:ingestion:0a065b098b8462f1f2c5:1:revision:2",
+                    "intentId": "intent:ingestion:0a065b098b8462f1f2c5:1",
+                    "evaluatedAt": "2026-09-06T11:01:00.000Z",
+                    "action": "contact",
+                    "reason": "The user explicitly asked to be prompted once after completing the project demo, and the scheduled time has passed. The latest event is the original request with no later reply indicating the demo feedback was already discussed or no longer needed, so contacting now remains useful.",
+                    "evidenceRefs": [
+                      "busy:source1"
+                    ],
+                    "counterEvidenceRefs": [],
+                    "confidence": 0.98,
+                    "nextEvaluationAt": null,
+                    "policyVersion": "context-comparison-decision-v1"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "contextAware": {
+        "rows": [
+          {
+            "stepId": "initial",
+            "decisions": [
+              {
+                "action": "defer",
+                "evidenceRefs": [
+                  "busy:source1"
+                ],
+                "kind": "intent_driven",
+                "nextEvaluationAt": "2026-09-06T09:00:00Z",
+                "reason": "用户明确要求在明天 09:00 UTC 项目演示完成后询问一次演示感受；现在尚未到该时间。",
+                "recognition": "open"
+              }
+            ],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "context_aware_decisions",
+                "phase": "decision",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 471,
+                  "outputTokens": 141,
+                  "totalTokens": 612
+                },
+                "requestId": "9d91b8ee-57ae-4059-aa1e-aa0f29e0b440",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ]
+          },
+          {
+            "stepId": "due",
+            "decisions": [
+              {
+                "action": "defer",
+                "evidenceRefs": [
+                  "busy:source1"
+                ],
+                "kind": "intent_driven",
+                "nextEvaluationAt": "2026-09-06T11:00:00Z",
+                "reason": "用户明确请求在演示后于今天09:00 UTC询问感受；当前已到时点，但勿扰状态持续到11:00 UTC，因此先延后到可联系时再评估。",
+                "recognition": "open"
+              }
+            ],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "context_aware_decisions",
+                "phase": "decision",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 492,
+                  "outputTokens": 426,
+                  "totalTokens": 918
+                },
+                "requestId": "0067adf5-0bcd-496b-8860-6f4898c04c26",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ]
+          },
+          {
+            "stepId": "available",
+            "decisions": [
+              {
+                "action": "contact",
+                "evidenceRefs": [
+                  "busy:source1"
+                ],
+                "kind": "intent_driven",
+                "nextEvaluationAt": null,
+                "reason": "用户明确要求在 2026-09-06 09:00 UTC 项目演示完成后询问一次演示感受；当前时间已过该时间且尚未联系过。",
+                "recognition": "open"
+              }
+            ],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "context_aware_decisions",
+                "phase": "decision",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 471,
+                  "outputTokens": 156,
+                  "totalTokens": 627
+                },
+                "requestId": "70c7beaa-52d1-41ae-af94-38bf8791be2d",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ]
+          }
+        ],
+        "trace": {
+          "applicable": false,
+          "passed": true,
+          "reason": "Context-aware baseline has decision evidence but no persistent intent lifecycle to audit."
+        }
+      },
+      "diagnostics": []
+    },
+    {
+      "id": "unanswered",
+      "title": "连续不回复",
+      "kind": "intent_driven",
+      "wakeIntent": {
+        "rows": [
+          {
+            "stepId": "initial",
+            "decisions": [],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "process": {
+              "outcome": "created",
+              "modelWorkPerformed": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "wakeintent_candidates",
+                "phase": "extraction",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 462,
+                  "outputTokens": 355,
+                  "totalTokens": 817
+                },
+                "requestId": "621c7249-c061-4e11-aa1d-088930cb9ba4",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ],
+            "state": [
+              {
+                "intent": {
+                  "schemaVersion": "0.1.0",
+                  "id": "intent:ingestion:dd2149d8b31ecd188aa9:1",
+                  "status": "active",
+                  "subject": "询问用户的练琴进度",
+                  "reason": "用户明确要求在明天 09:00 UTC 询问练琴进度，并给出了在连续两次未回复后的取消条件。",
+                  "target": {
+                    "kind": "user",
+                    "id": "synthetic:unanswered"
+                  },
+                  "evidence": [
+                    {
+                      "eventId": "unanswered:source1",
+                      "quote": "明天09:00 UTC可以问问我的练琴进度。如果之前已经连续两次主动找我而我没回复，就保持沉默，别再追问，也别安排追问。"
+                    }
+                  ],
+                  "notBefore": "2026-09-06T09:00:00.000Z",
+                  "expiresAt": null,
+                  "cancellationHints": [
+                    "用户撤回或更改该提醒请求",
+                    "用户已提供练琴进度更新",
+                    "此前已连续两次主动联系用户且用户未回复"
+                  ],
+                  "priority": 0.7,
+                  "interruptionCost": 0.3,
+                  "confidence": 0.98,
+                  "createdAt": "2026-09-05T09:00:00.000Z",
+                  "updatedAt": "2026-09-05T09:00:00.000Z",
+                  "metadata": {
+                    "sourceConversationId": "unanswered",
+                    "sourceIngestionId": "dd2149d8b31ecd188aa9"
+                  }
+                },
+                "revision": 1,
+                "nextEvaluationAt": "2026-09-06T09:00:00.000Z",
+                "audit": []
+              }
+            ]
+          },
+          {
+            "stepId": "history",
+            "decisions": [
+              {
+                "action": "cancel",
+                "kind": "none",
+                "recognition": "cancelled",
+                "reason": "用户明确设定了“连续两次主动找我而我没回复就保持沉默，不再追问”的取消条件；这两条连续主动联系且未见回复，已使后续练琴进度追问应被取消。",
+                "evidenceRefs": [
+                  "unanswered:source1",
+                  "unanswered:a1",
+                  "unanswered:a2"
+                ],
+                "nextEvaluationAt": null,
+                "intentId": "intent:ingestion:dd2149d8b31ecd188aa9:1",
+                "source": "route-closure"
+              }
+            ],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "process": {
+              "outcome": "created",
+              "modelWorkPerformed": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "wakeintent_candidates",
+                "phase": "extraction",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 468,
+                  "outputTokens": 54,
+                  "totalTokens": 522
+                },
+                "requestId": "c6779371-862d-4ab3-a6a3-c640efa4cf6c",
+                "attempts": 1,
+                "costUsd": null
+              },
+              {
+                "schemaName": "wakeintent_relevance_route",
+                "phase": "extraction",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 574,
+                  "outputTokens": 343,
+                  "totalTokens": 917
+                },
+                "requestId": "14d3be62-bea9-441e-bae1-62e38f322a4d",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ],
+            "state": [
+              {
+                "intent": {
+                  "schemaVersion": "0.1.0",
+                  "id": "intent:ingestion:dd2149d8b31ecd188aa9:1",
+                  "status": "cancelled",
+                  "subject": "询问用户的练琴进度",
+                  "reason": "用户明确要求在明天 09:00 UTC 询问练琴进度，并给出了在连续两次未回复后的取消条件。",
+                  "target": {
+                    "kind": "user",
+                    "id": "synthetic:unanswered"
+                  },
+                  "evidence": [
+                    {
+                      "eventId": "unanswered:source1",
+                      "quote": "明天09:00 UTC可以问问我的练琴进度。如果之前已经连续两次主动找我而我没回复，就保持沉默，别再追问，也别安排追问。"
+                    }
+                  ],
+                  "notBefore": "2026-09-06T09:00:00.000Z",
+                  "expiresAt": null,
+                  "cancellationHints": [
+                    "用户撤回或更改该提醒请求",
+                    "用户已提供练琴进度更新",
+                    "此前已连续两次主动联系用户且用户未回复"
+                  ],
+                  "priority": 0.7,
+                  "interruptionCost": 0.3,
+                  "confidence": 0.98,
+                  "createdAt": "2026-09-05T09:00:00.000Z",
+                  "updatedAt": "2026-09-06T08:00:00.000Z",
+                  "metadata": {
+                    "sourceConversationId": "unanswered",
+                    "sourceIngestionId": "dd2149d8b31ecd188aa9"
+                  }
+                },
+                "revision": 3,
+                "nextEvaluationAt": null,
+                "audit": [
+                  {
+                    "kind": "evaluation-requested",
+                    "request": {
+                      "id": "evaluation-request:ingestion:adabdb32b734d6ee9510:intent:ingestion:dd2149d8b31ecd188aa9:1",
+                      "intentId": "intent:ingestion:dd2149d8b31ecd188aa9:1",
+                      "requestedAt": "2026-09-06T08:00:00Z",
+                      "eventIds": [
+                        "unanswered:a1",
+                        "unanswered:a2"
+                      ],
+                      "effect": "cancel",
+                      "reason": "用户明确设定了“连续两次主动找我而我没回复就保持沉默，不再追问”的取消条件；这两条连续主动联系且未见回复，已使后续练琴进度追问应被取消。",
+                      "confidence": 0.98,
+                      "nextEvaluationAt": "2026-09-06T08:00:00Z",
+                      "policyVersion": "context-comparison-route-v1",
+                      "metadata": {
+                        "source": "conversation-event-route"
+                      }
+                    }
+                  },
+                  {
+                    "kind": "decision",
+                    "decision": {
+                      "id": "decision:evaluate:intent:ingestion:dd2149d8b31ecd188aa9:1:revision:2",
+                      "intentId": "intent:ingestion:dd2149d8b31ecd188aa9:1",
+                      "evaluatedAt": "2026-09-06T08:00:00.000Z",
+                      "action": "cancel",
+                      "reason": "用户明确设定了“连续两次主动找我而我没回复就保持沉默，不再追问”的取消条件；这两条连续主动联系且未见回复，已使后续练琴进度追问应被取消。",
+                      "evidenceRefs": [
+                        "unanswered:source1"
+                      ],
+                      "counterEvidenceRefs": [
+                        "unanswered:a1",
+                        "unanswered:a2"
+                      ],
+                      "confidence": 0.98,
+                      "nextEvaluationAt": null,
+                      "policyVersion": "context-comparison-decision-v1",
+                      "metadata": {
+                        "source": "relevance-route-closure",
+                        "evaluationRequestId": "evaluation-request:ingestion:adabdb32b734d6ee9510:intent:ingestion:dd2149d8b31ecd188aa9:1",
+                        "routePolicyVersion": "context-comparison-route-v1"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "stepId": "due",
+            "decisions": [],
+            "score": {
+              "passed": false,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": false,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "process": null,
+            "modelCalls": [],
+            "state": [
+              {
+                "intent": {
+                  "schemaVersion": "0.1.0",
+                  "id": "intent:ingestion:dd2149d8b31ecd188aa9:1",
+                  "status": "cancelled",
+                  "subject": "询问用户的练琴进度",
+                  "reason": "用户明确要求在明天 09:00 UTC 询问练琴进度，并给出了在连续两次未回复后的取消条件。",
+                  "target": {
+                    "kind": "user",
+                    "id": "synthetic:unanswered"
+                  },
+                  "evidence": [
+                    {
+                      "eventId": "unanswered:source1",
+                      "quote": "明天09:00 UTC可以问问我的练琴进度。如果之前已经连续两次主动找我而我没回复，就保持沉默，别再追问，也别安排追问。"
+                    }
+                  ],
+                  "notBefore": "2026-09-06T09:00:00.000Z",
+                  "expiresAt": null,
+                  "cancellationHints": [
+                    "用户撤回或更改该提醒请求",
+                    "用户已提供练琴进度更新",
+                    "此前已连续两次主动联系用户且用户未回复"
+                  ],
+                  "priority": 0.7,
+                  "interruptionCost": 0.3,
+                  "confidence": 0.98,
+                  "createdAt": "2026-09-05T09:00:00.000Z",
+                  "updatedAt": "2026-09-06T08:00:00.000Z",
+                  "metadata": {
+                    "sourceConversationId": "unanswered",
+                    "sourceIngestionId": "dd2149d8b31ecd188aa9"
+                  }
+                },
+                "revision": 3,
+                "nextEvaluationAt": null,
+                "audit": [
+                  {
+                    "kind": "evaluation-requested",
+                    "request": {
+                      "id": "evaluation-request:ingestion:adabdb32b734d6ee9510:intent:ingestion:dd2149d8b31ecd188aa9:1",
+                      "intentId": "intent:ingestion:dd2149d8b31ecd188aa9:1",
+                      "requestedAt": "2026-09-06T08:00:00Z",
+                      "eventIds": [
+                        "unanswered:a1",
+                        "unanswered:a2"
+                      ],
+                      "effect": "cancel",
+                      "reason": "用户明确设定了“连续两次主动找我而我没回复就保持沉默，不再追问”的取消条件；这两条连续主动联系且未见回复，已使后续练琴进度追问应被取消。",
+                      "confidence": 0.98,
+                      "nextEvaluationAt": "2026-09-06T08:00:00Z",
+                      "policyVersion": "context-comparison-route-v1",
+                      "metadata": {
+                        "source": "conversation-event-route"
+                      }
+                    }
+                  },
+                  {
+                    "kind": "decision",
+                    "decision": {
+                      "id": "decision:evaluate:intent:ingestion:dd2149d8b31ecd188aa9:1:revision:2",
+                      "intentId": "intent:ingestion:dd2149d8b31ecd188aa9:1",
+                      "evaluatedAt": "2026-09-06T08:00:00.000Z",
+                      "action": "cancel",
+                      "reason": "用户明确设定了“连续两次主动找我而我没回复就保持沉默，不再追问”的取消条件；这两条连续主动联系且未见回复，已使后续练琴进度追问应被取消。",
+                      "evidenceRefs": [
+                        "unanswered:source1"
+                      ],
+                      "counterEvidenceRefs": [
+                        "unanswered:a1",
+                        "unanswered:a2"
+                      ],
+                      "confidence": 0.98,
+                      "nextEvaluationAt": null,
+                      "policyVersion": "context-comparison-decision-v1",
+                      "metadata": {
+                        "source": "relevance-route-closure",
+                        "evaluationRequestId": "evaluation-request:ingestion:adabdb32b734d6ee9510:intent:ingestion:dd2149d8b31ecd188aa9:1",
+                        "routePolicyVersion": "context-comparison-route-v1"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "trace": {
+          "applicable": true,
+          "passed": true,
+          "establishedIntents": [
+            {
+              "intentId": "intent:ingestion:dd2149d8b31ecd188aa9:1",
+              "evidenceRefs": [
+                "unanswered:source1"
+              ],
+              "transitions": [
+                {
+                  "kind": "evaluation-requested",
+                  "request": {
+                    "id": "evaluation-request:ingestion:adabdb32b734d6ee9510:intent:ingestion:dd2149d8b31ecd188aa9:1",
+                    "intentId": "intent:ingestion:dd2149d8b31ecd188aa9:1",
+                    "requestedAt": "2026-09-06T08:00:00Z",
+                    "eventIds": [
+                      "unanswered:a1",
+                      "unanswered:a2"
+                    ],
+                    "effect": "cancel",
+                    "reason": "用户明确设定了“连续两次主动找我而我没回复就保持沉默，不再追问”的取消条件；这两条连续主动联系且未见回复，已使后续练琴进度追问应被取消。",
+                    "confidence": 0.98,
+                    "nextEvaluationAt": "2026-09-06T08:00:00Z",
+                    "policyVersion": "context-comparison-route-v1",
+                    "metadata": {
+                      "source": "conversation-event-route"
+                    }
+                  }
+                },
+                {
+                  "kind": "decision",
+                  "decision": {
+                    "id": "decision:evaluate:intent:ingestion:dd2149d8b31ecd188aa9:1:revision:2",
+                    "intentId": "intent:ingestion:dd2149d8b31ecd188aa9:1",
+                    "evaluatedAt": "2026-09-06T08:00:00.000Z",
+                    "action": "cancel",
+                    "reason": "用户明确设定了“连续两次主动找我而我没回复就保持沉默，不再追问”的取消条件；这两条连续主动联系且未见回复，已使后续练琴进度追问应被取消。",
+                    "evidenceRefs": [
+                      "unanswered:source1"
+                    ],
+                    "counterEvidenceRefs": [
+                      "unanswered:a1",
+                      "unanswered:a2"
+                    ],
+                    "confidence": 0.98,
+                    "nextEvaluationAt": null,
+                    "policyVersion": "context-comparison-decision-v1",
+                    "metadata": {
+                      "source": "relevance-route-closure",
+                      "evaluationRequestId": "evaluation-request:ingestion:adabdb32b734d6ee9510:intent:ingestion:dd2149d8b31ecd188aa9:1",
+                      "routePolicyVersion": "context-comparison-route-v1"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "contextAware": {
+        "rows": [
+          {
+            "stepId": "initial",
+            "decisions": [
+              {
+                "action": "defer",
+                "evidenceRefs": [
+                  "unanswered:source1"
+                ],
+                "kind": "intent_driven",
+                "nextEvaluationAt": "2026-09-06T09:00:00Z",
+                "reason": "用户明确允许在明天 09:00 UTC 询问练琴进度；当前尚未到该时间。",
+                "recognition": "open"
+              }
+            ],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "context_aware_decisions",
+                "phase": "decision",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 494,
+                  "outputTokens": 176,
+                  "totalTokens": 670
+                },
+                "requestId": "2d57687e-2864-4526-a89c-43421676b1ef",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ]
+          },
+          {
+            "stepId": "history",
+            "decisions": [
+              {
+                "action": "silent",
+                "evidenceRefs": [
+                  "unanswered:source1",
+                  "unanswered:a1",
+                  "unanswered:a2"
+                ],
+                "kind": "intent_driven",
+                "nextEvaluationAt": null,
+                "reason": "用户明确要求在连续两次主动联系且仍未回复时停止追问；目前已发送两次但未收到回复，因此此轮不再联系，也不安排后续追问。",
+                "recognition": "cancelled"
+              }
+            ],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "context_aware_decisions",
+                "phase": "decision",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 581,
+                  "outputTokens": 348,
+                  "totalTokens": 929
+                },
+                "requestId": "af52fda2-90b5-439f-863f-61c3bc37a659",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ]
+          },
+          {
+            "stepId": "due",
+            "decisions": [
+              {
+                "action": "silent",
+                "evidenceRefs": [
+                  "unanswered:source1",
+                  "unanswered:a1",
+                  "unanswered:a2"
+                ],
+                "kind": "intent_driven",
+                "nextEvaluationAt": null,
+                "reason": "虽然现在到了用户允许询问练琴进度的时间，但用户明确要求如果此前已连续两次主动联系且未回复就保持沉默；07:00和08:00已有两次未获回复的主动联系。",
+                "recognition": "unanswered"
+              }
+            ],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "context_aware_decisions",
+                "phase": "decision",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 581,
+                  "outputTokens": 188,
+                  "totalTokens": 769
+                },
+                "requestId": "7abb7c54-3879-4979-963b-a06944783953",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ]
+          }
+        ],
+        "trace": {
+          "applicable": false,
+          "passed": true,
+          "reason": "Context-aware baseline has decision evidence but no persistent intent lifecycle to audit."
+        }
+      },
+      "diagnostics": []
+    },
+    {
+      "id": "multiple",
+      "title": "多理由分别处理",
+      "kind": "intent_driven",
+      "wakeIntent": {
+        "rows": [
+          {
+            "stepId": "initial",
+            "decisions": [],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "process": {
+              "outcome": "created",
+              "modelWorkPerformed": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "wakeintent_candidates",
+                "phase": "extraction",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 489,
+                  "outputTokens": 689,
+                  "totalTokens": 1178
+                },
+                "requestId": "ec4ff837-8b70-4f1f-a5c0-707582e2b5c1",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ],
+            "state": [
+              {
+                "intent": {
+                  "schemaVersion": "0.1.0",
+                  "id": "intent:ingestion:866a1f1530388549ec03:1",
+                  "status": "active",
+                  "subject": "询问论文提交情况",
+                  "reason": "在论文提交时间后询问提交情况",
+                  "target": {
+                    "kind": "user",
+                    "id": "synthetic:multiple"
+                  },
+                  "evidence": [
+                    {
+                      "eventId": "multiple:source1",
+                      "quote": "我明天09:00 UTC提交论文，到时问一次提交情况。"
+                    }
+                  ],
+                  "notBefore": "2026-09-06T09:00:00Z",
+                  "expiresAt": null,
+                  "cancellationHints": [
+                    "用户已取消这个提醒",
+                    "论文已经提交并且不再需要核实",
+                    "相关投稿事项已结束或被其他跟进取代"
+                  ],
+                  "priority": 0.9,
+                  "interruptionCost": 0.2,
+                  "confidence": 0.97,
+                  "createdAt": "2026-09-05T09:00:00.000Z",
+                  "updatedAt": "2026-09-05T09:00:00.000Z",
+                  "metadata": {
+                    "sourceConversationId": "multiple",
+                    "sourceIngestionId": "866a1f1530388549ec03"
+                  }
+                },
+                "revision": 1,
+                "nextEvaluationAt": "2026-09-06T09:00:00Z",
+                "audit": []
+              },
+              {
+                "intent": {
+                  "schemaVersion": "0.1.0",
+                  "id": "intent:ingestion:866a1f1530388549ec03:2",
+                  "status": "active",
+                  "subject": "询问摄影课程收获",
+                  "reason": "在摄影课程结束后询问学到了什么",
+                  "target": {
+                    "kind": "user",
+                    "id": "synthetic:multiple"
+                  },
+                  "evidence": [
+                    {
+                      "eventId": "multiple:source2",
+                      "quote": "我明天09:00 UTC参加完摄影课程，到时问一次学到了什么。"
+                    }
+                  ],
+                  "notBefore": "2026-09-06T09:00:00Z",
+                  "expiresAt": null,
+                  "cancellationHints": [
+                    "用户已取消这个提醒",
+                    "摄影课程已经结束并且不再需要回顾",
+                    "已经问过学到了什么或该跟进已被其他事项取代"
+                  ],
+                  "priority": 0.88,
+                  "interruptionCost": 0.2,
+                  "confidence": 0.97,
+                  "createdAt": "2026-09-05T09:00:00.000Z",
+                  "updatedAt": "2026-09-05T09:00:00.000Z",
+                  "metadata": {
+                    "sourceConversationId": "multiple",
+                    "sourceIngestionId": "866a1f1530388549ec03"
+                  }
+                },
+                "revision": 1,
+                "nextEvaluationAt": "2026-09-06T09:00:00Z",
+                "audit": []
+              }
+            ]
+          },
+          {
+            "stepId": "update",
+            "decisions": [
+              {
+                "action": "resolve",
+                "kind": "none",
+                "recognition": "resolved",
+                "reason": "用户明确表示论文已经提交成功且论文事项已解决，原本要询问提交情况的目标结果已经已知/完成。",
+                "evidenceRefs": [
+                  "multiple:source1",
+                  "multiple:update"
+                ],
+                "nextEvaluationAt": null,
+                "intentId": "intent:ingestion:866a1f1530388549ec03:1",
+                "source": "route-closure"
+              }
+            ],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "process": {
+              "outcome": "created",
+              "modelWorkPerformed": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "wakeintent_candidates",
+                "phase": "extraction",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 434,
+                  "outputTokens": 129,
+                  "totalTokens": 563
+                },
+                "requestId": "c935303f-5ebc-497a-81de-fa87b437b07d",
+                "attempts": 1,
+                "costUsd": null
+              },
+              {
+                "schemaName": "wakeintent_relevance_route",
+                "phase": "extraction",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 647,
+                  "outputTokens": 178,
+                  "totalTokens": 825
+                },
+                "requestId": "2a6b7601-8ef7-405e-9e91-13cf8c0d855e",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ],
+            "state": [
+              {
+                "intent": {
+                  "schemaVersion": "0.1.0",
+                  "id": "intent:ingestion:866a1f1530388549ec03:2",
+                  "status": "active",
+                  "subject": "询问摄影课程收获",
+                  "reason": "在摄影课程结束后询问学到了什么",
+                  "target": {
+                    "kind": "user",
+                    "id": "synthetic:multiple"
+                  },
+                  "evidence": [
+                    {
+                      "eventId": "multiple:source2",
+                      "quote": "我明天09:00 UTC参加完摄影课程，到时问一次学到了什么。"
+                    }
+                  ],
+                  "notBefore": "2026-09-06T09:00:00Z",
+                  "expiresAt": null,
+                  "cancellationHints": [
+                    "用户已取消这个提醒",
+                    "摄影课程已经结束并且不再需要回顾",
+                    "已经问过学到了什么或该跟进已被其他事项取代"
+                  ],
+                  "priority": 0.88,
+                  "interruptionCost": 0.2,
+                  "confidence": 0.97,
+                  "createdAt": "2026-09-05T09:00:00.000Z",
+                  "updatedAt": "2026-09-05T09:00:00.000Z",
+                  "metadata": {
+                    "sourceConversationId": "multiple",
+                    "sourceIngestionId": "866a1f1530388549ec03"
+                  }
+                },
+                "revision": 1,
+                "nextEvaluationAt": "2026-09-06T09:00:00Z",
+                "audit": []
+              },
+              {
+                "intent": {
+                  "schemaVersion": "0.1.0",
+                  "id": "intent:ingestion:866a1f1530388549ec03:1",
+                  "status": "resolved",
+                  "subject": "询问论文提交情况",
+                  "reason": "在论文提交时间后询问提交情况",
+                  "target": {
+                    "kind": "user",
+                    "id": "synthetic:multiple"
+                  },
+                  "evidence": [
+                    {
+                      "eventId": "multiple:source1",
+                      "quote": "我明天09:00 UTC提交论文，到时问一次提交情况。"
+                    }
+                  ],
+                  "notBefore": "2026-09-06T09:00:00Z",
+                  "expiresAt": null,
+                  "cancellationHints": [
+                    "用户已取消这个提醒",
+                    "论文已经提交并且不再需要核实",
+                    "相关投稿事项已结束或被其他跟进取代"
+                  ],
+                  "priority": 0.9,
+                  "interruptionCost": 0.2,
+                  "confidence": 0.97,
+                  "createdAt": "2026-09-05T09:00:00.000Z",
+                  "updatedAt": "2026-09-05T15:00:00.000Z",
+                  "metadata": {
+                    "sourceConversationId": "multiple",
+                    "sourceIngestionId": "866a1f1530388549ec03"
+                  }
+                },
+                "revision": 3,
+                "nextEvaluationAt": null,
+                "audit": [
+                  {
+                    "kind": "evaluation-requested",
+                    "request": {
+                      "id": "evaluation-request:ingestion:0eb075d3de9fe8d0252c:intent:ingestion:866a1f1530388549ec03:1",
+                      "intentId": "intent:ingestion:866a1f1530388549ec03:1",
+                      "requestedAt": "2026-09-05T15:00:00Z",
+                      "eventIds": [
+                        "multiple:update"
+                      ],
+                      "effect": "resolve",
+                      "reason": "用户明确表示论文已经提交成功且论文事项已解决，原本要询问提交情况的目标结果已经已知/完成。",
+                      "confidence": 0.99,
+                      "nextEvaluationAt": "2026-09-05T15:00:00Z",
+                      "policyVersion": "context-comparison-route-v1",
+                      "metadata": {
+                        "source": "conversation-event-route"
+                      }
+                    }
+                  },
+                  {
+                    "kind": "decision",
+                    "decision": {
+                      "id": "decision:evaluate:intent:ingestion:866a1f1530388549ec03:1:revision:2",
+                      "intentId": "intent:ingestion:866a1f1530388549ec03:1",
+                      "evaluatedAt": "2026-09-05T15:00:00.000Z",
+                      "action": "resolve",
+                      "reason": "用户明确表示论文已经提交成功且论文事项已解决，原本要询问提交情况的目标结果已经已知/完成。",
+                      "evidenceRefs": [
+                        "multiple:source1"
+                      ],
+                      "counterEvidenceRefs": [
+                        "multiple:update"
+                      ],
+                      "confidence": 0.99,
+                      "nextEvaluationAt": null,
+                      "policyVersion": "context-comparison-decision-v1",
+                      "metadata": {
+                        "source": "relevance-route-closure",
+                        "evaluationRequestId": "evaluation-request:ingestion:0eb075d3de9fe8d0252c:intent:ingestion:866a1f1530388549ec03:1",
+                        "routePolicyVersion": "context-comparison-route-v1"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "stepId": "due",
+            "decisions": [
+              {
+                "action": "contact",
+                "kind": "intent_driven",
+                "recognition": "none",
+                "reason": "原始跟进明确要求在参加完摄影课后询问收获（multiple:source2），而最新更新说明摄影课仍按原计划进行、没有取消或改期（multiple:update）。现在已到 notBefore，继续联系仍有价值。",
+                "evidenceRefs": [
+                  "multiple:source2",
+                  "multiple:update"
+                ],
+                "nextEvaluationAt": null,
+                "intentId": "intent:ingestion:866a1f1530388549ec03:2",
+                "source": "semantic"
+              }
+            ],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "process": null,
+            "modelCalls": [
+              {
+                "schemaName": "wakeintent_decision",
+                "phase": "decision",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 671,
+                  "outputTokens": 1425,
+                  "totalTokens": 2096
+                },
+                "requestId": "f129d987-22d0-4fd1-bd82-6f08445e1366",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ],
+            "state": [
+              {
+                "intent": {
+                  "schemaVersion": "0.1.0",
+                  "id": "intent:ingestion:866a1f1530388549ec03:1",
+                  "status": "resolved",
+                  "subject": "询问论文提交情况",
+                  "reason": "在论文提交时间后询问提交情况",
+                  "target": {
+                    "kind": "user",
+                    "id": "synthetic:multiple"
+                  },
+                  "evidence": [
+                    {
+                      "eventId": "multiple:source1",
+                      "quote": "我明天09:00 UTC提交论文，到时问一次提交情况。"
+                    }
+                  ],
+                  "notBefore": "2026-09-06T09:00:00Z",
+                  "expiresAt": null,
+                  "cancellationHints": [
+                    "用户已取消这个提醒",
+                    "论文已经提交并且不再需要核实",
+                    "相关投稿事项已结束或被其他跟进取代"
+                  ],
+                  "priority": 0.9,
+                  "interruptionCost": 0.2,
+                  "confidence": 0.97,
+                  "createdAt": "2026-09-05T09:00:00.000Z",
+                  "updatedAt": "2026-09-05T15:00:00.000Z",
+                  "metadata": {
+                    "sourceConversationId": "multiple",
+                    "sourceIngestionId": "866a1f1530388549ec03"
+                  }
+                },
+                "revision": 3,
+                "nextEvaluationAt": null,
+                "audit": [
+                  {
+                    "kind": "evaluation-requested",
+                    "request": {
+                      "id": "evaluation-request:ingestion:0eb075d3de9fe8d0252c:intent:ingestion:866a1f1530388549ec03:1",
+                      "intentId": "intent:ingestion:866a1f1530388549ec03:1",
+                      "requestedAt": "2026-09-05T15:00:00Z",
+                      "eventIds": [
+                        "multiple:update"
+                      ],
+                      "effect": "resolve",
+                      "reason": "用户明确表示论文已经提交成功且论文事项已解决，原本要询问提交情况的目标结果已经已知/完成。",
+                      "confidence": 0.99,
+                      "nextEvaluationAt": "2026-09-05T15:00:00Z",
+                      "policyVersion": "context-comparison-route-v1",
+                      "metadata": {
+                        "source": "conversation-event-route"
+                      }
+                    }
+                  },
+                  {
+                    "kind": "decision",
+                    "decision": {
+                      "id": "decision:evaluate:intent:ingestion:866a1f1530388549ec03:1:revision:2",
+                      "intentId": "intent:ingestion:866a1f1530388549ec03:1",
+                      "evaluatedAt": "2026-09-05T15:00:00.000Z",
+                      "action": "resolve",
+                      "reason": "用户明确表示论文已经提交成功且论文事项已解决，原本要询问提交情况的目标结果已经已知/完成。",
+                      "evidenceRefs": [
+                        "multiple:source1"
+                      ],
+                      "counterEvidenceRefs": [
+                        "multiple:update"
+                      ],
+                      "confidence": 0.99,
+                      "nextEvaluationAt": null,
+                      "policyVersion": "context-comparison-decision-v1",
+                      "metadata": {
+                        "source": "relevance-route-closure",
+                        "evaluationRequestId": "evaluation-request:ingestion:0eb075d3de9fe8d0252c:intent:ingestion:866a1f1530388549ec03:1",
+                        "routePolicyVersion": "context-comparison-route-v1"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "intent": {
+                  "schemaVersion": "0.1.0",
+                  "id": "intent:ingestion:866a1f1530388549ec03:2",
+                  "status": "active",
+                  "subject": "询问摄影课程收获",
+                  "reason": "在摄影课程结束后询问学到了什么",
+                  "target": {
+                    "kind": "user",
+                    "id": "synthetic:multiple"
+                  },
+                  "evidence": [
+                    {
+                      "eventId": "multiple:source2",
+                      "quote": "我明天09:00 UTC参加完摄影课程，到时问一次学到了什么。"
+                    }
+                  ],
+                  "notBefore": "2026-09-06T09:00:00Z",
+                  "expiresAt": null,
+                  "cancellationHints": [
+                    "用户已取消这个提醒",
+                    "摄影课程已经结束并且不再需要回顾",
+                    "已经问过学到了什么或该跟进已被其他事项取代"
+                  ],
+                  "priority": 0.88,
+                  "interruptionCost": 0.2,
+                  "confidence": 0.97,
+                  "createdAt": "2026-09-05T09:00:00.000Z",
+                  "updatedAt": "2026-09-06T09:00:00.000Z",
+                  "metadata": {
+                    "sourceConversationId": "multiple",
+                    "sourceIngestionId": "866a1f1530388549ec03"
+                  }
+                },
+                "revision": 2,
+                "nextEvaluationAt": null,
+                "audit": [
+                  {
+                    "kind": "decision",
+                    "decision": {
+                      "id": "decision:evaluate:intent:ingestion:866a1f1530388549ec03:2:revision:1",
+                      "intentId": "intent:ingestion:866a1f1530388549ec03:2",
+                      "evaluatedAt": "2026-09-06T09:00:00.000Z",
+                      "action": "contact",
+                      "reason": "原始跟进明确要求在参加完摄影课后询问收获（multiple:source2），而最新更新说明摄影课仍按原计划进行、没有取消或改期（multiple:update）。现在已到 notBefore，继续联系仍有价值。",
+                      "evidenceRefs": [
+                        "multiple:source2",
+                        "multiple:update"
+                      ],
+                      "counterEvidenceRefs": [],
+                      "confidence": 0.92,
+                      "nextEvaluationAt": null,
+                      "policyVersion": "context-comparison-decision-v1"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "trace": {
+          "applicable": true,
+          "passed": true,
+          "establishedIntents": [
+            {
+              "intentId": "intent:ingestion:866a1f1530388549ec03:1",
+              "evidenceRefs": [
+                "multiple:source1"
+              ],
+              "transitions": [
+                {
+                  "kind": "evaluation-requested",
+                  "request": {
+                    "id": "evaluation-request:ingestion:0eb075d3de9fe8d0252c:intent:ingestion:866a1f1530388549ec03:1",
+                    "intentId": "intent:ingestion:866a1f1530388549ec03:1",
+                    "requestedAt": "2026-09-05T15:00:00Z",
+                    "eventIds": [
+                      "multiple:update"
+                    ],
+                    "effect": "resolve",
+                    "reason": "用户明确表示论文已经提交成功且论文事项已解决，原本要询问提交情况的目标结果已经已知/完成。",
+                    "confidence": 0.99,
+                    "nextEvaluationAt": "2026-09-05T15:00:00Z",
+                    "policyVersion": "context-comparison-route-v1",
+                    "metadata": {
+                      "source": "conversation-event-route"
+                    }
+                  }
+                },
+                {
+                  "kind": "decision",
+                  "decision": {
+                    "id": "decision:evaluate:intent:ingestion:866a1f1530388549ec03:1:revision:2",
+                    "intentId": "intent:ingestion:866a1f1530388549ec03:1",
+                    "evaluatedAt": "2026-09-05T15:00:00.000Z",
+                    "action": "resolve",
+                    "reason": "用户明确表示论文已经提交成功且论文事项已解决，原本要询问提交情况的目标结果已经已知/完成。",
+                    "evidenceRefs": [
+                      "multiple:source1"
+                    ],
+                    "counterEvidenceRefs": [
+                      "multiple:update"
+                    ],
+                    "confidence": 0.99,
+                    "nextEvaluationAt": null,
+                    "policyVersion": "context-comparison-decision-v1",
+                    "metadata": {
+                      "source": "relevance-route-closure",
+                      "evaluationRequestId": "evaluation-request:ingestion:0eb075d3de9fe8d0252c:intent:ingestion:866a1f1530388549ec03:1",
+                      "routePolicyVersion": "context-comparison-route-v1"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "intentId": "intent:ingestion:866a1f1530388549ec03:2",
+              "evidenceRefs": [
+                "multiple:source2"
+              ],
+              "transitions": [
+                {
+                  "kind": "decision",
+                  "decision": {
+                    "id": "decision:evaluate:intent:ingestion:866a1f1530388549ec03:2:revision:1",
+                    "intentId": "intent:ingestion:866a1f1530388549ec03:2",
+                    "evaluatedAt": "2026-09-06T09:00:00.000Z",
+                    "action": "contact",
+                    "reason": "原始跟进明确要求在参加完摄影课后询问收获（multiple:source2），而最新更新说明摄影课仍按原计划进行、没有取消或改期（multiple:update）。现在已到 notBefore，继续联系仍有价值。",
+                    "evidenceRefs": [
+                      "multiple:source2",
+                      "multiple:update"
+                    ],
+                    "counterEvidenceRefs": [],
+                    "confidence": 0.92,
+                    "nextEvaluationAt": null,
+                    "policyVersion": "context-comparison-decision-v1"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "contextAware": {
+        "rows": [
+          {
+            "stepId": "initial",
+            "decisions": [
+              {
+                "action": "defer",
+                "evidenceRefs": [
+                  "multiple:source1"
+                ],
+                "kind": "intent_driven",
+                "nextEvaluationAt": "2026-09-06T09:00:00Z",
+                "reason": "用户明确要求在明天09:00 UTC询问论文提交情况；现在尚未到该时间。",
+                "recognition": "open"
+              },
+              {
+                "action": "defer",
+                "evidenceRefs": [
+                  "multiple:source2"
+                ],
+                "kind": "intent_driven",
+                "nextEvaluationAt": "2026-09-06T09:00:00Z",
+                "reason": "用户明确要求在明天09:00 UTC询问摄影课程后学到了什么；现在尚未到该时间。",
+                "recognition": "open"
+              }
+            ],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "context_aware_decisions",
+                "phase": "decision",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 522,
+                  "outputTokens": 229,
+                  "totalTokens": 751
+                },
+                "requestId": "3a83f665-8c17-44aa-b0f4-8fd84ca7ec8a",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ]
+          },
+          {
+            "stepId": "update",
+            "decisions": [
+              {
+                "action": "silent",
+                "evidenceRefs": [
+                  "multiple:source1",
+                  "multiple:update"
+                ],
+                "kind": "intent_driven",
+                "nextEvaluationAt": null,
+                "reason": "论文跟进已被用户更新为“已经提交成功，论文这件事已解决”，因此不再需要在明天提醒提问。",
+                "recognition": "cancelled"
+              },
+              {
+                "action": "defer",
+                "evidenceRefs": [
+                  "multiple:source2"
+                ],
+                "kind": "intent_driven",
+                "nextEvaluationAt": "2026-09-06T09:00:00Z",
+                "reason": "摄影课仍按原计划，用户要求在明天09:00 UTC课程结束后问一次学到了什么。",
+                "recognition": "open"
+              }
+            ],
+            "score": {
+              "passed": false,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": false,
+              "explanationConsistent": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "context_aware_decisions",
+                "phase": "decision",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 576,
+                  "outputTokens": 491,
+                  "totalTokens": 1067
+                },
+                "requestId": "3f3f8071-9d4a-4687-bc2d-4ee1d3a2489f",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ]
+          },
+          {
+            "stepId": "due",
+            "decisions": [
+              {
+                "action": "silent",
+                "evidenceRefs": [
+                  "multiple:update"
+                ],
+                "kind": "intent_driven",
+                "nextEvaluationAt": null,
+                "reason": "论文已提交成功，原提醒已解决，现在不需要再问提交情况。",
+                "recognition": "resolved"
+              },
+              {
+                "action": "silent",
+                "evidenceRefs": [
+                  "multiple:source2",
+                  "multiple:update"
+                ],
+                "kind": "intent_driven",
+                "nextEvaluationAt": null,
+                "reason": "摄影课仍按原计划，但没有看到已结束或已完成的证据，当前不足以触发提问。",
+                "recognition": "open"
+              }
+            ],
+            "score": {
+              "passed": false,
+              "actionCorrect": false,
+              "contactsCorrect": false,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "context_aware_decisions",
+                "phase": "decision",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 576,
+                  "outputTokens": 1421,
+                  "totalTokens": 1997
+                },
+                "requestId": "a17a2f00-149e-4573-aea0-622560267156",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ]
+          }
+        ],
+        "trace": {
+          "applicable": false,
+          "passed": true,
+          "reason": "Context-aware baseline has decision evidence but no persistent intent lifecycle to audit."
+        }
+      },
+      "diagnostics": []
+    },
+    {
+      "id": "long",
+      "title": "早期理由退出近期上下文",
+      "kind": "intent_driven",
+      "wakeIntent": {
+        "rows": [
+          {
+            "stepId": "initial",
+            "decisions": [],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "process": {
+              "outcome": "created",
+              "modelWorkPerformed": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "wakeintent_candidates",
+                "phase": "extraction",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 437,
+                  "outputTokens": 246,
+                  "totalTokens": 683
+                },
+                "requestId": "6ac5c45d-7c29-42fa-8c4a-c7fdc55402ba",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ],
+            "state": [
+              {
+                "intent": {
+                  "schemaVersion": "0.1.0",
+                  "id": "intent:ingestion:823b285aef607c6adbdf:1",
+                  "status": "active",
+                  "subject": "询问志愿活动感受",
+                  "reason": "用户明确要求在志愿活动结束时询问一次活动感受。",
+                  "target": {
+                    "kind": "user",
+                    "id": "synthetic:long"
+                  },
+                  "evidence": [
+                    {
+                      "eventId": "long:source1",
+                      "quote": "我明天09:00 UTC结束志愿活动，请到时问一次活动感受。"
+                    }
+                  ],
+                  "notBefore": "2026-09-06T09:00:00Z",
+                  "expiresAt": null,
+                  "cancellationHints": [
+                    "用户取消或不再希望被询问",
+                    "用户已分享活动感受",
+                    "志愿活动未进行或已被取消",
+                    "该提醒已被其他方式完成或取代"
+                  ],
+                  "priority": 0.8,
+                  "interruptionCost": 0.2,
+                  "confidence": 0.98,
+                  "createdAt": "2026-09-05T09:00:00.000Z",
+                  "updatedAt": "2026-09-05T09:00:00.000Z",
+                  "metadata": {
+                    "sourceConversationId": "long",
+                    "sourceIngestionId": "823b285aef607c6adbdf"
+                  }
+                },
+                "revision": 1,
+                "nextEvaluationAt": "2026-09-06T09:00:00Z",
+                "audit": []
+              }
+            ]
+          },
+          {
+            "stepId": "long-chat",
+            "decisions": [],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "process": {
+              "outcome": "created",
+              "modelWorkPerformed": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "wakeintent_candidates",
+                "phase": "extraction",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 962,
+                  "outputTokens": 54,
+                  "totalTokens": 1016
+                },
+                "requestId": "290071dc-28e3-406b-a5f2-fce3ff82ce4a",
+                "attempts": 1,
+                "costUsd": null
+              },
+              {
+                "schemaName": "wakeintent_relevance_route",
+                "phase": "extraction",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 1082,
+                  "outputTokens": 54,
+                  "totalTokens": 1136
+                },
+                "requestId": "7ddc07b1-82c9-458b-b9ea-bd9cec8c45c6",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ],
+            "state": [
+              {
+                "intent": {
+                  "schemaVersion": "0.1.0",
+                  "id": "intent:ingestion:823b285aef607c6adbdf:1",
+                  "status": "active",
+                  "subject": "询问志愿活动感受",
+                  "reason": "用户明确要求在志愿活动结束时询问一次活动感受。",
+                  "target": {
+                    "kind": "user",
+                    "id": "synthetic:long"
+                  },
+                  "evidence": [
+                    {
+                      "eventId": "long:source1",
+                      "quote": "我明天09:00 UTC结束志愿活动，请到时问一次活动感受。"
+                    }
+                  ],
+                  "notBefore": "2026-09-06T09:00:00Z",
+                  "expiresAt": null,
+                  "cancellationHints": [
+                    "用户取消或不再希望被询问",
+                    "用户已分享活动感受",
+                    "志愿活动未进行或已被取消",
+                    "该提醒已被其他方式完成或取代"
+                  ],
+                  "priority": 0.8,
+                  "interruptionCost": 0.2,
+                  "confidence": 0.98,
+                  "createdAt": "2026-09-05T09:00:00.000Z",
+                  "updatedAt": "2026-09-05T09:00:00.000Z",
+                  "metadata": {
+                    "sourceConversationId": "long",
+                    "sourceIngestionId": "823b285aef607c6adbdf"
+                  }
+                },
+                "revision": 1,
+                "nextEvaluationAt": "2026-09-06T09:00:00Z",
+                "audit": []
+              }
+            ]
+          },
+          {
+            "stepId": "due",
+            "decisions": [
+              {
+                "action": "contact",
+                "kind": "intent_driven",
+                "recognition": "none",
+                "reason": "已到达用户指定的询问时间 2026-09-06T09:00:00Z；原始请求明确要求志愿活动结束时询问一次活动感受（long:source1）。最新事件 long:filler4 至 long:filler11 只是关于蓝色和绿色的闲聊及助手回应，未显示用户已分享志愿活动感受、取消志愿活动、撤回提醒或拒绝后续询问。因此该跟进现在仍有价值，应联系询问。",
+                "evidenceRefs": [
+                  "long:source1",
+                  "long:filler4",
+                  "long:filler5",
+                  "long:filler6",
+                  "long:filler7",
+                  "long:filler8",
+                  "long:filler9",
+                  "long:filler10",
+                  "long:filler11"
+                ],
+                "nextEvaluationAt": null,
+                "intentId": "intent:ingestion:823b285aef607c6adbdf:1",
+                "source": "semantic"
+              }
+            ],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "process": null,
+            "modelCalls": [
+              {
+                "schemaName": "wakeintent_decision",
+                "phase": "decision",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 907,
+                  "outputTokens": 313,
+                  "totalTokens": 1220
+                },
+                "requestId": "4b869f81-fe4d-43c8-ae7f-e5d236b500d8",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ],
+            "state": [
+              {
+                "intent": {
+                  "schemaVersion": "0.1.0",
+                  "id": "intent:ingestion:823b285aef607c6adbdf:1",
+                  "status": "active",
+                  "subject": "询问志愿活动感受",
+                  "reason": "用户明确要求在志愿活动结束时询问一次活动感受。",
+                  "target": {
+                    "kind": "user",
+                    "id": "synthetic:long"
+                  },
+                  "evidence": [
+                    {
+                      "eventId": "long:source1",
+                      "quote": "我明天09:00 UTC结束志愿活动，请到时问一次活动感受。"
+                    }
+                  ],
+                  "notBefore": "2026-09-06T09:00:00Z",
+                  "expiresAt": null,
+                  "cancellationHints": [
+                    "用户取消或不再希望被询问",
+                    "用户已分享活动感受",
+                    "志愿活动未进行或已被取消",
+                    "该提醒已被其他方式完成或取代"
+                  ],
+                  "priority": 0.8,
+                  "interruptionCost": 0.2,
+                  "confidence": 0.98,
+                  "createdAt": "2026-09-05T09:00:00.000Z",
+                  "updatedAt": "2026-09-06T09:00:00.000Z",
+                  "metadata": {
+                    "sourceConversationId": "long",
+                    "sourceIngestionId": "823b285aef607c6adbdf"
+                  }
+                },
+                "revision": 2,
+                "nextEvaluationAt": null,
+                "audit": [
+                  {
+                    "kind": "decision",
+                    "decision": {
+                      "id": "decision:evaluate:intent:ingestion:823b285aef607c6adbdf:1:revision:1",
+                      "intentId": "intent:ingestion:823b285aef607c6adbdf:1",
+                      "evaluatedAt": "2026-09-06T09:00:00.000Z",
+                      "action": "contact",
+                      "reason": "已到达用户指定的询问时间 2026-09-06T09:00:00Z；原始请求明确要求志愿活动结束时询问一次活动感受（long:source1）。最新事件 long:filler4 至 long:filler11 只是关于蓝色和绿色的闲聊及助手回应，未显示用户已分享志愿活动感受、取消志愿活动、撤回提醒或拒绝后续询问。因此该跟进现在仍有价值，应联系询问。",
+                      "evidenceRefs": [
+                        "long:source1",
+                        "long:filler4",
+                        "long:filler5",
+                        "long:filler6",
+                        "long:filler7",
+                        "long:filler8",
+                        "long:filler9",
+                        "long:filler10",
+                        "long:filler11"
+                      ],
+                      "counterEvidenceRefs": [],
+                      "confidence": 0.93,
+                      "nextEvaluationAt": null,
+                      "policyVersion": "context-comparison-decision-v1"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "trace": {
+          "applicable": true,
+          "passed": true,
+          "establishedIntents": [
+            {
+              "intentId": "intent:ingestion:823b285aef607c6adbdf:1",
+              "evidenceRefs": [
+                "long:source1"
+              ],
+              "transitions": [
+                {
+                  "kind": "decision",
+                  "decision": {
+                    "id": "decision:evaluate:intent:ingestion:823b285aef607c6adbdf:1:revision:1",
+                    "intentId": "intent:ingestion:823b285aef607c6adbdf:1",
+                    "evaluatedAt": "2026-09-06T09:00:00.000Z",
+                    "action": "contact",
+                    "reason": "已到达用户指定的询问时间 2026-09-06T09:00:00Z；原始请求明确要求志愿活动结束时询问一次活动感受（long:source1）。最新事件 long:filler4 至 long:filler11 只是关于蓝色和绿色的闲聊及助手回应，未显示用户已分享志愿活动感受、取消志愿活动、撤回提醒或拒绝后续询问。因此该跟进现在仍有价值，应联系询问。",
+                    "evidenceRefs": [
+                      "long:source1",
+                      "long:filler4",
+                      "long:filler5",
+                      "long:filler6",
+                      "long:filler7",
+                      "long:filler8",
+                      "long:filler9",
+                      "long:filler10",
+                      "long:filler11"
+                    ],
+                    "counterEvidenceRefs": [],
+                    "confidence": 0.93,
+                    "nextEvaluationAt": null,
+                    "policyVersion": "context-comparison-decision-v1"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "contextAware": {
+        "rows": [
+          {
+            "stepId": "initial",
+            "decisions": [
+              {
+                "action": "defer",
+                "evidenceRefs": [
+                  "long:source1"
+                ],
+                "kind": "intent_driven",
+                "nextEvaluationAt": "2026-09-06T09:00:00Z",
+                "reason": "User asked to ask once about the volunteer activity feelings at tomorrow 09:00 UTC; that time has not arrived yet.",
+                "recognition": "open"
+              }
+            ],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "context_aware_decisions",
+                "phase": "decision",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 470,
+                  "outputTokens": 296,
+                  "totalTokens": 766
+                },
+                "requestId": "c3f18dd2-be50-4f8d-8340-e610e4143106",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ]
+          },
+          {
+            "stepId": "long-chat",
+            "decisions": [
+              {
+                "action": "silent",
+                "evidenceRefs": [
+                  "long:filler4",
+                  "long:filler5",
+                  "long:filler6",
+                  "long:filler7",
+                  "long:filler8",
+                  "long:filler9",
+                  "long:filler10",
+                  "long:filler11"
+                ],
+                "kind": "none",
+                "nextEvaluationAt": null,
+                "reason": "This was just casual color chat, and the assistant already replied to the same topic several times. There is no new question, task, or unresolved prompt that warrants another message now.",
+                "recognition": "none"
+              }
+            ],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "context_aware_decisions",
+                "phase": "decision",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 801,
+                  "outputTokens": 367,
+                  "totalTokens": 1168
+                },
+                "requestId": "75bb6a49-25ec-48a7-878b-3d2bba63a6d3",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ]
+          },
+          {
+            "stepId": "due",
+            "decisions": [
+              {
+                "action": "silent",
+                "evidenceRefs": [
+                  "long:filler10",
+                  "long:filler11",
+                  "long:filler8",
+                  "long:filler9"
+                ],
+                "kind": "none",
+                "nextEvaluationAt": null,
+                "reason": "最新内容仍然只是随便聊蓝色和绿色，而且这类内容已经被回复过多次；当前没有新的问题、请求或时间触发点，因此不需要再说话。",
+                "recognition": "none"
+              }
+            ],
+            "score": {
+              "passed": false,
+              "actionCorrect": false,
+              "contactsCorrect": false,
+              "evidenceCorrect": false,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "context_aware_decisions",
+                "phase": "decision",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 801,
+                  "outputTokens": 404,
+                  "totalTokens": 1205
+                },
+                "requestId": "04d93e94-704f-4724-a501-c569ee0c867e",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ]
+          }
+        ],
+        "trace": {
+          "applicable": false,
+          "passed": true,
+          "reason": "Context-aware baseline has decision evidence but no persistent intent lifecycle to audit."
+        }
+      },
+      "diagnostics": [
+        {
+          "kind": "full-archive-context",
+          "stepId": "due",
+          "decisions": [
+            {
+              "action": "contact",
+              "evidenceRefs": [
+                "long:source1"
+              ],
+              "kind": "intent_driven",
+              "nextEvaluationAt": null,
+              "reason": "用户明确要求在 2026-09-06 09:00 UTC 志愿活动结束时问一次活动感受；当前正是该时间，且未见已发送过该跟进。",
+              "recognition": "open"
+            }
+          ],
+          "score": {
+            "passed": true,
+            "actionCorrect": true,
+            "contactsCorrect": true,
+            "evidenceCorrect": true,
+            "recognitionCorrect": true,
+            "explanationConsistent": true
+          },
+          "modelCalls": [
+            {
+              "schemaName": "context_aware_decisions",
+              "phase": "decision",
+              "reasoningEffort": null,
+              "usage": {
+                "inputTokens": 1052,
+                "outputTokens": 121,
+                "totalTokens": 1173
+              },
+              "requestId": "21ffa0ef-657f-4a95-8481-0e0ea3b890fb",
+              "attempts": 1,
+              "costUsd": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "restart",
+      "title": "进程重启后恢复",
+      "kind": "intent_driven",
+      "wakeIntent": {
+        "rows": [
+          {
+            "stepId": "initial",
+            "decisions": [],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "process": {
+              "outcome": "created",
+              "modelWorkPerformed": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "wakeintent_candidates",
+                "phase": "extraction",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 437,
+                  "outputTokens": 330,
+                  "totalTokens": 767
+                },
+                "requestId": "016b3801-d965-4c80-9c78-8ea21462899d",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ],
+            "state": [
+              {
+                "intent": {
+                  "schemaVersion": "0.1.0",
+                  "id": "intent:ingestion:ae6488f2529bedcf1710:1",
+                  "status": "active",
+                  "subject": "询问第一次陶艺课的感受",
+                  "reason": "用户明确要求在第一次陶艺课完成时询问感受。",
+                  "target": {
+                    "kind": "user",
+                    "id": "synthetic:restart"
+                  },
+                  "evidence": [
+                    {
+                      "eventId": "restart:source1",
+                      "quote": "我明天09:00 UTC完成第一次陶艺课，请到时问一次感受。"
+                    }
+                  ],
+                  "notBefore": "2026-09-06T09:00:00Z",
+                  "expiresAt": null,
+                  "cancellationHints": [
+                    "用户撤回或更改这次提醒请求",
+                    "用户已经分享了第一次陶艺课的感受",
+                    "第一次陶艺课未按计划进行或已改期"
+                  ],
+                  "priority": 0.8,
+                  "interruptionCost": 0.2,
+                  "confidence": 0.98,
+                  "createdAt": "2026-09-05T09:00:00.000Z",
+                  "updatedAt": "2026-09-05T09:00:00.000Z",
+                  "metadata": {
+                    "sourceConversationId": "restart",
+                    "sourceIngestionId": "ae6488f2529bedcf1710"
+                  }
+                },
+                "revision": 1,
+                "nextEvaluationAt": "2026-09-06T09:00:00Z",
+                "audit": []
+              }
+            ]
+          },
+          {
+            "stepId": "due",
+            "decisions": [
+              {
+                "action": "contact",
+                "kind": "intent_driven",
+                "recognition": "none",
+                "reason": "已到用户指定的时间；最新事件显示用户明确要求在 2026-09-06 09:00 UTC 第一次陶艺课完成时询问感受，且没有后续事件表明用户撤回、已分享感受、课程改期或已有助手打扰。",
+                "evidenceRefs": [
+                  "restart:source1"
+                ],
+                "nextEvaluationAt": null,
+                "intentId": "intent:ingestion:ae6488f2529bedcf1710:1",
+                "source": "semantic"
+              }
+            ],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "process": null,
+            "modelCalls": [
+              {
+                "schemaName": "wakeintent_decision",
+                "phase": "decision",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 575,
+                  "outputTokens": 137,
+                  "totalTokens": 712
+                },
+                "requestId": "a5b7a266-e3f9-4520-9a41-b7caf8b9fd42",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ],
+            "state": [
+              {
+                "intent": {
+                  "schemaVersion": "0.1.0",
+                  "id": "intent:ingestion:ae6488f2529bedcf1710:1",
+                  "status": "active",
+                  "subject": "询问第一次陶艺课的感受",
+                  "reason": "用户明确要求在第一次陶艺课完成时询问感受。",
+                  "target": {
+                    "kind": "user",
+                    "id": "synthetic:restart"
+                  },
+                  "evidence": [
+                    {
+                      "eventId": "restart:source1",
+                      "quote": "我明天09:00 UTC完成第一次陶艺课，请到时问一次感受。"
+                    }
+                  ],
+                  "notBefore": "2026-09-06T09:00:00Z",
+                  "expiresAt": null,
+                  "cancellationHints": [
+                    "用户撤回或更改这次提醒请求",
+                    "用户已经分享了第一次陶艺课的感受",
+                    "第一次陶艺课未按计划进行或已改期"
+                  ],
+                  "priority": 0.8,
+                  "interruptionCost": 0.2,
+                  "confidence": 0.98,
+                  "createdAt": "2026-09-05T09:00:00.000Z",
+                  "updatedAt": "2026-09-06T09:00:00.000Z",
+                  "metadata": {
+                    "sourceConversationId": "restart",
+                    "sourceIngestionId": "ae6488f2529bedcf1710"
+                  }
+                },
+                "revision": 2,
+                "nextEvaluationAt": null,
+                "audit": [
+                  {
+                    "kind": "decision",
+                    "decision": {
+                      "id": "decision:evaluate:intent:ingestion:ae6488f2529bedcf1710:1:revision:1",
+                      "intentId": "intent:ingestion:ae6488f2529bedcf1710:1",
+                      "evaluatedAt": "2026-09-06T09:00:00.000Z",
+                      "action": "contact",
+                      "reason": "已到用户指定的时间；最新事件显示用户明确要求在 2026-09-06 09:00 UTC 第一次陶艺课完成时询问感受，且没有后续事件表明用户撤回、已分享感受、课程改期或已有助手打扰。",
+                      "evidenceRefs": [
+                        "restart:source1"
+                      ],
+                      "counterEvidenceRefs": [],
+                      "confidence": 0.98,
+                      "nextEvaluationAt": null,
+                      "policyVersion": "context-comparison-decision-v1"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "trace": {
+          "applicable": true,
+          "passed": true,
+          "establishedIntents": [
+            {
+              "intentId": "intent:ingestion:ae6488f2529bedcf1710:1",
+              "evidenceRefs": [
+                "restart:source1"
+              ],
+              "transitions": [
+                {
+                  "kind": "decision",
+                  "decision": {
+                    "id": "decision:evaluate:intent:ingestion:ae6488f2529bedcf1710:1:revision:1",
+                    "intentId": "intent:ingestion:ae6488f2529bedcf1710:1",
+                    "evaluatedAt": "2026-09-06T09:00:00.000Z",
+                    "action": "contact",
+                    "reason": "已到用户指定的时间；最新事件显示用户明确要求在 2026-09-06 09:00 UTC 第一次陶艺课完成时询问感受，且没有后续事件表明用户撤回、已分享感受、课程改期或已有助手打扰。",
+                    "evidenceRefs": [
+                      "restart:source1"
+                    ],
+                    "counterEvidenceRefs": [],
+                    "confidence": 0.98,
+                    "nextEvaluationAt": null,
+                    "policyVersion": "context-comparison-decision-v1"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "contextAware": {
+        "rows": [
+          {
+            "stepId": "initial",
+            "decisions": [
+              {
+                "action": "defer",
+                "evidenceRefs": [
+                  "restart:source1"
+                ],
+                "kind": "intent_driven",
+                "nextEvaluationAt": "2026-09-06T09:00:00Z",
+                "reason": "用户请求在明天 09:00 UTC 询问一次第一次陶艺课的感受；该时间尚未到。",
+                "recognition": "open"
+              }
+            ],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "context_aware_decisions",
+                "phase": "decision",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 470,
+                  "outputTokens": 231,
+                  "totalTokens": 701
+                },
+                "requestId": "c62bf674-7cb3-4c37-8850-cf0c879dc6bf",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ]
+          },
+          {
+            "stepId": "due",
+            "decisions": [
+              {
+                "action": "contact",
+                "evidenceRefs": [
+                  "restart:source1"
+                ],
+                "kind": "intent_driven",
+                "nextEvaluationAt": null,
+                "reason": "用户明确要求在 2026-09-06 09:00 UTC 第一次陶艺课完成时询问一次感受，现在正是该时间且尚未联系过。",
+                "recognition": "open"
+              }
+            ],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "context_aware_decisions",
+                "phase": "decision",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 470,
+                  "outputTokens": 124,
+                  "totalTokens": 594
+                },
+                "requestId": "3ef5ff9a-a58f-4822-bf31-337dd1edf1fa",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ]
+          }
+        ],
+        "trace": {
+          "applicable": false,
+          "passed": true,
+          "reason": "Context-aware baseline has decision evidence but no persistent intent lifecycle to audit."
+        }
+      },
+      "diagnostics": []
+    },
+    {
+      "id": "duplicate",
+      "title": "重复输入和评估",
+      "kind": "intent_driven",
+      "wakeIntent": {
+        "rows": [
+          {
+            "stepId": "initial",
+            "decisions": [],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "process": {
+              "outcome": "created",
+              "modelWorkPerformed": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "wakeintent_candidates",
+                "phase": "extraction",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 439,
+                  "outputTokens": 613,
+                  "totalTokens": 1052
+                },
+                "requestId": "b2a4a4f5-eaa1-49c6-92ea-4d271facf4bd",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ],
+            "state": [
+              {
+                "intent": {
+                  "schemaVersion": "0.1.0",
+                  "id": "intent:ingestion:dfabb4a14b00ebc5b31c:1",
+                  "status": "active",
+                  "subject": "Ask once about the reading group experience",
+                  "reason": "User asked for a one-time follow-up at the end of the reading group to ask about their feelings.",
+                  "target": {
+                    "kind": "user",
+                    "id": "synthetic:duplicate"
+                  },
+                  "evidence": [
+                    {
+                      "eventId": "duplicate:source1",
+                      "quote": "我明天09:00 UTC结束读书会，请到时问一次感受，只联系一次。"
+                    }
+                  ],
+                  "notBefore": "2026-09-06T09:00:00Z",
+                  "expiresAt": null,
+                  "cancellationHints": [
+                    "User withdraws the request to ask.",
+                    "The check-in has already been done.",
+                    "The reading group ending or the underlying follow-up is no longer relevant."
+                  ],
+                  "priority": 0.78,
+                  "interruptionCost": 0.2,
+                  "confidence": 0.97,
+                  "createdAt": "2026-09-05T09:00:00.000Z",
+                  "updatedAt": "2026-09-05T09:00:00.000Z",
+                  "metadata": {
+                    "sourceConversationId": "duplicate",
+                    "sourceIngestionId": "dfabb4a14b00ebc5b31c"
+                  }
+                },
+                "revision": 1,
+                "nextEvaluationAt": "2026-09-06T09:00:00Z",
+                "audit": []
+              }
+            ]
+          },
+          {
+            "stepId": "replay-initial",
+            "decisions": [],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "process": {
+              "outcome": "duplicate",
+              "modelWorkPerformed": false
+            },
+            "modelCalls": [],
+            "state": [
+              {
+                "intent": {
+                  "schemaVersion": "0.1.0",
+                  "id": "intent:ingestion:dfabb4a14b00ebc5b31c:1",
+                  "status": "active",
+                  "subject": "Ask once about the reading group experience",
+                  "reason": "User asked for a one-time follow-up at the end of the reading group to ask about their feelings.",
+                  "target": {
+                    "kind": "user",
+                    "id": "synthetic:duplicate"
+                  },
+                  "evidence": [
+                    {
+                      "eventId": "duplicate:source1",
+                      "quote": "我明天09:00 UTC结束读书会，请到时问一次感受，只联系一次。"
+                    }
+                  ],
+                  "notBefore": "2026-09-06T09:00:00Z",
+                  "expiresAt": null,
+                  "cancellationHints": [
+                    "User withdraws the request to ask.",
+                    "The check-in has already been done.",
+                    "The reading group ending or the underlying follow-up is no longer relevant."
+                  ],
+                  "priority": 0.78,
+                  "interruptionCost": 0.2,
+                  "confidence": 0.97,
+                  "createdAt": "2026-09-05T09:00:00.000Z",
+                  "updatedAt": "2026-09-05T09:00:00.000Z",
+                  "metadata": {
+                    "sourceConversationId": "duplicate",
+                    "sourceIngestionId": "dfabb4a14b00ebc5b31c"
+                  }
+                },
+                "revision": 1,
+                "nextEvaluationAt": "2026-09-06T09:00:00Z",
+                "audit": []
+              }
+            ]
+          },
+          {
+            "stepId": "due",
+            "decisions": [
+              {
+                "action": "contact",
+                "kind": "intent_driven",
+                "recognition": "none",
+                "reason": "The scheduled time has arrived (2026-09-06T09:00:00Z), matching the user's explicit request to ask once at the end of the reading group. Latest event duplicate:source1 is the user asking to be contacted then for a one-time feelings check-in, and there is no later withdrawal, completed check-in, or assistant outreach without reply.",
+                "evidenceRefs": [
+                  "duplicate:source1"
+                ],
+                "nextEvaluationAt": null,
+                "intentId": "intent:ingestion:dfabb4a14b00ebc5b31c:1",
+                "source": "semantic"
+              }
+            ],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "process": null,
+            "modelCalls": [
+              {
+                "schemaName": "wakeintent_decision",
+                "phase": "decision",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 582,
+                  "outputTokens": 149,
+                  "totalTokens": 731
+                },
+                "requestId": "781c8b8a-182d-42b7-b909-c42d3a7d8334",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ],
+            "state": [
+              {
+                "intent": {
+                  "schemaVersion": "0.1.0",
+                  "id": "intent:ingestion:dfabb4a14b00ebc5b31c:1",
+                  "status": "active",
+                  "subject": "Ask once about the reading group experience",
+                  "reason": "User asked for a one-time follow-up at the end of the reading group to ask about their feelings.",
+                  "target": {
+                    "kind": "user",
+                    "id": "synthetic:duplicate"
+                  },
+                  "evidence": [
+                    {
+                      "eventId": "duplicate:source1",
+                      "quote": "我明天09:00 UTC结束读书会，请到时问一次感受，只联系一次。"
+                    }
+                  ],
+                  "notBefore": "2026-09-06T09:00:00Z",
+                  "expiresAt": null,
+                  "cancellationHints": [
+                    "User withdraws the request to ask.",
+                    "The check-in has already been done.",
+                    "The reading group ending or the underlying follow-up is no longer relevant."
+                  ],
+                  "priority": 0.78,
+                  "interruptionCost": 0.2,
+                  "confidence": 0.97,
+                  "createdAt": "2026-09-05T09:00:00.000Z",
+                  "updatedAt": "2026-09-06T09:00:00.000Z",
+                  "metadata": {
+                    "sourceConversationId": "duplicate",
+                    "sourceIngestionId": "dfabb4a14b00ebc5b31c"
+                  }
+                },
+                "revision": 2,
+                "nextEvaluationAt": null,
+                "audit": [
+                  {
+                    "kind": "decision",
+                    "decision": {
+                      "id": "decision:evaluate:intent:ingestion:dfabb4a14b00ebc5b31c:1:revision:1",
+                      "intentId": "intent:ingestion:dfabb4a14b00ebc5b31c:1",
+                      "evaluatedAt": "2026-09-06T09:00:00.000Z",
+                      "action": "contact",
+                      "reason": "The scheduled time has arrived (2026-09-06T09:00:00Z), matching the user's explicit request to ask once at the end of the reading group. Latest event duplicate:source1 is the user asking to be contacted then for a one-time feelings check-in, and there is no later withdrawal, completed check-in, or assistant outreach without reply.",
+                      "evidenceRefs": [
+                        "duplicate:source1"
+                      ],
+                      "counterEvidenceRefs": [],
+                      "confidence": 0.97,
+                      "nextEvaluationAt": null,
+                      "policyVersion": "context-comparison-decision-v1"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "stepId": "replay-due",
+            "decisions": [],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "process": null,
+            "modelCalls": [],
+            "state": [
+              {
+                "intent": {
+                  "schemaVersion": "0.1.0",
+                  "id": "intent:ingestion:dfabb4a14b00ebc5b31c:1",
+                  "status": "active",
+                  "subject": "Ask once about the reading group experience",
+                  "reason": "User asked for a one-time follow-up at the end of the reading group to ask about their feelings.",
+                  "target": {
+                    "kind": "user",
+                    "id": "synthetic:duplicate"
+                  },
+                  "evidence": [
+                    {
+                      "eventId": "duplicate:source1",
+                      "quote": "我明天09:00 UTC结束读书会，请到时问一次感受，只联系一次。"
+                    }
+                  ],
+                  "notBefore": "2026-09-06T09:00:00Z",
+                  "expiresAt": null,
+                  "cancellationHints": [
+                    "User withdraws the request to ask.",
+                    "The check-in has already been done.",
+                    "The reading group ending or the underlying follow-up is no longer relevant."
+                  ],
+                  "priority": 0.78,
+                  "interruptionCost": 0.2,
+                  "confidence": 0.97,
+                  "createdAt": "2026-09-05T09:00:00.000Z",
+                  "updatedAt": "2026-09-06T09:00:00.000Z",
+                  "metadata": {
+                    "sourceConversationId": "duplicate",
+                    "sourceIngestionId": "dfabb4a14b00ebc5b31c"
+                  }
+                },
+                "revision": 2,
+                "nextEvaluationAt": null,
+                "audit": [
+                  {
+                    "kind": "decision",
+                    "decision": {
+                      "id": "decision:evaluate:intent:ingestion:dfabb4a14b00ebc5b31c:1:revision:1",
+                      "intentId": "intent:ingestion:dfabb4a14b00ebc5b31c:1",
+                      "evaluatedAt": "2026-09-06T09:00:00.000Z",
+                      "action": "contact",
+                      "reason": "The scheduled time has arrived (2026-09-06T09:00:00Z), matching the user's explicit request to ask once at the end of the reading group. Latest event duplicate:source1 is the user asking to be contacted then for a one-time feelings check-in, and there is no later withdrawal, completed check-in, or assistant outreach without reply.",
+                      "evidenceRefs": [
+                        "duplicate:source1"
+                      ],
+                      "counterEvidenceRefs": [],
+                      "confidence": 0.97,
+                      "nextEvaluationAt": null,
+                      "policyVersion": "context-comparison-decision-v1"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "stepId": "later-repeat",
+            "decisions": [],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "process": null,
+            "modelCalls": [],
+            "state": [
+              {
+                "intent": {
+                  "schemaVersion": "0.1.0",
+                  "id": "intent:ingestion:dfabb4a14b00ebc5b31c:1",
+                  "status": "active",
+                  "subject": "Ask once about the reading group experience",
+                  "reason": "User asked for a one-time follow-up at the end of the reading group to ask about their feelings.",
+                  "target": {
+                    "kind": "user",
+                    "id": "synthetic:duplicate"
+                  },
+                  "evidence": [
+                    {
+                      "eventId": "duplicate:source1",
+                      "quote": "我明天09:00 UTC结束读书会，请到时问一次感受，只联系一次。"
+                    }
+                  ],
+                  "notBefore": "2026-09-06T09:00:00Z",
+                  "expiresAt": null,
+                  "cancellationHints": [
+                    "User withdraws the request to ask.",
+                    "The check-in has already been done.",
+                    "The reading group ending or the underlying follow-up is no longer relevant."
+                  ],
+                  "priority": 0.78,
+                  "interruptionCost": 0.2,
+                  "confidence": 0.97,
+                  "createdAt": "2026-09-05T09:00:00.000Z",
+                  "updatedAt": "2026-09-06T09:00:00.000Z",
+                  "metadata": {
+                    "sourceConversationId": "duplicate",
+                    "sourceIngestionId": "dfabb4a14b00ebc5b31c"
+                  }
+                },
+                "revision": 2,
+                "nextEvaluationAt": null,
+                "audit": [
+                  {
+                    "kind": "decision",
+                    "decision": {
+                      "id": "decision:evaluate:intent:ingestion:dfabb4a14b00ebc5b31c:1:revision:1",
+                      "intentId": "intent:ingestion:dfabb4a14b00ebc5b31c:1",
+                      "evaluatedAt": "2026-09-06T09:00:00.000Z",
+                      "action": "contact",
+                      "reason": "The scheduled time has arrived (2026-09-06T09:00:00Z), matching the user's explicit request to ask once at the end of the reading group. Latest event duplicate:source1 is the user asking to be contacted then for a one-time feelings check-in, and there is no later withdrawal, completed check-in, or assistant outreach without reply.",
+                      "evidenceRefs": [
+                        "duplicate:source1"
+                      ],
+                      "counterEvidenceRefs": [],
+                      "confidence": 0.97,
+                      "nextEvaluationAt": null,
+                      "policyVersion": "context-comparison-decision-v1"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "trace": {
+          "applicable": true,
+          "passed": true,
+          "establishedIntents": [
+            {
+              "intentId": "intent:ingestion:dfabb4a14b00ebc5b31c:1",
+              "evidenceRefs": [
+                "duplicate:source1"
+              ],
+              "transitions": [
+                {
+                  "kind": "decision",
+                  "decision": {
+                    "id": "decision:evaluate:intent:ingestion:dfabb4a14b00ebc5b31c:1:revision:1",
+                    "intentId": "intent:ingestion:dfabb4a14b00ebc5b31c:1",
+                    "evaluatedAt": "2026-09-06T09:00:00.000Z",
+                    "action": "contact",
+                    "reason": "The scheduled time has arrived (2026-09-06T09:00:00Z), matching the user's explicit request to ask once at the end of the reading group. Latest event duplicate:source1 is the user asking to be contacted then for a one-time feelings check-in, and there is no later withdrawal, completed check-in, or assistant outreach without reply.",
+                    "evidenceRefs": [
+                      "duplicate:source1"
+                    ],
+                    "counterEvidenceRefs": [],
+                    "confidence": 0.97,
+                    "nextEvaluationAt": null,
+                    "policyVersion": "context-comparison-decision-v1"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "contextAware": {
+        "rows": [
+          {
+            "stepId": "initial",
+            "decisions": [
+              {
+                "action": "defer",
+                "evidenceRefs": [
+                  "duplicate:source1"
+                ],
+                "kind": "intent_driven",
+                "nextEvaluationAt": "2026-09-06T09:00:00Z",
+                "reason": "User asked to be contacted once tomorrow at 09:00 UTC, so this is not due yet.",
+                "recognition": "open"
+              }
+            ],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "context_aware_decisions",
+                "phase": "decision",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 472,
+                  "outputTokens": 251,
+                  "totalTokens": 723
+                },
+                "requestId": "4a45cc42-470a-4749-a36a-b7e80c094b14",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ]
+          },
+          {
+            "stepId": "replay-initial",
+            "decisions": [],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "modelCalls": []
+          },
+          {
+            "stepId": "due",
+            "decisions": [
+              {
+                "action": "contact",
+                "evidenceRefs": [
+                  "duplicate:source1"
+                ],
+                "kind": "intent_driven",
+                "nextEvaluationAt": null,
+                "reason": "用户明确要求在 2026-09-06 09:00 UTC 读书会结束时只联系一次询问感受；当前正是该时间，且尚无已发送记录。",
+                "recognition": "open"
+              }
+            ],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "context_aware_decisions",
+                "phase": "decision",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 472,
+                  "outputTokens": 151,
+                  "totalTokens": 623
+                },
+                "requestId": "e12f3471-dd81-4593-ba65-0de5c17898c1",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ]
+          },
+          {
+            "stepId": "replay-due",
+            "decisions": [
+              {
+                "action": "silent",
+                "evidenceRefs": [
+                  "duplicate:source1"
+                ],
+                "kind": "intent_driven",
+                "nextEvaluationAt": null,
+                "reason": "该联系请求已在 2026-09-06T09:00:00Z 发送过一次，且用户只要求联系一次；当前没有新的理由再次联系。",
+                "recognition": "resolved"
+              }
+            ],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "context_aware_decisions",
+                "phase": "decision",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 545,
+                  "outputTokens": 271,
+                  "totalTokens": 816
+                },
+                "requestId": "ab991d84-be88-4184-a4aa-ddd37101c957",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ]
+          },
+          {
+            "stepId": "later-repeat",
+            "decisions": [
+              {
+                "action": "silent",
+                "evidenceRefs": [
+                  "duplicate:source1"
+                ],
+                "kind": "intent_driven",
+                "nextEvaluationAt": null,
+                "reason": "该请求已在 2026-09-06T09:00:00Z 按要求联系过一次；当前 09:01 UTC 没有新的触发理由，且用户明确要求只联系一次。",
+                "recognition": "resolved"
+              }
+            ],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "context_aware_decisions",
+                "phase": "decision",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 545,
+                  "outputTokens": 257,
+                  "totalTokens": 802
+                },
+                "requestId": "15bfd411-a46e-4c47-99d0-f67cc04b3560",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ]
+          }
+        ],
+        "trace": {
+          "applicable": false,
+          "passed": true,
+          "reason": "Context-aware baseline has decision evidence but no persistent intent lifecycle to audit."
+        }
+      },
+      "diagnostics": []
+    },
+    {
+      "id": "negative",
+      "title": "相似内容负例",
+      "kind": "intent_driven",
+      "wakeIntent": {
+        "rows": [
+          {
+            "stepId": "initial",
+            "decisions": [],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "process": {
+              "outcome": "created",
+              "modelWorkPerformed": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "wakeintent_candidates",
+                "phase": "extraction",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 456,
+                  "outputTokens": 27,
+                  "totalTokens": 483
+                },
+                "requestId": "e36a8d88-af5d-4a67-ac43-81ac1a7d19b9",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ],
+            "state": []
+          },
+          {
+            "stepId": "due",
+            "decisions": [],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "process": null,
+            "modelCalls": [],
+            "state": []
+          }
+        ],
+        "trace": {
+          "applicable": true,
+          "passed": true,
+          "establishedIntents": []
+        }
+      },
+      "contextAware": {
+        "rows": [
+          {
+            "stepId": "initial",
+            "decisions": [
+              {
+                "action": "silent",
+                "evidenceRefs": [
+                  "negative:source1"
+                ],
+                "kind": "none",
+                "nextEvaluationAt": null,
+                "reason": "用户明确说明这只是教材里的假设例句，不是实际计划，也不是要求之后联系；没有可执行的跟进理由。",
+                "recognition": "none"
+              }
+            ],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "context_aware_decisions",
+                "phase": "decision",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 489,
+                  "outputTokens": 101,
+                  "totalTokens": 590
+                },
+                "requestId": "25241fca-827e-483e-a291-3d093862ee71",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ]
+          },
+          {
+            "stepId": "due",
+            "decisions": [
+              {
+                "action": "silent",
+                "evidenceRefs": [
+                  "negative:source1"
+                ],
+                "kind": "none",
+                "nextEvaluationAt": null,
+                "reason": "用户明确说明该句只是教材假设，不是个人计划，也不是要求以后联系；没有可执行的跟进事项。",
+                "recognition": "none"
+              }
+            ],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "context_aware_decisions",
+                "phase": "decision",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 489,
+                  "outputTokens": 94,
+                  "totalTokens": 583
+                },
+                "requestId": "8c436082-419a-46e0-bd9e-d2d84014fca4",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ]
+          }
+        ],
+        "trace": {
+          "applicable": false,
+          "passed": true,
+          "reason": "Context-aware baseline has decision evidence but no persistent intent lifecycle to audit."
+        }
+      },
+      "diagnostics": []
+    },
+    {
+      "id": "spontaneous",
+      "title": "无长期理由的随口闲聊",
+      "kind": "spontaneous",
+      "wakeIntent": {
+        "rows": [
+          {
+            "stepId": "initial",
+            "decisions": [],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "process": {
+              "outcome": "created",
+              "modelWorkPerformed": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "wakeintent_candidates",
+                "phase": "extraction",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 467,
+                  "outputTokens": 50,
+                  "totalTokens": 517
+                },
+                "requestId": "9216f4aa-5f66-44b4-b7bc-bc5a55c7e808",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ],
+            "state": []
+          },
+          {
+            "stepId": "due",
+            "decisions": [],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "process": null,
+            "modelCalls": [],
+            "state": []
+          }
+        ],
+        "trace": {
+          "applicable": true,
+          "passed": true,
+          "establishedIntents": []
+        }
+      },
+      "contextAware": {
+        "rows": [
+          {
+            "stepId": "initial",
+            "decisions": [
+              {
+                "action": "contact",
+                "evidenceRefs": [
+                  "spontaneous:source1"
+                ],
+                "kind": "spontaneous",
+                "nextEvaluationAt": null,
+                "reason": "用户明确表示当前是轻松随意的聊天氛围，并允许偶尔主动接梗；现在可发一条简短冷笑话式回应，但不建立任何后续跟进。",
+                "recognition": "open"
+              }
+            ],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "context_aware_decisions",
+                "phase": "decision",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 498,
+                  "outputTokens": 211,
+                  "totalTokens": 709
+                },
+                "requestId": "1ff02cfe-1724-4785-a57f-28bde5b2b440",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ]
+          },
+          {
+            "stepId": "due",
+            "decisions": [
+              {
+                "action": "silent",
+                "evidenceRefs": [
+                  "spontaneous:source1"
+                ],
+                "kind": "none",
+                "nextEvaluationAt": null,
+                "reason": "用户只是允许偶尔主动接梗且明确没有未来跟进事项；同一依据已经主动回应过，当前没有新的对话气氛或具体理由值得再次联系。",
+                "recognition": "none"
+              }
+            ],
+            "score": {
+              "passed": true,
+              "actionCorrect": true,
+              "contactsCorrect": true,
+              "evidenceCorrect": true,
+              "recognitionCorrect": true,
+              "explanationConsistent": true
+            },
+            "modelCalls": [
+              {
+                "schemaName": "context_aware_decisions",
+                "phase": "decision",
+                "reasoningEffort": null,
+                "usage": {
+                  "inputTokens": 574,
+                  "outputTokens": 136,
+                  "totalTokens": 710
+                },
+                "requestId": "cb36ca64-d1d5-4911-9b62-9c4c4eaa15e1",
+                "attempts": 1,
+                "costUsd": null
+              }
+            ]
+          }
+        ],
+        "trace": {
+          "applicable": false,
+          "passed": true,
+          "reason": "Context-aware baseline has decision evidence but no persistent intent lifecycle to audit."
+        }
+      },
+      "diagnostics": []
+    }
+  ]
+}
