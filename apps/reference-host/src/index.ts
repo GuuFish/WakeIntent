@@ -55,3 +55,32 @@ export type {
   RunModelEvaluationInput,
   RunModelEvaluationResult,
 } from "./service.js";
+
+export {
+  ChatMessageConflictError,
+  ChatMessagePersistenceError,
+  InvalidChatMessageFileError,
+  InvalidChatMessageInputError,
+  JsonChatMessageStore,
+} from "./chat-message-store.js";
+export type {
+  AppendProactiveMessageInput,
+  AppendProactiveMessageResult,
+  LocalChatMessage,
+  LocalChatMessageSnapshot,
+} from "./chat-message-store.js";
+export {
+  IntentDrivenReferenceApp,
+  InvalidIntentDrivenAppInputError,
+} from "./intent-driven-app.js";
+export type {
+  GeneratedMessageResult,
+  IntentDrivenReferenceAppOptions,
+  IntentWakeCycleResult,
+} from "./intent-driven-app.js";
+export { OpenAICompatibleProactiveMessageGenerator } from "./proactive-message.js";
+export type {
+  ProactiveMessageDraft,
+  ProactiveMessageGenerationInput,
+  ProactiveMessageGenerator,
+} from "./proactive-message.js";

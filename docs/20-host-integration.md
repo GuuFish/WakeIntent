@@ -55,7 +55,7 @@ switch (result.decision.action) {
 }
 ```
 
-上面的投递代码是边界说明，不是当前已经实现的投递模块。
+上面的投递代码是边界说明；参考 host 的本地聊天消息生成已经实现，但真实渠道投递仍不属于 WakeIntent。
 
 `demo:host` 会进一步把唯一的 `contact` 决策转换成一个 `delivered: false` 的 outbox 项；`resolve` 和授权未知导致的 `silent` 不会进入 outbox。这可以运行并验证宿主分支，但依然不会生成或发送真实消息。
 
@@ -77,6 +77,7 @@ switch (result.decision.action) {
 - 消息生成、渠道选择、投递、失败处理和回执；
 - 对外日志脱敏与用户可见的控制入口；
 - 多进程场景下的事务型存储适配器。Alpha JSON store 只保证单进程、单实例写入。
+- 真实用户授权、免打扰和预算状态。参考 host 在没有策略提供器时默认 `authorization: unknown`，不会主动联系。
 
 ## 5. `contact` 不等于送达
 

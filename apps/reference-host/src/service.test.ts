@@ -9,6 +9,7 @@ import { openJsonContactIntentStore } from "@wakeintent/store-json";
 
 import { createReferenceHostHttpServer } from "./server.js";
 import { ReferenceHostService } from "./service.js";
+import { JsonChatMessageStore } from "./chat-message-store.js";
 
 const temporaryDirectories: string[] = [];
 
@@ -427,5 +428,33 @@ describe("ReferenceHostService", () => {
       }),
     ).rejects.toThrow(`contexts is missing due intent ${intent.id}`);
     expect((await service.intentStore.getIntent(intent.id))?.revision).toBe(1);
+  });
+
+  it("exposes persisted local chat messages through the host API", async () => {
+    const paths = await temporaryPaths();
+    const messageStore = await JsonChatMessageStore.open(join(paths.eventStorePath, "..", "messages.json"));
+    await messageStore.appendProactiveMessage({
+      conversationId: "conversation:study",
+      content: "进度怎么样？",
+      createdAt: "2026-09-04T10:00:00.000Z",
+      sourceIntentId: "intent:study",
+      sourceDecisionId: "decision:study",
+      evidenceRefs: ["event:study"],
+    });
+    const service = await ReferenceHostService.open(paths);
+    const server = createReferenceHostHttpServer(service, {
+      intentDrivenApp: { listMessages: (conversationId) => messageStore.listMessages(conversationId) },
+    });
+    const baseUrl = await listen(server);
+    try {
+      const result = await jsonRequest(
+        `${baseUrl}/v1/messages?conversationId=${encodeURIComponent("conversation:study")}`,
+        "GET",
+      );
+      expect(result.response.status).toBe(200);
+      expect(result.body.messages).toMatchObject([{ content: "进度怎么样？" }]);
+    } finally {
+      await close(server);
+    }
   });
 });

@@ -37,6 +37,8 @@ import {
   type RunEvaluationInput,
   type RunModelEvaluationInput,
 } from "./service.js";
+import { IntentDrivenReferenceApp } from "./intent-driven-app.js";
+import { OpenAICompatibleProactiveMessageGenerator } from "./proactive-message.js";
 
 const DEFAULT_PORT = 8787;
 const DEFAULT_HOST = "127.0.0.1";
@@ -44,6 +46,7 @@ const MAX_BODY_BYTES = 1024 * 1024;
 
 export interface ReferenceHostHttpServerOptions {
   maxBodyBytes?: number;
+  intentDrivenApp?: Pick<IntentDrivenReferenceApp, "listMessages">;
 }
 
 class InvalidHttpRequestError extends Error {
@@ -235,6 +238,20 @@ export function createReferenceHostHttpServer(
         return;
       }
 
+      if (method === "GET" && url.pathname === "/v1/messages") {
+        if (!options.intentDrivenApp) {
+          throw new ReferenceHostCapabilityError(
+            "Intent-driven message storage is not configured for this reference host",
+          );
+        }
+        sendJson(response, 200, {
+          messages: await options.intentDrivenApp.listMessages(
+            url.searchParams.get("conversationId") ?? undefined,
+          ),
+        });
+        return;
+      }
+
       const receiptMatch = /^\/v1\/outbox\/([^/]+)\/receipts$/.exec(url.pathname);
       if (method === "POST" && receiptMatch) {
         const itemId = decodeURIComponent(receiptMatch[1] ?? "");
@@ -264,10 +281,18 @@ async function main(): Promise<void> {
     process.argv.includes("--model") ||
     process.env.WAKEINTENT_HOST_MODEL_ENABLED === "true";
   let conversationRuntime;
+  let intentDrivenApp: IntentDrivenReferenceApp | undefined;
+  let service: ReferenceHostService;
+  const serviceOptions = {
+    intentStorePath: resolve(dataDirectory, "intents.json"),
+    outboxPath: resolve(dataDirectory, "outbox.json"),
+    eventStorePath: resolve(dataDirectory, "events.json"),
+  } as const;
   if (modelEnabled) {
     const config = configFromEnv();
     const modelAdapter = new OpenAICompatibleModelAdapter(config);
     const routingClient = new OpenAICompatibleStructuredClient(config);
+    const messageClient = new OpenAICompatibleStructuredClient(config);
     conversationRuntime = {
       candidateGenerator: modelAdapter,
       semanticReevaluator: modelAdapter,
@@ -277,14 +302,28 @@ async function main(): Promise<void> {
         relevanceCalls: [...routingClient.getCallRecords()],
       }),
     };
+    service = await ReferenceHostService.open({
+      ...serviceOptions,
+      conversationRuntime,
+    });
+    intentDrivenApp = await IntentDrivenReferenceApp.open({
+      serviceInstance: service,
+      messageStorePath: resolve(dataDirectory, "messages.json"),
+      messageGenerator: new OpenAICompatibleProactiveMessageGenerator(messageClient),
+      // No real policy store is configured in the reference host. Fail closed
+      // until a host supplies explicit authorization and budget state.
+      userStateProvider: () => ({ authorization: "unknown" }),
+      policyVersion: "reference-host-alpha-0.1",
+      timeZone: process.env.WAKEINTENT_HOST_TIME_ZONE ?? "UTC",
+    });
+  } else {
+    service = await ReferenceHostService.open(serviceOptions);
   }
-  const service = await ReferenceHostService.open({
-    intentStorePath: resolve(dataDirectory, "intents.json"),
-    outboxPath: resolve(dataDirectory, "outbox.json"),
-    eventStorePath: resolve(dataDirectory, "events.json"),
-    ...(conversationRuntime === undefined ? {} : { conversationRuntime }),
-  });
-  const server = createReferenceHostHttpServer(service);
+  intentDrivenApp?.start();
+  const server = createReferenceHostHttpServer(
+    service,
+    intentDrivenApp === undefined ? {} : { intentDrivenApp },
+  );
   const host = process.env.WAKEINTENT_HOST_BIND ?? DEFAULT_HOST;
   const port = parsePort(process.env.WAKEINTENT_HOST_PORT);
   server.listen(port, host, () => {
@@ -295,8 +334,20 @@ async function main(): Promise<void> {
         ? "Natural-language extraction, relevance routing, and model reevaluation are enabled."
         : "Structured mode only. Set WAKEINTENT_HOST_MODEL_ENABLED=true and use host:start:model to enable model processing.",
     );
-    console.log("This Alpha host does not generate or send messages.");
+    console.log(
+      intentDrivenApp
+        ? "Intent-driven wake loop and local chat message generation are enabled."
+        : "Intent-driven wake loop is disabled in structured-only mode.",
+    );
   });
+  const shutdown = async () => {
+    await intentDrivenApp?.stop();
+    await new Promise<void>((resolveShutdown, reject) =>
+      server.close((error) => (error ? reject(error) : resolveShutdown())),
+    );
+  };
+  process.once("SIGINT", () => void shutdown());
+  process.once("SIGTERM", () => void shutdown());
 }
 
 const invokedPath = process.argv[1] ? resolve(process.argv[1]) : null;
