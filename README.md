@@ -14,31 +14,34 @@ It turns a conversational reason to follow up later into a durable `ContactInten
 then revalidates that reason against newer context before deciding to contact,
 defer, cancel, expire, resolve, or stay silent.
 
-> **Status: research Alpha 0.1.** The core engine, local persistence, model
-> adapter, audit trail, and evaluation tooling run today. WakeIntent is not yet a
-> production notification service or a finished chat application.
+> **Status: experiment concluded; standalone product development is paused.**
+> WakeIntent remains a runnable research artifact and developer component. A
+> frozen comparison against a strong Memory + Proactive Agent baseline did not
+> show enough behavioral benefit to justify the extra complexity and token cost.
 
-## Vision
+## Research outcome
 
-Most conversational AI still lives inside a request-response loop: it speaks
-when called and disappears when the user stops typing. WakeIntent's long-term
-goal is to provide the missing continuity layer—not by making a model think in
-an expensive endless loop, but by letting an assistant preserve a concrete
-reason to reconnect, sleep without polling, and wake only when time or relevant
-new context makes that reason worth reconsidering.
+WakeIntent tested a narrow question: does preserving a future contact reason as
+an explicit, durable lifecycle object lead to better behavior than saving a
+future-follow-up memory and letting the same model reconsider it later?
 
-If the project succeeds, an assistant, companion, tutor, recruiter, support
-agent, or other user-authorized AI product could share the same small protocol:
-create a contact intent during normal conversation; revise or invalidate it as
-life changes; revalidate it against current context, policy, relationship, and
-persona; then contact through the host's chosen channel—or deliberately remain
-silent. Different characters may be reserved, warm, or talkative, but none
-should bypass consent, interruption budgets, or explainability.
+In the frozen experiment, 20 synthetic longitudinal scenarios were run three
+times for both systems with the same model, conversation facts, time, and user
+state. Both systems made zero unjustified outreaches. WakeIntent missed 3 of 21
+required follow-ups while the strong baseline missed 1, used 42.2% more tokens,
+made 17.8% more model calls, and took 31.7% more cumulative latency. The key
+busy-then-free demo produced the same `defer -> contact` behavior in all three
+runs.
 
-The ambition is therefore larger than a reminder feature and smaller than a
-general autonomous-agent framework: make thoughtful, accountable continuity a
-reusable piece of AI infrastructure. This is a direction, not a claim that the
-Alpha has already achieved it.
+The result does not prove that explicit intent state is useless in every system.
+It shows that this implementation did not turn lifecycle structure, earlier
+state cleanup, and auditability into better user-visible behavior. The current
+decision is therefore to stop expanding WakeIntent as a standalone product and
+retain the code, datasets, failures, and reports as an honest engineering
+experiment or a possible internal component for another proactive agent.
+
+See the [experiment report](reports/intent-continuity-value/2026-09-05T11-50-41.477Z/experiment-report.md)
+and [frozen protocol](docs/25-intent-continuity-value-experiment.md).
 
 ## Why this exists
 
@@ -148,10 +151,7 @@ pnpm install --frozen-lockfile
 pnpm check
 ```
 
-`pnpm check` builds and type-checks every workspace package and app, then runs
-their tests. At the independently verified commit `53d5e49`, the summary was
-178 passing tests across five packages and 22 test files. The exact count grows
-as the project changes.
+`pnpm check` builds and type-checks every workspace package and app, then runs their tests. The final experiment branch passes 205 automated tests.
 
 Now run the local Alpha demo twice with the same state file:
 
@@ -297,37 +297,37 @@ application cannot yet install a stable registry release. See the
 [host integration guide](docs/20-host-integration.md) and the runnable
 [`examples/minimal.mjs`](examples/minimal.mjs) reference.
 
-## Current evidence
+## Final evidence
 
-An independent clean-clone verification reproduced the complete repository
-check at commit `53d5e49`: 178 tests across five packages. Two real-model smoke
-runs performed during development using `gpt-5.5` also passed:
+The final frozen comparison completed 60/60 paired scenario runs with zero
+runtime errors and 327 HTTP attempts:
 
-- cancellation after the follow-up reason became invalid: 2 model calls, 1,452
-  tokens, 0 contact decisions;
-- timing change: 3 model calls, 2,627 tokens, deferred until after the updated
-  event window, 0 contact decisions.
+| Metric | WakeIntent | Strong baseline |
+| --- | ---: | ---: |
+| Unjustified outreach | 0 / 48 | 0 / 48 |
+| Missed required follow-up | 3 / 21 | 1 / 21 |
+| Model calls | 172 | 146 |
+| Total tokens | 155,455 | 109,353 |
+| Cumulative latency | 1,663,909 ms | 1,263,853 ms |
 
-The first reference-host ingestion smoke also passed with `gpt-5.5`: a natural
-language study plan created an active intent, a later completion-and-withdrawal
-message resolved it, final evaluation made no semantic model call and produced
-no contact, and duplicate replay made no model call. The full path used 3 model
-requests and 2,432 tokens. This is a synthetic regression result, not a user
-study or a cost comparison.
+Complete internal action sequences agreed in 61/69 cases (88.4%). Several
+differences were internal only: neither system sent a message. The stable
+user-visible failure was `s16-two-intents-one-cancelled`, where WakeIntent
+incorrectly cancelled both intents in all three runs even though the user
+cancelled one topic and explicitly kept the other. The baseline handled all
+three runs correctly. WakeIntent outperformed the baseline once in
+`s17-similar-learning-update`, but that baseline error did not repeat in the
+other two runs.
 
-The reports are preserved in
-[`reports/core-api-smoke`](reports/core-api-smoke). Earlier feasibility results
-and their limitations are documented in
-[`docs/10-feasibility-conclusion.md`](docs/10-feasibility-conclusion.md).
-The host-ingestion evidence is preserved in
-[`reports/host-ingestion-smoke`](reports/host-ingestion-smoke).
-The independent installation result, including the issues it found, is preserved
-in [`reports/external-verification/2026-09-04-clean-clone.md`](reports/external-verification/2026-09-04-clean-clone.md).
+The blind evaluation pack is preserved, but no result from five real human
+testers exists. The project therefore makes no claim that WakeIntent feels more
+natural or continuous. Model cost in USD is unavailable because provider
+pricing was not configured.
 
-This evidence shows that the mechanism runs end to end. It does **not** yet show
-that WakeIntent is cheaper than a strong due-gated heartbeat or that it improves
-user experience in production. Current experiments found better early state
-cleanup and auditability, but often higher token usage.
+Machine-readable data, CSV output, generated messages, failure traces, and the
+blind pack are preserved under
+[`reports/intent-continuity-value/2026-09-05T11-50-41.477Z`](reports/intent-continuity-value/2026-09-05T11-50-41.477Z).
+The repository currently passes 205 automated tests.
 
 ## Scope and limitations
 

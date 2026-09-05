@@ -246,7 +246,17 @@ P1 离线准备新增 `evals/longitudinal-policy-development-v0.1.json`，包含
 
 正式比较必须把“路由准确率”“终止影响类型准确率”“用户可见误触达”“状态陈旧时长”“模型调用”和“Token/费用”分开报告。
 
-## 14. 有限 Alpha 收口集
+## 14. 核心价值证伪实验最终结果
+
+冻结的 20 个场景、每场景 3 次重复已从正式检查点断点续跑完成：60/60 组、0 个运行错误、327 次 HTTP 尝试；WakeIntent 发生 1 次传输重试，Baseline 没有重试。正式报告目录为 `reports/intent-continuity-value/2026-09-05T11-50-41.477Z/`。
+
+最终指标为：WakeIntent 误触达 0/48、漏跟进 3/21、172 次模型调用、155,455 Token；Baseline 误触达 0/48、漏跟进 1/21、146 次调用、109,353 Token。WakeIntent 比 Baseline 多约 17.8% 调用和 42.2% 总 Token；动作序列一致率为 61/69（88.4%），低于冻结的 90% 阈值。费用不可得，因为没有配置模型单价。三轮通过率分别为 17/20、18/20、18/20。
+
+动作序列差异只出现在四个场景：`s16-two-intents-one-cancelled` 中 WakeIntent 三轮都误取消了仍应联系的第二个意图，造成 3 次漏跟进；`s17-similar-learning-update` 中 WakeIntent 只在第一轮优于 Baseline，后两轮两边一致；`s19-vague-no-new-reason` 主要是 WakeIntent 不创建意图与 Baseline 到期后终止/沉默的内部路径差异，双方都没有用户可见消息；`s20-unanswered-outreach` 双方均无误触达，仅有允许的 `silent/defer` 动作差异。关键 `s07-living-demo-busy-then-free` 三轮均为 `defer -> contact`，两边最终实际消息都合理，不能作为 WakeIntent 独有优势。
+
+本轮盲评材料已生成 20 个 A/B 项目，但没有至少 5 名真实测试者评分，因此 Q3 只能记为“待真人验证”。Q1 的自动答案是“有差异但未达到独立价值阈值”；Q2 的主要稳定差异是 `s16` 的 WakeIntent 漏跟进；Q4 是“用户可见结果大体近似，但内部路径不同，且 WakeIntent 成本更高”。按冻结停止规则，最终选择**结论 3：与强 Baseline 基本相同或成本不成比例，应收缩或合并实现**。原始结果、失败案例和计分限制均保留，不据此修改场景或评分。
+
+## 15. 有限 Alpha 收口集
 
 为了避免长期停留在“继续证明价值”，新增冻结集 `evals/alpha-closure-longitudinal-v0.1.json`，固定 12 条连续时间线及 GO/REVIEW 停止规则。`packages/eval/src/alpha-closure.ts` 负责按意图来源证据匹配两套系统的时间、动作和决策证据，并单独统计意外 trace、误触达、策略信号与陈旧状态时间差；`scripts/run-alpha-closure-eval.mjs` 同时接入 WakeIntent 候选/决策适配器、`0.3.0` 策略提取器、混合 relevance router 和强 due-gated baseline。
 
@@ -258,7 +268,7 @@ P1 离线准备新增 `evals/longitudinal-policy-development-v0.1.json`，包含
 
 在真实收口运行前，4 个包构建和类型检查通过，共 108 项离线测试通过：core 43、schemas 9、model-openai-compatible 14、eval 42。这里证明的是数据、评分、编排、公平性和请求前记账可运行；当时 12 条真实语义结果仍待一个重新明确授权的新收口轮次。
 
-## 15. 有限 Alpha 真实收口结果
+## 16. 有限 Alpha 真实收口结果
 
 用户重新明确授权后，冻结的 12 条合成连续时间线完成了一次真实中转 API 运行。原始报告为 `reports/alpha-closure-runs/2026-09-02T07-37-32.948Z.json`；由于原 runner 在两个 baseline 过量提取场景中中止且旧停止判定只接受 12 条全部可评分，原报告的 `stopDecision` 为 `null`。未修改任何原始场景结果的审计报告为 `reports/alpha-closure-runs/2026-09-02T07-37-32.948Z.audited.json`，修正后的冻结判定是 **REVIEW**：8/12 通过，10/12 可评分，WakeIntent 已评分场景误触达为 0。
 

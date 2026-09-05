@@ -1,0 +1,105 @@
+{
+  "warning": "盲评结束前不要交给测试者。",
+  "key": [
+    {
+      "itemId": "71df40fe3cde",
+      "A": "baseline",
+      "B": "wakeintent"
+    },
+    {
+      "itemId": "64d80d0faedc",
+      "A": "wakeintent",
+      "B": "baseline"
+    },
+    {
+      "itemId": "e3d9297343fe",
+      "A": "baseline",
+      "B": "wakeintent"
+    },
+    {
+      "itemId": "cf3ec1b32c8a",
+      "A": "baseline",
+      "B": "wakeintent"
+    },
+    {
+      "itemId": "71bf1c6956d9",
+      "A": "baseline",
+      "B": "wakeintent"
+    },
+    {
+      "itemId": "4264397164fe",
+      "A": "wakeintent",
+      "B": "baseline"
+    },
+    {
+      "itemId": "e9b00a8305b1",
+      "A": "baseline",
+      "B": "wakeintent"
+    },
+    {
+      "itemId": "2af3d8bc21b2",
+      "A": "wakeintent",
+      "B": "baseline"
+    },
+    {
+      "itemId": "a03c86930003",
+      "A": "wakeintent",
+      "B": "baseline"
+    },
+    {
+      "itemId": "17492c65af08",
+      "A": "baseline",
+      "B": "wakeintent"
+    },
+    {
+      "itemId": "e308a1517919",
+      "A": "baseline",
+      "B": "wakeintent"
+    },
+    {
+      "itemId": "7078184f8a71",
+      "A": "wakeintent",
+      "B": "baseline"
+    },
+    {
+      "itemId": "a63368fd9c82",
+      "A": "wakeintent",
+      "B": "baseline"
+    },
+    {
+      "itemId": "f56d77042589",
+      "A": "baseline",
+      "B": "wakeintent"
+    },
+    {
+      "itemId": "1041c43df2fb",
+      "A": "wakeintent",
+      "B": "baseline"
+    },
+    {
+      "itemId": "881ce16e95b2",
+      "A": "wakeintent",
+      "B": "baseline"
+    },
+    {
+      "itemId": "0b94f6fbfa6c",
+      "A": "baseline",
+      "B": "wakeintent"
+    },
+    {
+      "itemId": "b01015319299",
+      "A": "wakeintent",
+      "B": "baseline"
+    },
+    {
+      "itemId": "ad9f9c4053c6",
+      "A": "baseline",
+      "B": "wakeintent"
+    },
+    {
+      "itemId": "f1eca20462da",
+      "A": "baseline",
+      "B": "wakeintent"
+    }
+  ]
+}

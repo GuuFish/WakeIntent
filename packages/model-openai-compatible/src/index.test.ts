@@ -238,6 +238,66 @@ describe("OpenAICompatibleModelAdapter", () => {
     });
   });
 
+  it("parses a completed Responses SSE stream from a compatible relay", async () => {
+    const completedResponse = {
+      output_text: JSON.stringify({ candidates: [] }),
+      usage: { input_tokens: 21, output_tokens: 5, total_tokens: 26 },
+    };
+    const body = [
+      "event: response.created",
+      'data: {"type":"response.created","response":{"id":"resp-1"}}',
+      "",
+      "event: response.output_text.done",
+      "data: " + JSON.stringify({
+        type: "response.output_text.done",
+        text: JSON.stringify({ candidates: [] }),
+      }),
+      "",
+      "event: response.completed",
+      "data: " + JSON.stringify({
+        type: "response.completed",
+        response: completedResponse,
+      }),
+      "",
+      "data: [DONE]",
+      "",
+    ].join("\n");
+    const fetchImplementation = vi.fn<typeof fetch>().mockResolvedValue(
+      new Response(body, {
+        status: 200,
+        headers: { "Content-Type": "text/event-stream" },
+      }),
+    );
+    const adapter = new OpenAICompatibleModelAdapter({
+      apiKey: "secret",
+      baseUrl: "https://example.test/v1",
+      model: "model-a",
+      apiMode: "responses",
+      timeoutMs: 1000,
+      maxRetries: 0,
+      fetchImplementation,
+    });
+
+    const result = await adapter.generate({
+      events: [{
+        id: "event-1",
+        conversationId: "conversation",
+        actor: "user",
+        occurredAt: "2026-09-01T09:00:00.000Z",
+        content: "普通聊天。",
+      }],
+      target: { kind: "user", id: "user" },
+      now: "2026-09-01T09:00:00.000Z",
+    });
+
+    expect(result).toEqual([]);
+    expect(adapter.getCallRecords()[0]?.usage).toEqual({
+      inputTokens: 21,
+      outputTokens: 5,
+      totalTokens: 26,
+    });
+  });
+
   it("conservatively removes an invalid model expiry and audits the repair", async () => {
     const fetchImplementation = vi.fn<typeof fetch>().mockResolvedValue(
       new Response(

@@ -381,6 +381,74 @@ function calculateCost(usage: ModelUsage, pricing: ModelPricing): number | null 
   );
 }
 
+async function readSuccessPayload(response: Response): Promise<unknown> {
+  const text = await response.text();
+  try {
+    return JSON.parse(text) as unknown;
+  } catch {
+    // Some compatible relays return Responses SSE without stream=true.
+  }
+
+  const events: JsonRecord[] = [];
+  for (const line of text.split(/\r?\n/u)) {
+    if (!line.startsWith("data:")) continue;
+    const data = line.slice("data:".length).trim();
+    if (data.length === 0 || data === "[DONE]") continue;
+    try {
+      const event = JSON.parse(data) as unknown;
+      if (isRecord(event)) events.push(event);
+    } catch {
+      continue;
+    }
+  }
+
+  let completedResponse: JsonRecord | null = null;
+  let completedText: string | null = null;
+  const textDeltas: string[] = [];
+  for (const event of events) {
+    if (event.type === "response.completed" && isRecord(event.response)) {
+      completedResponse = event.response;
+    }
+    if (
+      event.type === "response.output_text.done" &&
+      typeof event.text === "string"
+    ) {
+      completedText = event.text;
+    }
+    if (
+      event.type === "response.output_text.delta" &&
+      typeof event.delta === "string"
+    ) {
+      textDeltas.push(event.delta);
+    }
+  }
+
+  if (completedResponse && extractResponsesText(completedResponse) !== null) {
+    return completedResponse;
+  }
+  const reconstructedText =
+    completedText ?? (textDeltas.length > 0 ? textDeltas.join("") : null);
+  if (reconstructedText !== null) {
+    return {
+      ...(completedResponse ?? {}),
+      output_text: reconstructedText,
+    };
+  }
+
+  for (const event of events.reverse()) {
+    const candidate = isRecord(event.response) ? event.response : event;
+    if (extractResponsesText(candidate) !== null) return candidate;
+  }
+
+  const eventTypes = events
+    .map((event) => typeof event.type === "string" ? event.type : "unknown")
+    .slice(-8)
+    .join(", ");
+  throw new ModelRequestError(
+    `Model API SSE response contained no completed text (events: ${eventTypes || "none"}).`,
+  );
+}
+
 async function readErrorBody(response: Response): Promise<string> {
   const text = await response.text();
   return text.length > 800 ? `${text.slice(0, 800)}…` : text;
@@ -505,7 +573,7 @@ export class OpenAICompatibleStructuredClient {
           );
         }
 
-        const payload: unknown = await response.json();
+        const payload = await readSuccessPayload(response);
         const usage = extractUsage(payload);
         const text =
           this.#config.apiMode === "responses"
