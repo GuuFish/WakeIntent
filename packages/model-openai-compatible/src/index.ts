@@ -6,6 +6,9 @@ import type {
   ContactPolicySignalDraft,
   PolicySignalGenerationInput,
   PolicySignalGenerator,
+  RelevanceRouter,
+  RelevanceRoutingInput,
+  RelevanceRoutingSelection,
   SemanticDecisionProposal,
   SemanticReevaluationInput,
   SemanticReevaluator,
@@ -21,6 +24,7 @@ export type OpenAICompatibleReasoningEffort =
 export type OpenAICompatibleTextVerbosity = "low" | "medium" | "high";
 export const WAKEINTENT_MODEL_PROMPT_VERSION = "0.1.3";
 export const WAKEINTENT_POLICY_SIGNAL_PROMPT_VERSION = "0.3.0";
+export const WAKEINTENT_RELEVANCE_ROUTER_PROMPT_VERSION = "0.2.0";
 
 export interface ModelUsage {
   inputTokens: number | null;
@@ -377,6 +381,74 @@ function calculateCost(usage: ModelUsage, pricing: ModelPricing): number | null 
   );
 }
 
+async function readSuccessPayload(response: Response): Promise<unknown> {
+  const text = await response.text();
+  try {
+    return JSON.parse(text) as unknown;
+  } catch {
+    // Some compatible relays return Responses SSE without stream=true.
+  }
+
+  const events: JsonRecord[] = [];
+  for (const line of text.split(/\r?\n/u)) {
+    if (!line.startsWith("data:")) continue;
+    const data = line.slice("data:".length).trim();
+    if (data.length === 0 || data === "[DONE]") continue;
+    try {
+      const event = JSON.parse(data) as unknown;
+      if (isRecord(event)) events.push(event);
+    } catch {
+      continue;
+    }
+  }
+
+  let completedResponse: JsonRecord | null = null;
+  let completedText: string | null = null;
+  const textDeltas: string[] = [];
+  for (const event of events) {
+    if (event.type === "response.completed" && isRecord(event.response)) {
+      completedResponse = event.response;
+    }
+    if (
+      event.type === "response.output_text.done" &&
+      typeof event.text === "string"
+    ) {
+      completedText = event.text;
+    }
+    if (
+      event.type === "response.output_text.delta" &&
+      typeof event.delta === "string"
+    ) {
+      textDeltas.push(event.delta);
+    }
+  }
+
+  if (completedResponse && extractResponsesText(completedResponse) !== null) {
+    return completedResponse;
+  }
+  const reconstructedText =
+    completedText ?? (textDeltas.length > 0 ? textDeltas.join("") : null);
+  if (reconstructedText !== null) {
+    return {
+      ...(completedResponse ?? {}),
+      output_text: reconstructedText,
+    };
+  }
+
+  for (const event of events.reverse()) {
+    const candidate = isRecord(event.response) ? event.response : event;
+    if (extractResponsesText(candidate) !== null) return candidate;
+  }
+
+  const eventTypes = events
+    .map((event) => typeof event.type === "string" ? event.type : "unknown")
+    .slice(-8)
+    .join(", ");
+  throw new ModelRequestError(
+    `Model API SSE response contained no completed text (events: ${eventTypes || "none"}).`,
+  );
+}
+
 async function readErrorBody(response: Response): Promise<string> {
   const text = await response.text();
   return text.length > 800 ? `${text.slice(0, 800)}…` : text;
@@ -501,7 +573,7 @@ export class OpenAICompatibleStructuredClient {
           );
         }
 
-        const payload: unknown = await response.json();
+        const payload = await readSuccessPayload(response);
         const usage = extractUsage(payload);
         const text =
           this.#config.apiMode === "responses"
@@ -851,5 +923,143 @@ export class OpenAICompatiblePolicySignalAdapter
         }),
       ),
     ];
+  }
+}
+
+export interface ModelRelevanceRouteAudit {
+  at: string;
+  source: "model";
+  matches: RelevanceRoutingSelection[];
+}
+
+interface RelevanceResponse {
+  matches: RelevanceRoutingSelection[];
+}
+
+const relevanceInstructions =
+  "Route new conversation events to active contact intents whose validity, timing, priority, interruption cost, cancellation, or resolution may have changed. Detect indirect goal supersession, not only explicit reminder cancellation. For each match, use effect cancel only when the user withdrew the follow-up or abandoned the underlying plan, resolve only when the intended outcome is already known or completed, and reevaluate for timing, policy, priority, interruption, mixed, or uncertain changes. Do not select an intent for superficial topic overlap that cannot change a future contact decision. Use only supplied intent IDs and event IDs. Return an empty match list when no intent needs early reevaluation.";
+
+function relevanceSchema(
+  intentIds: string[],
+  eventIds: string[],
+): Record<string, unknown> {
+  return {
+    type: "object",
+    additionalProperties: false,
+    properties: {
+      matches: {
+        type: "array",
+        items: {
+          type: "object",
+          additionalProperties: false,
+          properties: {
+            intentId: { type: "string", enum: intentIds },
+            eventIds: {
+              type: "array",
+              minItems: 1,
+              items: { type: "string", enum: eventIds },
+            },
+            effect: {
+              type: "string",
+              enum: ["reevaluate", "cancel", "resolve"],
+            },
+            reason: { type: "string", maxLength: 180 },
+            confidence: { type: "number", minimum: 0, maximum: 1 },
+          },
+          required: [
+            "intentId",
+            "eventIds",
+            "effect",
+            "reason",
+            "confidence",
+          ],
+        },
+      },
+    },
+    required: ["matches"],
+  };
+}
+
+function consolidateRelevanceMatches(
+  matches: RelevanceRoutingSelection[],
+): RelevanceRoutingSelection[] {
+  const consolidated = new Map<string, RelevanceRoutingSelection>();
+  for (const match of matches) {
+    const previous = consolidated.get(match.intentId);
+    if (!previous) {
+      consolidated.set(match.intentId, {
+        ...match,
+        eventIds: [...new Set(match.eventIds)],
+      });
+      continue;
+    }
+    consolidated.set(match.intentId, {
+      intentId: match.intentId,
+      eventIds: [...new Set([...previous.eventIds, ...match.eventIds])],
+      effect: previous.effect === match.effect ? match.effect : "reevaluate",
+      reason: `${previous.reason}; ${match.reason}`.slice(0, 180),
+      confidence: Math.min(previous.confidence, match.confidence),
+    });
+  }
+  return [...consolidated.values()];
+}
+
+/** Production adapter for the core RelevanceRouter port. */
+export class OpenAICompatibleRelevanceRouter implements RelevanceRouter {
+  readonly #client: Pick<OpenAICompatibleStructuredClient, "generate">;
+  readonly #audits: ModelRelevanceRouteAudit[] = [];
+
+  constructor(client: Pick<OpenAICompatibleStructuredClient, "generate">) {
+    this.#client = client;
+  }
+
+  getAudits(): readonly ModelRelevanceRouteAudit[] {
+    return this.#audits.map((audit) => ({
+      at: audit.at,
+      source: audit.source,
+      matches: audit.matches.map((match) => ({
+        ...match,
+        eventIds: [...match.eventIds],
+      })),
+    }));
+  }
+
+  async selectRelevant(
+    input: RelevanceRoutingInput,
+  ): Promise<RelevanceRoutingSelection[]> {
+    if (input.intents.length === 0 || input.events.length === 0) return [];
+    const intentIds = input.intents.map((intent) => intent.id);
+    const eventIds = input.events.map((event) => event.id);
+    const response = await this.#client.generate<RelevanceResponse>({
+      schemaName: "wakeintent_relevance_route",
+      schema: relevanceSchema(intentIds, eventIds),
+      instructions: relevanceInstructions,
+      input: {
+        now: input.now,
+        intents: input.intents.map((intent) => ({
+          id: intent.id,
+          subject: intent.subject,
+          reason: intent.reason,
+          evidence: intent.evidence,
+          notBefore: intent.notBefore,
+          expiresAt: intent.expiresAt,
+          cancellationHints: intent.cancellationHints,
+          priority: intent.priority,
+          interruptionCost: intent.interruptionCost,
+        })),
+        events: input.events,
+      },
+      phase: "extraction",
+    });
+    const matches = consolidateRelevanceMatches(response.matches);
+    this.#audits.push({
+      at: input.now,
+      source: "model",
+      matches: matches.map((match) => ({
+        ...match,
+        eventIds: [...match.eventIds],
+      })),
+    });
+    return matches;
   }
 }

@@ -3,10 +3,83 @@ import {
   ModelConfigurationError,
   ModelRequestError,
   OpenAICompatiblePolicySignalAdapter,
+  OpenAICompatibleRelevanceRouter,
   OpenAICompatibleStructuredClient,
   OpenAICompatibleModelAdapter,
   configFromEnv,
 } from "./index.js";
+
+describe("OpenAICompatibleRelevanceRouter", () => {
+  it("implements the core relevance port without depending on the eval package", async () => {
+    const fetchImplementation = vi.fn<typeof fetch>().mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          output_text: JSON.stringify({
+            matches: [
+              {
+                intentId: "intent:study",
+                eventIds: ["event:finished"],
+                effect: "resolve",
+                reason: "The user completed the planned study task.",
+                confidence: 0.98,
+              },
+            ],
+          }),
+        }),
+        { status: 200 },
+      ),
+    );
+    const client = new OpenAICompatibleStructuredClient({
+      apiKey: "secret",
+      baseUrl: "https://example.test/v1",
+      model: "model-a",
+      apiMode: "responses",
+      timeoutMs: 1000,
+      extractionReasoningEffort: "none",
+      fetchImplementation,
+    });
+    const router = new OpenAICompatibleRelevanceRouter(client);
+    const matches = await router.selectRelevant({
+      intents: [
+        {
+          schemaVersion: "0.1.0",
+          id: "intent:study",
+          status: "active",
+          subject: "Study progress",
+          reason: "The user planned to finish chapter three.",
+          target: { kind: "user", id: "user:student" },
+          evidence: [{ eventId: "event:plan" }],
+          notBefore: "2026-09-05T12:00:00.000Z",
+          expiresAt: null,
+          cancellationHints: ["The chapter is already complete"],
+          priority: 0.7,
+          interruptionCost: 0.2,
+          confidence: 0.9,
+          createdAt: "2026-09-04T09:00:00.000Z",
+          updatedAt: "2026-09-04T09:00:00.000Z",
+        },
+      ],
+      events: [
+        {
+          id: "event:finished",
+          conversationId: "conversation:study",
+          actor: "user",
+          occurredAt: "2026-09-04T15:00:00.000Z",
+          content: "I finished chapter three already.",
+        },
+      ],
+      now: "2026-09-04T15:01:00.000Z",
+    });
+
+    expect(matches).toMatchObject([
+      { intentId: "intent:study", effect: "resolve" },
+    ]);
+    expect(router.getAudits()).toMatchObject([
+      { source: "model", matches: [{ intentId: "intent:study" }] },
+    ]);
+    expect(fetchImplementation).toHaveBeenCalledOnce();
+  });
+});
 
 describe("configFromEnv", () => {
   it("loads a safe configurable API setup", () => {
@@ -162,6 +235,66 @@ describe("OpenAICompatibleModelAdapter", () => {
       inputTokens: null,
       outputTokens: null,
       totalTokens: null,
+    });
+  });
+
+  it("parses a completed Responses SSE stream from a compatible relay", async () => {
+    const completedResponse = {
+      output_text: JSON.stringify({ candidates: [] }),
+      usage: { input_tokens: 21, output_tokens: 5, total_tokens: 26 },
+    };
+    const body = [
+      "event: response.created",
+      'data: {"type":"response.created","response":{"id":"resp-1"}}',
+      "",
+      "event: response.output_text.done",
+      "data: " + JSON.stringify({
+        type: "response.output_text.done",
+        text: JSON.stringify({ candidates: [] }),
+      }),
+      "",
+      "event: response.completed",
+      "data: " + JSON.stringify({
+        type: "response.completed",
+        response: completedResponse,
+      }),
+      "",
+      "data: [DONE]",
+      "",
+    ].join("\n");
+    const fetchImplementation = vi.fn<typeof fetch>().mockResolvedValue(
+      new Response(body, {
+        status: 200,
+        headers: { "Content-Type": "text/event-stream" },
+      }),
+    );
+    const adapter = new OpenAICompatibleModelAdapter({
+      apiKey: "secret",
+      baseUrl: "https://example.test/v1",
+      model: "model-a",
+      apiMode: "responses",
+      timeoutMs: 1000,
+      maxRetries: 0,
+      fetchImplementation,
+    });
+
+    const result = await adapter.generate({
+      events: [{
+        id: "event-1",
+        conversationId: "conversation",
+        actor: "user",
+        occurredAt: "2026-09-01T09:00:00.000Z",
+        content: "普通聊天。",
+      }],
+      target: { kind: "user", id: "user" },
+      now: "2026-09-01T09:00:00.000Z",
+    });
+
+    expect(result).toEqual([]);
+    expect(adapter.getCallRecords()[0]?.usage).toEqual({
+      inputTokens: 21,
+      outputTokens: 5,
+      totalTokens: 26,
     });
   });
 

@@ -23,6 +23,9 @@ importers:
       '@wakeintent/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@wakeintent/model-openai-compatible':
+        specifier: workspace:*
+        version: link:../../packages/model-openai-compatible
       '@wakeintent/schemas':
         specifier: workspace:*
         version: link:../../packages/schemas

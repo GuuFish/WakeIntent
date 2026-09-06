@@ -1,0 +1,302 @@
+[
+  {
+    "itemId": "ae01-tokyo-exhibition-discovery:r1",
+    "candidateA": "autonomous",
+    "candidateB": "baseline"
+  },
+  {
+    "itemId": "ae02-library-release-fix:r1",
+    "candidateA": "baseline",
+    "candidateB": "autonomous"
+  },
+  {
+    "itemId": "ae03-expired-ticket-discovery:r1",
+    "candidateA": "autonomous",
+    "candidateB": "baseline"
+  },
+  {
+    "itemId": "ae04-explicit-no-away-research:r1",
+    "candidateA": "baseline",
+    "candidateB": "autonomous"
+  },
+  {
+    "itemId": "ae05-no-meaningful-opportunity:r1",
+    "candidateA": "baseline",
+    "candidateB": "autonomous"
+  },
+  {
+    "itemId": "ae06-interest-reversal:r1",
+    "candidateA": "baseline",
+    "candidateB": "autonomous"
+  },
+  {
+    "itemId": "ae07-pending-share-after-busy:r1",
+    "candidateA": "baseline",
+    "candidateB": "autonomous"
+  },
+  {
+    "itemId": "ae08-urgent-unrelated-return:r1",
+    "candidateA": "baseline",
+    "candidateB": "autonomous"
+  },
+  {
+    "itemId": "ae09-study-method-synthesis:r1",
+    "candidateA": "baseline",
+    "candidateB": "autonomous"
+  },
+  {
+    "itemId": "ae10-new-grant-deadline:r1",
+    "candidateA": "baseline",
+    "candidateB": "autonomous"
+  },
+  {
+    "itemId": "ae11-relationship-change:r1",
+    "candidateA": "baseline",
+    "candidateB": "autonomous"
+  },
+  {
+    "itemId": "ae12-private-family-topic:r1",
+    "candidateA": "baseline",
+    "candidateB": "autonomous"
+  },
+  {
+    "itemId": "ae13-random-interest-share:r1",
+    "candidateA": "autonomous",
+    "candidateB": "baseline"
+  },
+  {
+    "itemId": "ae14-agent-preference-only:r1",
+    "candidateA": "baseline",
+    "candidateB": "autonomous"
+  },
+  {
+    "itemId": "ae15-unverified-rumor:r1",
+    "candidateA": "baseline",
+    "candidateB": "autonomous"
+  },
+  {
+    "itemId": "ae16-transit-closure:r1",
+    "candidateA": "autonomous",
+    "candidateB": "baseline"
+  },
+  {
+    "itemId": "ae17-stale-result-needs-recheck:r1",
+    "candidateA": "baseline",
+    "candidateB": "autonomous"
+  },
+  {
+    "itemId": "ae18-unsolicited-mini-project:r1",
+    "candidateA": "autonomous",
+    "candidateB": "baseline"
+  },
+  {
+    "itemId": "ae19-baseline-can-reconstruct:r1",
+    "candidateA": "baseline",
+    "candidateB": "autonomous"
+  },
+  {
+    "itemId": "ae20-proactive-deadline-checkpoint:r1",
+    "candidateA": "baseline",
+    "candidateB": "autonomous"
+  },
+  {
+    "itemId": "ae01-tokyo-exhibition-discovery:r2",
+    "candidateA": "baseline",
+    "candidateB": "autonomous"
+  },
+  {
+    "itemId": "ae02-library-release-fix:r2",
+    "candidateA": "autonomous",
+    "candidateB": "baseline"
+  },
+  {
+    "itemId": "ae03-expired-ticket-discovery:r2",
+    "candidateA": "baseline",
+    "candidateB": "autonomous"
+  },
+  {
+    "itemId": "ae04-explicit-no-away-research:r2",
+    "candidateA": "autonomous",
+    "candidateB": "baseline"
+  },
+  {
+    "itemId": "ae05-no-meaningful-opportunity:r2",
+    "candidateA": "autonomous",
+    "candidateB": "baseline"
+  },
+  {
+    "itemId": "ae06-interest-reversal:r2",
+    "candidateA": "autonomous",
+    "candidateB": "baseline"
+  },
+  {
+    "itemId": "ae07-pending-share-after-busy:r2",
+    "candidateA": "autonomous",
+    "candidateB": "baseline"
+  },
+  {
+    "itemId": "ae08-urgent-unrelated-return:r2",
+    "candidateA": "autonomous",
+    "candidateB": "baseline"
+  },
+  {
+    "itemId": "ae09-study-method-synthesis:r2",
+    "candidateA": "autonomous",
+    "candidateB": "baseline"
+  },
+  {
+    "itemId": "ae10-new-grant-deadline:r2",
+    "candidateA": "autonomous",
+    "candidateB": "baseline"
+  },
+  {
+    "itemId": "ae11-relationship-change:r2",
+    "candidateA": "autonomous",
+    "candidateB": "baseline"
+  },
+  {
+    "itemId": "ae12-private-family-topic:r2",
+    "candidateA": "autonomous",
+    "candidateB": "baseline"
+  },
+  {
+    "itemId": "ae13-random-interest-share:r2",
+    "candidateA": "baseline",
+    "candidateB": "autonomous"
+  },
+  {
+    "itemId": "ae14-agent-preference-only:r2",
+    "candidateA": "autonomous",
+    "candidateB": "baseline"
+  },
+  {
+    "itemId": "ae15-unverified-rumor:r2",
+    "candidateA": "autonomous",
+    "candidateB": "baseline"
+  },
+  {
+    "itemId": "ae16-transit-closure:r2",
+    "candidateA": "baseline",
+    "candidateB": "autonomous"
+  },
+  {
+    "itemId": "ae17-stale-result-needs-recheck:r2",
+    "candidateA": "autonomous",
+    "candidateB": "baseline"
+  },
+  {
+    "itemId": "ae18-unsolicited-mini-project:r2",
+    "candidateA": "baseline",
+    "candidateB": "autonomous"
+  },
+  {
+    "itemId": "ae19-baseline-can-reconstruct:r2",
+    "candidateA": "autonomous",
+    "candidateB": "baseline"
+  },
+  {
+    "itemId": "ae20-proactive-deadline-checkpoint:r2",
+    "candidateA": "autonomous",
+    "candidateB": "baseline"
+  },
+  {
+    "itemId": "ae01-tokyo-exhibition-discovery:r3",
+    "candidateA": "autonomous",
+    "candidateB": "baseline"
+  },
+  {
+    "itemId": "ae02-library-release-fix:r3",
+    "candidateA": "baseline",
+    "candidateB": "autonomous"
+  },
+  {
+    "itemId": "ae03-expired-ticket-discovery:r3",
+    "candidateA": "autonomous",
+    "candidateB": "baseline"
+  },
+  {
+    "itemId": "ae04-explicit-no-away-research:r3",
+    "candidateA": "baseline",
+    "candidateB": "autonomous"
+  },
+  {
+    "itemId": "ae05-no-meaningful-opportunity:r3",
+    "candidateA": "baseline",
+    "candidateB": "autonomous"
+  },
+  {
+    "itemId": "ae06-interest-reversal:r3",
+    "candidateA": "baseline",
+    "candidateB": "autonomous"
+  },
+  {
+    "itemId": "ae07-pending-share-after-busy:r3",
+    "candidateA": "baseline",
+    "candidateB": "autonomous"
+  },
+  {
+    "itemId": "ae08-urgent-unrelated-return:r3",
+    "candidateA": "baseline",
+    "candidateB": "autonomous"
+  },
+  {
+    "itemId": "ae09-study-method-synthesis:r3",
+    "candidateA": "baseline",
+    "candidateB": "autonomous"
+  },
+  {
+    "itemId": "ae10-new-grant-deadline:r3",
+    "candidateA": "baseline",
+    "candidateB": "autonomous"
+  },
+  {
+    "itemId": "ae11-relationship-change:r3",
+    "candidateA": "baseline",
+    "candidateB": "autonomous"
+  },
+  {
+    "itemId": "ae12-private-family-topic:r3",
+    "candidateA": "baseline",
+    "candidateB": "autonomous"
+  },
+  {
+    "itemId": "ae13-random-interest-share:r3",
+    "candidateA": "autonomous",
+    "candidateB": "baseline"
+  },
+  {
+    "itemId": "ae14-agent-preference-only:r3",
+    "candidateA": "baseline",
+    "candidateB": "autonomous"
+  },
+  {
+    "itemId": "ae15-unverified-rumor:r3",
+    "candidateA": "baseline",
+    "candidateB": "autonomous"
+  },
+  {
+    "itemId": "ae16-transit-closure:r3",
+    "candidateA": "autonomous",
+    "candidateB": "baseline"
+  },
+  {
+    "itemId": "ae17-stale-result-needs-recheck:r3",
+    "candidateA": "baseline",
+    "candidateB": "autonomous"
+  },
+  {
+    "itemId": "ae18-unsolicited-mini-project:r3",
+    "candidateA": "autonomous",
+    "candidateB": "baseline"
+  },
+  {
+    "itemId": "ae19-baseline-can-reconstruct:r3",
+    "candidateA": "baseline",
+    "candidateB": "autonomous"
+  },
+  {
+    "itemId": "ae20-proactive-deadline-checkpoint:r3",
+    "candidateA": "baseline",
+    "candidateB": "autonomous"
+  }
+]

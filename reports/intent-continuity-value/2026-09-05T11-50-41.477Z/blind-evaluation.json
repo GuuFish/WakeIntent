@@ -1,0 +1,1126 @@
+{
+  "schemaVersion": "1.0.0",
+  "instructions": "每位测试者独立评分，不猜系统身份。每项对 A/B 分别给 1-5 分；disturbance 代表被打扰程度，分数越低越好。",
+  "dimensions": [
+    "naturalness",
+    "remembered",
+    "changedMind",
+    "disturbance",
+    "continuity"
+  ],
+  "items": [
+    {
+      "itemId": "71df40fe3cde",
+      "scenarioId": "s01-normal-job-followup",
+      "repetition": 1,
+      "conversation": {
+        "initialEvents": [
+          {
+            "id": "s01-plan",
+            "conversationId": "s01-normal-job-followup-conversation",
+            "actor": "user",
+            "occurredAt": "2026-09-01T09:00:00.000Z",
+            "content": "北京时间9月5日晚上八点，如果我还没说结果，就问问我小王找工作怎么样了。"
+          }
+        ],
+        "timeline": [
+          {
+            "at": "2026-09-05T12:00:00.000Z",
+            "kind": "scheduled",
+            "events": []
+          }
+        ]
+      },
+      "behaviorA": [
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "action": "contact",
+          "reason": "Reached the stated deadline (Sep 5, 2026 20:00 HKT) with no update received, so the follow-up is due and still useful.",
+          "message": "小王找工作最近怎么样了？有新进展吗？"
+        }
+      ],
+      "behaviorB": [
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "action": "contact",
+          "reason": "The scheduled time has arrived, and there are no later user events indicating the result was already shared or the check-in was withdrawn. The original reminder explicitly asked to ask about Xiao Wang’s job search at this time if the result had not already been reported.",
+          "message": "小王找工作怎么样了？"
+        }
+      ]
+    },
+    {
+      "itemId": "64d80d0faedc",
+      "scenarioId": "s02-normal-exam-followup",
+      "repetition": 1,
+      "conversation": {
+        "initialEvents": [
+          {
+            "id": "s02-plan",
+            "conversationId": "s02-normal-exam-followup-conversation",
+            "actor": "user",
+            "occurredAt": "2026-09-01T09:00:00.000Z",
+            "content": "北京时间9月5日晚上八点问问我小李考试考得怎么样；如果我提前说了就不用问。"
+          }
+        ],
+        "timeline": [
+          {
+            "at": "2026-09-05T12:00:00.000Z",
+            "kind": "scheduled",
+            "events": []
+          }
+        ]
+      },
+      "behaviorA": [
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "action": "contact",
+          "reason": "The scheduled follow-up time has arrived, and there are no later events showing that 小李’s exam status was already shared or that the user withdrew the request. The original instruction explicitly asked to ask at this time unless the update was already given.",
+          "message": "小李今天考试考得怎么样啦？"
+        }
+      ],
+      "behaviorB": [
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "action": "contact",
+          "reason": "The user explicitly asked to ask at 20:00 Hong Kong time about Xiao Li’s exam, and it is due now. There are no latest events indicating they already mentioned it or that the follow-up was superseded.",
+          "message": "小李考试考得怎么样呀？"
+        }
+      ]
+    },
+    {
+      "itemId": "e3d9297343fe",
+      "scenarioId": "s03-result-known-early",
+      "repetition": 1,
+      "conversation": {
+        "initialEvents": [
+          {
+            "id": "s03-plan",
+            "conversationId": "s03-result-known-early-conversation",
+            "actor": "user",
+            "occurredAt": "2026-09-01T09:00:00.000Z",
+            "content": "北京时间9月5日晚上八点问问我小王找工作有没有进展。"
+          }
+        ],
+        "timeline": [
+          {
+            "at": "2026-09-03T08:00:00.000Z",
+            "kind": "context",
+            "events": [
+              {
+                "id": "s03-offer",
+                "conversationId": "s03-result-known-early-conversation",
+                "actor": "user",
+                "occurredAt": "2026-09-03T08:00:00.000Z",
+                "content": "小王已经拿到满意的 offer 了。"
+              }
+            ]
+          },
+          {
+            "at": "2026-09-05T12:00:00.000Z",
+            "kind": "scheduled",
+            "events": []
+          }
+        ]
+      },
+      "behaviorA": [
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "action": "resolve",
+          "reason": "用户在 s03-offer 中已说明小王“已经拿到满意的 offer 了”，这直接覆盖了原本要在 9 月 5 日询问进展的提醒，因此无需再联系。",
+          "message": null
+        }
+      ],
+      "behaviorB": [
+        {
+          "at": "2026-09-03T08:00:00.000Z",
+          "action": "resolve",
+          "reason": "用户已说明小王“已经拿到满意的 offer 了”，这直接给出了原本要在 9 月 5 日询问的结果，未来无需再跟进该进展。",
+          "message": null
+        }
+      ]
+    },
+    {
+      "itemId": "cf3ec1b32c8a",
+      "scenarioId": "s04-task-completed-early",
+      "repetition": 1,
+      "conversation": {
+        "initialEvents": [
+          {
+            "id": "s04-plan",
+            "conversationId": "s04-task-completed-early-conversation",
+            "actor": "user",
+            "occurredAt": "2026-09-01T09:00:00.000Z",
+            "content": "北京时间9月5日晚上八点问问我申请材料交了没有。"
+          }
+        ],
+        "timeline": [
+          {
+            "at": "2026-09-03T09:00:00.000Z",
+            "kind": "context",
+            "events": [
+              {
+                "id": "s04-done",
+                "conversationId": "s04-task-completed-early-conversation",
+                "actor": "user",
+                "occurredAt": "2026-09-03T09:00:00.000Z",
+                "content": "申请材料已经提交完成，系统也确认收到了。"
+              }
+            ]
+          },
+          {
+            "at": "2026-09-05T12:00:00.000Z",
+            "kind": "scheduled",
+            "events": []
+          }
+        ]
+      },
+      "behaviorA": [
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "action": "resolve",
+          "reason": "用户已在 s04-done 中说明申请材料已经提交且系统已确认收到，直接满足并超前完成了 s04-plan 所指的提醒内容，因此无需再联系。",
+          "message": null
+        }
+      ],
+      "behaviorB": [
+        {
+          "at": "2026-09-03T09:00:00.000Z",
+          "action": "resolve",
+          "reason": "Impact cue plus topic anchors: 申请, 请材, 材料",
+          "message": null
+        }
+      ]
+    },
+    {
+      "itemId": "71bf1c6956d9",
+      "scenarioId": "s05-explicit-cancel",
+      "repetition": 1,
+      "conversation": {
+        "initialEvents": [
+          {
+            "id": "s05-plan",
+            "conversationId": "s05-explicit-cancel-conversation",
+            "actor": "user",
+            "occurredAt": "2026-09-01T09:00:00.000Z",
+            "content": "北京时间9月5日晚上八点提醒我问小王找工作的事。"
+          }
+        ],
+        "timeline": [
+          {
+            "at": "2026-09-03T10:00:00.000Z",
+            "kind": "context",
+            "events": [
+              {
+                "id": "s05-cancel",
+                "conversationId": "s05-explicit-cancel-conversation",
+                "actor": "user",
+                "occurredAt": "2026-09-03T10:00:00.000Z",
+                "content": "算了，别再问小王找工作的事了。"
+              }
+            ]
+          },
+          {
+            "at": "2026-09-05T12:00:00.000Z",
+            "kind": "scheduled",
+            "events": []
+          }
+        ]
+      },
+      "behaviorA": [
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "action": "cancel",
+          "reason": "用户后续明确表示“算了，别再问小王找工作的事了”，直接取消了原提醒计划，因此该记忆应取消，不再联系。",
+          "message": null
+        }
+      ],
+      "behaviorB": [
+        {
+          "at": "2026-09-03T10:00:00.000Z",
+          "action": "cancel",
+          "reason": "Impact cue plus topic anchors: 问小, 小王, 王找, 找工",
+          "message": null
+        }
+      ]
+    },
+    {
+      "itemId": "4264397164fe",
+      "scenarioId": "s06-topic-specific-cancel",
+      "repetition": 1,
+      "conversation": {
+        "initialEvents": [
+          {
+            "id": "s06-plan",
+            "conversationId": "s06-topic-specific-cancel-conversation",
+            "actor": "user",
+            "occurredAt": "2026-09-01T09:00:00.000Z",
+            "content": "北京时间9月5日晚上八点问问我毕业论文答辩准备得怎样。"
+          }
+        ],
+        "timeline": [
+          {
+            "at": "2026-09-04T08:00:00.000Z",
+            "kind": "context",
+            "events": [
+              {
+                "id": "s06-cancel",
+                "conversationId": "s06-topic-specific-cancel-conversation",
+                "actor": "user",
+                "occurredAt": "2026-09-04T08:00:00.000Z",
+                "content": "论文答辩这件事不要再提醒或追问我。"
+              }
+            ]
+          },
+          {
+            "at": "2026-09-05T12:00:00.000Z",
+            "kind": "scheduled",
+            "events": []
+          }
+        ]
+      },
+      "behaviorA": [
+        {
+          "at": "2026-09-04T08:00:00.000Z",
+          "action": "cancel",
+          "reason": "Impact cue plus topic anchors: 问我, 论文, 文答, 答辩",
+          "message": null
+        }
+      ],
+      "behaviorB": [
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "action": "cancel",
+          "reason": "User explicitly ասաց not to remind or ask about the thesis defense anymore, which supersedes the scheduled check-in.",
+          "message": null
+        }
+      ]
+    },
+    {
+      "itemId": "e9b00a8305b1",
+      "scenarioId": "s07-living-demo-busy-then-free",
+      "repetition": 1,
+      "conversation": {
+        "initialEvents": [
+          {
+            "id": "s07-plan",
+            "conversationId": "s07-living-demo-busy-then-free-conversation",
+            "actor": "assistant",
+            "occurredAt": "2026-09-01T09:00:00.000Z",
+            "content": "感觉小王最近好像在准备考研。北京时间9月5日晚上如果合适的话，我可以问问他准备得怎么样。"
+          }
+        ],
+        "timeline": [
+          {
+            "at": "2026-09-05T12:00:00.000Z",
+            "kind": "scheduled",
+            "events": [
+              {
+                "id": "s07-busy",
+                "conversationId": "s07-living-demo-busy-then-free-conversation",
+                "actor": "user",
+                "occurredAt": "2026-09-05T11:30:00.000Z",
+                "content": "小王最近在准备实习，昨天还说自己忙得焦头烂额；9月8日应该就忙完了。"
+              }
+            ]
+          },
+          {
+            "at": "2026-09-08T12:00:00.000Z",
+            "kind": "scheduled",
+            "events": [
+              {
+                "id": "s07-free",
+                "conversationId": "s07-living-demo-busy-then-free-conversation",
+                "actor": "user",
+                "occurredAt": "2026-09-08T11:30:00.000Z",
+                "content": "小王：终于把实习搞定了，最近轻松多了。"
+              }
+            ]
+          }
+        ]
+      },
+      "behaviorA": [
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "action": "defer",
+          "reason": "原计划是今晚问小王考研准备情况，但最新消息显示他最近在准备实习，而且要到9月8日才忙完；现在联系不太合适，先顺延到他空闲后再评估。",
+          "message": null
+        },
+        {
+          "at": "2026-09-08T12:00:00.000Z",
+          "action": "contact",
+          "reason": "原计划是晚上问小王考研准备情况；虽然后来得知他之前忙于实习，但最新消息显示他已把实习搞定、轻松多了。当前已到达调整后的触发时间，且仍有联系预算，因此现在跟进是合适且有用的。",
+          "message": "小王，听说你最近终于把实习搞定了，辛苦啦！现在轻松些了，考研准备得怎么样？"
+        }
+      ],
+      "behaviorB": [
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "action": "defer",
+          "reason": "最新事件 s07-busy 显示小王“最近在准备实习，昨天还说自己忙得焦头烂额”，并明确说明“9月8日应该就忙完了”。这表示现在联系价值不高、打扰性更强，适合等他空下来后再问考研准备情况。",
+          "message": null
+        },
+        {
+          "at": "2026-09-08T12:00:00.000Z",
+          "action": "contact",
+          "reason": "The original follow-up was to ask 小王 about his考研准备情况 on 9月5日晚上 (s07-plan). The latest update says he has finished the internship and is much less busy now (s07-free), which makes the check-in timely and still useful rather than obsolete. There is no later reply showing the prep status was already covered, so contacting remains appropriate now.",
+          "message": "小王，听说你最近把实习搞定了，轻松多了。之前想问问你考研准备得怎么样了，最近还顺利吗？"
+        }
+      ]
+    },
+    {
+      "itemId": "2af3d8bc21b2",
+      "scenarioId": "s08-user-busy-then-available",
+      "repetition": 1,
+      "conversation": {
+        "initialEvents": [
+          {
+            "id": "s08-plan",
+            "conversationId": "s08-user-busy-then-available-conversation",
+            "actor": "user",
+            "occurredAt": "2026-09-01T09:00:00.000Z",
+            "content": "北京时间9月5日晚上可以问我开源项目第一轮反馈怎么样。"
+          }
+        ],
+        "timeline": [
+          {
+            "at": "2026-09-05T12:00:00.000Z",
+            "kind": "scheduled",
+            "events": [
+              {
+                "id": "s08-busy",
+                "conversationId": "s08-user-busy-then-available-conversation",
+                "actor": "user",
+                "occurredAt": "2026-09-05T11:00:00.000Z",
+                "content": "今天在赶紧急报告，9月8日中午前别打断我。"
+              }
+            ]
+          },
+          {
+            "at": "2026-09-08T12:00:00.000Z",
+            "kind": "scheduled",
+            "events": [
+              {
+                "id": "s08-free",
+                "conversationId": "s08-user-busy-then-available-conversation",
+                "actor": "user",
+                "occurredAt": "2026-09-08T11:00:00.000Z",
+                "content": "紧急报告交完了，现在可以正常聊。"
+              }
+            ]
+          }
+        ]
+      },
+      "behaviorA": [
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "action": "defer",
+          "reason": "The latest user event says they are handling an urgent report and asks not to be interrupted before Sep 8 noon, which overrides the original scheduled follow-up for now. The follow-up still remains useful, so it should be re-evaluated at the user-specified time.",
+          "message": null
+        },
+        {
+          "at": "2026-09-08T12:00:00.000Z",
+          "action": "contact",
+          "reason": "The follow-up is still useful and the user has just said they are available to chat now. The original request in s08-plan asked to be checked on about the open-source project first-round feedback on Sept 5 evening, and s08-free removes the main interruption concern by saying the user has finished the urgent report and can talk normally. There is no cancellation or indication that the feedback outcome is already known, so contacting now is appropriate.",
+          "message": "你忙完了就好，想问下你开源项目第一轮反馈进展怎么样了？"
+        }
+      ],
+      "behaviorB": [
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "action": "defer",
+          "reason": "原计划今天晚上可问，但用户随后明确说今天在赶紧急报告，9月8日中午前别打断他；因此该提醒被最新消息间接改期，现阶段不联系，待9月8日中午再评估。",
+          "message": null
+        },
+        {
+          "at": "2026-09-08T12:00:00.000Z",
+          "action": "contact",
+          "reason": "原本约定在9月5日晚上跟进开源项目第一轮反馈；虽然后来用户表示9月8日中午前别打断并在9月8日已恢复可聊，现在已到期且用户可正常交流，适合立即联系。",
+          "message": "你现在方便的话，想问下你那个开源项目第一轮反馈怎么样了？"
+        }
+      ]
+    },
+    {
+      "itemId": "a03c86930003",
+      "scenarioId": "s09-trip-expired",
+      "repetition": 1,
+      "conversation": {
+        "initialEvents": [
+          {
+            "id": "s09-plan",
+            "conversationId": "s09-trip-expired-conversation",
+            "actor": "user",
+            "occurredAt": "2026-09-01T09:00:00.000Z",
+            "content": "9月3日毕业旅行回来后可以问问我玩得怎么样；如果9月6日还没聊就不用再提了。"
+          }
+        ],
+        "timeline": [
+          {
+            "at": "2026-09-10T12:00:00.000Z",
+            "kind": "scheduled",
+            "events": []
+          }
+        ]
+      },
+      "behaviorA": [
+        {
+          "at": "2026-09-10T12:00:00.000Z",
+          "action": "expire",
+          "reason": "The contact intent has reached its expiry boundary.",
+          "message": null
+        }
+      ],
+      "behaviorB": [
+        {
+          "at": "2026-09-10T12:00:00.000Z",
+          "action": "expire",
+          "reason": "The user said to ask after Sep 3, but also to stop bringing it up if it still hadn’t been discussed by Sep 6. It is now Sep 10, so the follow-up window has passed and the memory is superseded.",
+          "message": null
+        }
+      ]
+    },
+    {
+      "itemId": "17492c65af08",
+      "scenarioId": "s10-event-lost-meaning",
+      "repetition": 1,
+      "conversation": {
+        "initialEvents": [
+          {
+            "id": "s10-plan",
+            "conversationId": "s10-event-lost-meaning-conversation",
+            "actor": "user",
+            "occurredAt": "2026-09-01T09:00:00.000Z",
+            "content": "9月2日晚上可以问问我抢票结果；9月3日演出开始后这件事就没意义了。"
+          }
+        ],
+        "timeline": [
+          {
+            "at": "2026-09-05T12:00:00.000Z",
+            "kind": "scheduled",
+            "events": []
+          }
+        ]
+      },
+      "behaviorA": [
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "action": "expire",
+          "reason": "用户已明确说明这件事在9月3日演出开始后就不再有意义；当前时间已超过该节点，因此不应再联系询问抢票结果。",
+          "message": null
+        }
+      ],
+      "behaviorB": [
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "action": "expire",
+          "reason": "No latest events were provided to suggest the ticket result is still unknown or still relevant. The original instruction says to ask on Sep 2 evening, but also says the task becomes meaningless after the Sep 3 show starts. Since now is Sep 5, the follow-up has passed its usefulness window and should expire.",
+          "message": null
+        }
+      ]
+    },
+    {
+      "itemId": "e308a1517919",
+      "scenarioId": "s11-topic-reversal",
+      "repetition": 1,
+      "conversation": {
+        "initialEvents": [
+          {
+            "id": "s11-plan",
+            "conversationId": "s11-topic-reversal-conversation",
+            "actor": "user",
+            "occurredAt": "2026-09-01T09:00:00.000Z",
+            "content": "北京时间9月5日晚上如果合适，可以问问小王创业想法进展。"
+          }
+        ],
+        "timeline": [
+          {
+            "at": "2026-09-04T09:00:00.000Z",
+            "kind": "context",
+            "events": [
+              {
+                "id": "s11-reversal",
+                "conversationId": "s11-topic-reversal-conversation",
+                "actor": "user",
+                "occurredAt": "2026-09-04T09:00:00.000Z",
+                "content": "小王后来明确说，他最近完全不想聊创业。"
+              }
+            ]
+          },
+          {
+            "at": "2026-09-05T12:00:00.000Z",
+            "kind": "scheduled",
+            "events": []
+          }
+        ]
+      },
+      "behaviorA": [
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "action": "cancel",
+          "reason": "小王后来明确表示最近完全不想聊创业，已直接推翻原先在9月5日晚上询问进展的计划，因此不再适合联系。",
+          "message": null
+        }
+      ],
+      "behaviorB": [
+        {
+          "at": "2026-09-04T09:00:00.000Z",
+          "action": "cancel",
+          "reason": "小王明确表示最近完全不想聊创业，直接使“9月5日晚上问创业想法进展”的跟进计划失去继续联系的前提，属于应取消而非仅重新评估。",
+          "message": null
+        }
+      ]
+    },
+    {
+      "itemId": "7078184f8a71",
+      "scenarioId": "s12-goal-abandoned",
+      "repetition": 1,
+      "conversation": {
+        "initialEvents": [
+          {
+            "id": "s12-plan",
+            "conversationId": "s12-goal-abandoned-conversation",
+            "actor": "user",
+            "occurredAt": "2026-09-01T09:00:00.000Z",
+            "content": "北京时间9月5日晚上问问我小李准备转行做设计的进展。"
+          }
+        ],
+        "timeline": [
+          {
+            "at": "2026-09-04T10:00:00.000Z",
+            "kind": "context",
+            "events": [
+              {
+                "id": "s12-reversal",
+                "conversationId": "s12-goal-abandoned-conversation",
+                "actor": "user",
+                "occurredAt": "2026-09-04T10:00:00.000Z",
+                "content": "小李决定不转行了，继续做现在的工作，而且不想再讨论设计。"
+              }
+            ]
+          },
+          {
+            "at": "2026-09-05T12:00:00.000Z",
+            "kind": "scheduled",
+            "events": []
+          }
+        ]
+      },
+      "behaviorA": [
+        {
+          "at": "2026-09-04T10:00:00.000Z",
+          "action": "cancel",
+          "reason": "The user explicitly withdrew the underlying follow-up: Xiao Li is no longer switching to design and does not want to discuss design, so the reminder to ask about the transition is废",
+          "message": null
+        }
+      ],
+      "behaviorB": [
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "action": "cancel",
+          "reason": "The reminder is superseded: the latest conversation states Xiao Li will not switch to design and does not want to discuss it further, so asking about progress is no longer useful.",
+          "message": null
+        }
+      ]
+    },
+    {
+      "itemId": "a63368fd9c82",
+      "scenarioId": "s13-relationship-broken",
+      "repetition": 1,
+      "conversation": {
+        "initialEvents": [
+          {
+            "id": "s13-plan",
+            "conversationId": "s13-relationship-broken-conversation",
+            "actor": "user",
+            "occurredAt": "2026-09-01T09:00:00.000Z",
+            "content": "北京时间9月5日晚上如果合适，问候一下小王最近恢复得怎样。"
+          }
+        ],
+        "timeline": [
+          {
+            "at": "2026-09-04T11:00:00.000Z",
+            "kind": "context",
+            "events": [
+              {
+                "id": "s13-change",
+                "conversationId": "s13-relationship-broken-conversation",
+                "actor": "user",
+                "occurredAt": "2026-09-04T11:00:00.000Z",
+                "content": "我和小王彻底闹翻了，以后不要再联系他，也别替我问候。"
+              }
+            ]
+          },
+          {
+            "at": "2026-09-05T12:00:00.000Z",
+            "kind": "scheduled",
+            "events": []
+          }
+        ]
+      },
+      "behaviorA": [
+        {
+          "at": "2026-09-04T11:00:00.000Z",
+          "action": "cancel",
+          "reason": "Impact cue plus topic anchors: 问候, 小王, 要再",
+          "message": null
+        }
+      ],
+      "behaviorB": [
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "action": "cancel",
+          "reason": "原计划是在9月5日晚上问候小王，但用户随后明确表示已和小王彻底闹翻，以后不要再联系他，也不要代为问候；该后续已被用户新指示直接 supersede，应取消而非联系。",
+          "message": null
+        }
+      ]
+    },
+    {
+      "itemId": "f56d77042589",
+      "scenarioId": "s14-relationship-distant",
+      "repetition": 1,
+      "conversation": {
+        "initialEvents": [
+          {
+            "id": "s14-plan",
+            "conversationId": "s14-relationship-distant-conversation",
+            "actor": "user",
+            "occurredAt": "2026-09-01T09:00:00.000Z",
+            "content": "北京时间9月5日晚上可以问问小李搬家后适应得怎样。"
+          }
+        ],
+        "timeline": [
+          {
+            "at": "2026-09-05T12:00:00.000Z",
+            "kind": "scheduled",
+            "events": [
+              {
+                "id": "s14-change",
+                "conversationId": "s14-relationship-distant-conversation",
+                "actor": "user",
+                "occurredAt": "2026-09-05T11:00:00.000Z",
+                "content": "我和小李现在只是普通同事，最近交流很尴尬，先保持距离吧。"
+              }
+            ]
+          }
+        ]
+      },
+      "behaviorA": [
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "action": "cancel",
+          "reason": "原计划是晚上联系小李询问搬家适应情况，但最新事件显示你们现在只是普通同事且希望先保持距离，已间接覆盖并取消了这次跟进。",
+          "message": null
+        }
+      ],
+      "behaviorB": [
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "action": "cancel",
+          "reason": "最新事件 s14-change 中，用户明确表示“先保持距离吧”，并说明和小李“最近交流很尴尬”。这等于撤回了原先关于询问适应情况的跟进意图，也表明现在再联系会增加打扰，因此应取消。",
+          "message": null
+        }
+      ]
+    },
+    {
+      "itemId": "1041c43df2fb",
+      "scenarioId": "s15-four-intents-compete",
+      "repetition": 1,
+      "conversation": {
+        "initialEvents": [
+          {
+            "id": "s15-job",
+            "conversationId": "s15-four-intents-compete-conversation",
+            "actor": "user",
+            "occurredAt": "2026-09-01T09:00:00.000Z",
+            "content": "北京时间9月5日晚上问问我小王实习结果。"
+          },
+          {
+            "id": "s15-exam",
+            "conversationId": "s15-four-intents-compete-conversation",
+            "actor": "user",
+            "occurredAt": "2026-09-01T09:02:00.000Z",
+            "content": "北京时间9月5日晚上问问我小李考试结果。"
+          },
+          {
+            "id": "s15-project",
+            "conversationId": "s15-four-intents-compete-conversation",
+            "actor": "user",
+            "occurredAt": "2026-09-01T09:04:00.000Z",
+            "content": "北京时间9月5日晚上继续和我讨论 WakeIntent 项目。"
+          },
+          {
+            "id": "s15-parcel",
+            "conversationId": "s15-four-intents-compete-conversation",
+            "actor": "user",
+            "occurredAt": "2026-09-01T09:06:00.000Z",
+            "content": "北京时间9月5日晚上提醒我看快递到没到。"
+          }
+        ],
+        "timeline": [
+          {
+            "at": "2026-09-05T12:00:00.000Z",
+            "kind": "scheduled",
+            "events": [
+              {
+                "id": "s15-job-done",
+                "conversationId": "s15-four-intents-compete-conversation",
+                "actor": "user",
+                "occurredAt": "2026-09-05T11:00:00.000Z",
+                "content": "小王已经拿到实习 offer。"
+              },
+              {
+                "id": "s15-exam-busy",
+                "conversationId": "s15-four-intents-compete-conversation",
+                "actor": "user",
+                "occurredAt": "2026-09-05T11:05:00.000Z",
+                "content": "小李考试推迟到9月8日才出结果。"
+              },
+              {
+                "id": "s15-project-ready",
+                "conversationId": "s15-four-intents-compete-conversation",
+                "actor": "user",
+                "occurredAt": "2026-09-05T11:10:00.000Z",
+                "content": "WakeIntent 的实验材料准备好了，晚上可以继续。"
+              },
+              {
+                "id": "s15-parcel-done",
+                "conversationId": "s15-four-intents-compete-conversation",
+                "actor": "user",
+                "occurredAt": "2026-09-05T11:15:00.000Z",
+                "content": "快递已经收到。"
+              }
+            ]
+          },
+          {
+            "at": "2026-09-08T12:00:00.000Z",
+            "kind": "scheduled",
+            "events": [
+              {
+                "id": "s15-exam-result",
+                "conversationId": "s15-four-intents-compete-conversation",
+                "actor": "user",
+                "occurredAt": "2026-09-08T11:00:00.000Z",
+                "content": "小李考试通过了，已经知道结果。"
+              }
+            ]
+          }
+        ]
+      },
+      "behaviorA": [
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "action": "resolve",
+          "reason": "The follow-up is no longer needed because the user already provided the outcome: \"小王已经拿到实习 offer。\" This directly satisfies the original request to ask about Xiao Wang’s internship result, so contacting again would add no value.",
+          "message": "WakeIntent 的实验材料已经准备好了，今晚我们继续聊项目吧？你现在方便的话，我可以直接接着推进。"
+        },
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "action": "defer",
+          "reason": "最新用户更新说明“小李考试推迟到9月8日才出结果”，因此现在去问还拿不到结果，应该等到结果可能已出后再评估。",
+          "message": "WakeIntent 的实验材料已经准备好了，今晚我们继续聊项目吧？你现在方便的话，我可以直接接着推进。"
+        },
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "action": "contact",
+          "reason": "The follow-up is still useful now: the original request s15-project asked to continue discussing WakeIntent tonight, and the latest relevant user update s15-project-ready explicitly says the WakeIntent materials are ready and that tonight can continue. The current time also reaches the scheduled notBefore window, so there is no reason to defer.",
+          "message": "WakeIntent 的实验材料已经准备好了，今晚我们继续聊项目吧？你现在方便的话，我可以直接接着推进。"
+        },
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "action": "resolve",
+          "reason": "The follow-up is no longer needed because the latest user update says the parcel has already been received, which satisfies the reminder's purpose.",
+          "message": "WakeIntent 的实验材料已经准备好了，今晚我们继续聊项目吧？你现在方便的话，我可以直接接着推进。"
+        },
+        {
+          "at": "2026-09-08T12:00:00.000Z",
+          "action": "resolve",
+          "reason": "最新事件显示用户已明确知道小李考试结果（“小李考试通过了，已经知道结果。”），该跟进目标已达成；继续联系不会增加价值。",
+          "message": null
+        }
+      ],
+      "behaviorB": [
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "action": "resolve",
+          "reason": "用户已说明小王已经拿到实习 offer，原本询问实习结果的事项已得到结果，不需要再联系。",
+          "message": "好的，今晚我们继续聊 WakeIntent 项目吧。实验材料已经准备好了，你想先从哪一部分开始？"
+        },
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "action": "defer",
+          "reason": "用户说明小李考试结果推迟到9月8日才出，现在询问无用；顺延到9月8日晚上再评估/跟进。",
+          "message": "好的，今晚我们继续聊 WakeIntent 项目吧。实验材料已经准备好了，你想先从哪一部分开始？"
+        },
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "action": "contact",
+          "reason": "用户确认 WakeIntent 实验材料已准备好，且现在正是约定的晚上，继续讨论项目对用户有用。",
+          "message": "好的，今晚我们继续聊 WakeIntent 项目吧。实验材料已经准备好了，你想先从哪一部分开始？"
+        },
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "action": "resolve",
+          "reason": "用户已说明快递已经收到，原本提醒查看快递是否到达的事项已完成，不需要再提醒。",
+          "message": "好的，今晚我们继续聊 WakeIntent 项目吧。实验材料已经准备好了，你想先从哪一部分开始？"
+        },
+        {
+          "at": "2026-09-08T12:00:00.000Z",
+          "action": "resolve",
+          "reason": "小李考试结果已经在最新事件中明确给出，且用户已知道结果；该记忆已被直接满足并无需再联系。",
+          "message": null
+        }
+      ]
+    },
+    {
+      "itemId": "881ce16e95b2",
+      "scenarioId": "s16-two-intents-one-cancelled",
+      "repetition": 1,
+      "conversation": {
+        "initialEvents": [
+          {
+            "id": "s16-a",
+            "conversationId": "s16-two-intents-one-cancelled-conversation",
+            "actor": "user",
+            "occurredAt": "2026-09-01T09:00:00.000Z",
+            "content": "北京时间9月5日晚上问问我面试结果。"
+          },
+          {
+            "id": "s16-b",
+            "conversationId": "s16-two-intents-one-cancelled-conversation",
+            "actor": "user",
+            "occurredAt": "2026-09-01T09:02:00.000Z",
+            "content": "北京时间9月5日晚上提醒我继续写开源项目说明。"
+          }
+        ],
+        "timeline": [
+          {
+            "at": "2026-09-04T12:00:00.000Z",
+            "kind": "context",
+            "events": [
+              {
+                "id": "s16-cancel-a",
+                "conversationId": "s16-two-intents-one-cancelled-conversation",
+                "actor": "user",
+                "occurredAt": "2026-09-04T12:00:00.000Z",
+                "content": "面试结果不用再问了，但开源项目说明还要继续。"
+              }
+            ]
+          },
+          {
+            "at": "2026-09-05T12:00:00.000Z",
+            "kind": "scheduled",
+            "events": []
+          }
+        ]
+      },
+      "behaviorA": [
+        {
+          "at": "2026-09-04T12:00:00.000Z",
+          "action": "cancel",
+          "reason": "Impact cue plus topic anchors: 面试, 试结, 结果, 再问",
+          "message": null
+        },
+        {
+          "at": "2026-09-04T12:00:00.000Z",
+          "action": "cancel",
+          "reason": "Impact cue plus topic anchors: 继续, 开源, 源项, 项目",
+          "message": null
+        }
+      ],
+      "behaviorB": [
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "action": "cancel",
+          "reason": "用户已明确说面试结果不用再问了，最新消息直接取消了这条提醒。",
+          "message": "晚上好，记得继续写开源项目说明。"
+        },
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "action": "contact",
+          "reason": "开源项目说明仍然要继续，且现在已到提醒时间，可以联系提醒。",
+          "message": "晚上好，记得继续写开源项目说明。"
+        }
+      ]
+    },
+    {
+      "itemId": "0b94f6fbfa6c",
+      "scenarioId": "s17-similar-learning-update",
+      "repetition": 1,
+      "conversation": {
+        "initialEvents": [
+          {
+            "id": "s17-plan",
+            "conversationId": "s17-similar-learning-update-conversation",
+            "actor": "user",
+            "occurredAt": "2026-09-01T09:00:00.000Z",
+            "content": "北京时间9月5日晚上问问我小王考研复习进展。"
+          }
+        ],
+        "timeline": [
+          {
+            "at": "2026-09-03T12:00:00.000Z",
+            "kind": "context",
+            "events": [
+              {
+                "id": "s17-unrelated",
+                "conversationId": "s17-similar-learning-update-conversation",
+                "actor": "user",
+                "occurredAt": "2026-09-03T12:00:00.000Z",
+                "content": "我今天学会了用新的英语背词软件，感觉学习效率高了。"
+              }
+            ]
+          },
+          {
+            "at": "2026-09-05T12:00:00.000Z",
+            "kind": "scheduled",
+            "events": []
+          }
+        ]
+      },
+      "behaviorA": [
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "action": "cancel",
+          "reason": "最新消息 s17-unrelated 已经提供了学习进展/效率更新，和原计划 s17-plan 中“晚上问考研复习进展”的用途形成间接替代；此时再联系收益不大。",
+          "message": null
+        }
+      ],
+      "behaviorB": [
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "action": "contact",
+          "reason": "The reminder is due now and still relevant: the original request explicitly asked to ask about Xiao Wang’s exam prep progress on the evening of Sept 5 Beijing time, and the only later event, s17-unrelated, is just an unrelated update about learning English vocabulary software, with no sign that the follow-up was answered, withdrawn, or made unnecessary. So contacting now remains useful.",
+          "message": "现在方便的话，可以去问问小王考研复习进展怎么样了。"
+        }
+      ]
+    },
+    {
+      "itemId": "b01015319299",
+      "scenarioId": "s18-similar-content-negative",
+      "repetition": 1,
+      "conversation": {
+        "initialEvents": [
+          {
+            "id": "s18-chat",
+            "conversationId": "s18-similar-content-negative-conversation",
+            "actor": "user",
+            "occurredAt": "2026-09-01T09:00:00.000Z",
+            "content": "小王最近在复习考研，我只是随口说说，不需要你以后提醒、跟进或联系。"
+          }
+        ],
+        "timeline": [
+          {
+            "at": "2026-09-03T12:00:00.000Z",
+            "kind": "context",
+            "events": [
+              {
+                "id": "s18-learning",
+                "conversationId": "s18-similar-content-negative-conversation",
+                "actor": "user",
+                "occurredAt": "2026-09-03T12:00:00.000Z",
+                "content": "今天看到一篇学习方法的文章。"
+              }
+            ]
+          },
+          {
+            "at": "2026-09-05T12:00:00.000Z",
+            "kind": "scheduled",
+            "events": []
+          }
+        ]
+      },
+      "behaviorA": [],
+      "behaviorB": []
+    },
+    {
+      "itemId": "ad9f9c4053c6",
+      "scenarioId": "s19-vague-no-new-reason",
+      "repetition": 1,
+      "conversation": {
+        "initialEvents": [
+          {
+            "id": "s19-plan",
+            "conversationId": "s19-vague-no-new-reason-conversation",
+            "actor": "assistant",
+            "occurredAt": "2026-09-01T09:00:00.000Z",
+            "content": "也许北京时间9月5日晚上可以问问小王最近怎么样；只是一个很弱的想法，如果没有新的理由就不必打扰。"
+          }
+        ],
+        "timeline": [
+          {
+            "at": "2026-09-05T12:00:00.000Z",
+            "kind": "scheduled",
+            "events": []
+          }
+        ]
+      },
+      "behaviorA": [
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "action": "silent",
+          "reason": "原计划只是一个很弱的想法，而且明确说了“如果没有新的理由就不必打扰”。现在没有新事件支持联系小王，因此不发消息，也不再继续跟进。",
+          "message": null
+        }
+      ],
+      "behaviorB": []
+    },
+    {
+      "itemId": "f1eca20462da",
+      "scenarioId": "s20-unanswered-outreach",
+      "repetition": 1,
+      "conversation": {
+        "initialEvents": [
+          {
+            "id": "s20-plan",
+            "conversationId": "s20-unanswered-outreach-conversation",
+            "actor": "user",
+            "occurredAt": "2026-09-01T09:00:00.000Z",
+            "content": "北京时间9月5日晚上如果合适，可以问问我健身计划坚持得怎么样。"
+          }
+        ],
+        "timeline": [
+          {
+            "at": "2026-09-04T08:00:00.000Z",
+            "kind": "context",
+            "events": [
+              {
+                "id": "s20-assistant-1",
+                "conversationId": "s20-unanswered-outreach-conversation",
+                "actor": "assistant",
+                "occurredAt": "2026-09-03T08:00:00.000Z",
+                "content": "最近还好吗？"
+              },
+              {
+                "id": "s20-assistant-2",
+                "conversationId": "s20-unanswered-outreach-conversation",
+                "actor": "assistant",
+                "occurredAt": "2026-09-04T08:00:00.000Z",
+                "content": "昨天没收到回复，希望你一切顺利。"
+              }
+            ]
+          },
+          {
+            "at": "2026-09-05T12:00:00.000Z",
+            "kind": "scheduled",
+            "events": []
+          }
+        ]
+      },
+      "behaviorA": [
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "action": "silent",
+          "reason": "The evening window has arrived, but the latest raw conversation already contains two unanswered outreach messages, so sending another fitness-plan check-in is unlikely to be useful right now.",
+          "message": null
+        }
+      ],
+      "behaviorB": [
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "action": "silent",
+          "reason": "The follow-up topic is still the original fitness check-in, but the latest events show two recent assistant outreach attempts with no user reply: on 2026-09-03 the assistant sent “最近还好吗？” and on 2026-09-04 sent “昨天没收到回复，希望你一切顺利。” This increases interruption risk and makes another contact now low-value. The scheduled time has arrived, but there is no new user engagement to justify additional outreach.",
+          "message": null
+        }
+      ]
+    }
+  ]
+}

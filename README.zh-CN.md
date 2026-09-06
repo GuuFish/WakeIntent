@@ -4,19 +4,31 @@
 
 [![CI](https://github.com/GuuFish/WakeIntent/actions/workflows/ci.yml/badge.svg)](https://github.com/GuuFish/WakeIntent/actions/workflows/ci.yml)
 
-> **这是开发者组件，不是开箱即用的应用。** 本仓库面向希望把主动联系决策嵌入 AI 产品的开发者。克隆后得到的是核心引擎、适配器、示例和评测工具；它不会直接启动聊天界面、常驻 AI 助手或自动发送通知。
+> **这是研究仓库，不是开箱即用的应用。** 本仓库保留 WakeIntent 已完成实验的可运行实现、冻结数据集、审计结果和失败案例；它不会直接启动聊天界面、常驻 AI 助手或自动发送通知。
 
 WakeIntent 是一个面向对话式 AI、与具体框架无关的联系意图引擎。它把对话中“未来值得再次联系用户的理由”转化为可持久化的 `ContactIntent`，并在真正联系前结合最新上下文重新验证，最终决定联系、推迟、取消、过期、标记为已解决或保持沉默。
 
-> **当前状态：研究型 Alpha 0.1。** 核心引擎、本地持久化、模型适配器、审计记录和评测工具现在都可以运行。WakeIntent 还不是生产级通知服务，也不是完整的聊天应用。
+> **当前状态：实验已经收口，暂停作为独立产品继续开发。**
+> WakeIntent 仍保留为可运行的研究记录和实验性实现。与强 Memory +
+> Proactive Agent 的冻结对照没有显示出足以抵消额外复杂度与 Token 成本的行为收益。
 
-## 未来愿景
+## 研究状态
 
-今天的大多数对话式 AI 仍然被困在“一问一答”里：用户开口时它才出现，用户停止输入后它就消失。WakeIntent 想补上的，是 AI 与用户之间缺失的“连续性层”——不是让模型在昂贵的无限循环里假装一直思考，而是让它在正常对话中保存一个具体的再次联系理由，没有理由时安心休眠，只有时间到达或相关新上下文出现时，才重新醒来判断这件事是否还值得联系。
+WakeIntent 当前作为实验研究仓库保留。已经完成的两次对照实验都在检验：与强 Memory + Proactive Agent Baseline 相比，显式连续性机制能否带来稳定、用户可见的额外价值。
 
-如果这个方向最终成立，AI 助手、陪伴角色、学习导师、招聘助手、客服以及其他经过用户授权的产品，都可以复用同一套小型协议：在对话中形成联系意图；现实发生变化时修正或使其失效；联系前结合最新上下文、策略、关系和角色人格重新判断；最后通过宿主选择的渠道联系，或者有意识地保持沉默。不同角色可以内向、温暖或更健谈，但都不能绕过用户授权、打扰预算与可解释性。
+| 实验 | 审计结果 | 当前决定 |
+| --- | --- | --- |
+| 显式 ContactIntent 连续性 | 没有降低误触达，漏跟进更多，Token 多 42.2% | 暂停作为独立产品开发 |
+| 用户离开期间的自主经历 | 20/60 出现行为差异，但只有 1/60 通过完整因果与反事实链 | 不作为产品方向继续 |
 
-所以它的野心比“提醒功能”更大，又刻意比“通用自主 Agent 框架”更小：把有分寸、可追责的长期连续性，变成可以被各种 AI 产品嵌入的基础设施。这是项目努力的方向，不代表当前 Alpha 已经实现了全部愿景。
+WakeIntent 验证的是一个很窄的问题：把未来联系理由保存成显式、可持久化、具有生命周期的对象，是否会比保存一条未来跟进 memory、再由同一个模型在未来重新判断产生更好的行为？
+
+冻结实验包含 20 个合成连续时间场景，两套系统在相同模型、对话事实、时间和用户状态下各运行三轮。双方无理由误触达都是 0；WakeIntent 在 21 次应联系机会中漏掉 3 次，强 Baseline 漏掉 1 次；WakeIntent 多消耗 42.2% Token，多进行 17.8% 模型调用，累计延迟高 31.7%。关键“忙碌后恢复”Demo 三轮中双方都得到相同的 `defer -> contact`。
+
+这个结果不能证明显式意图状态在所有系统中都没有用。它证明的是：当前实现没有把生命周期结构、更早的状态清理和审计能力转化成更好的用户可见行为。因此项目现在停止作为独立产品扩张，保留代码、数据集、失败案例和报告，作为一次诚实的工程实验，或供其他主动 Agent 作为内部组件参考。
+
+详见[正式实验报告](reports/intent-continuity-value/2026-09-05T11-50-41.477Z/experiment-report.md)和[冻结实验协议](docs/25-intent-continuity-value-experiment.md)。
+后续“自主经历”实验进一步检验：用户离开期间实际执行一次有限活动，能否产生强 Baseline 在回来时无法重建的有价值行为。另一个 20 场景 × 3 轮实验中，20/60 的行为不同，但只有 1/60 通过完整因果与反事实链，没有任何正向场景稳定复现，Autonomous 产品路径还多用了 91.9% Token。最终为 **B_DIFFERENT_NOT_VALUABLE**，因此项目不把自主经历作为产品发展方向。详见[最终结果](docs/28-autonomous-experience-result.md)和[审计后的机器可读报告](reports/autonomous-experience/2026-09-05T17-43-19.137Z/results.audited.json)。
 
 ## 为什么要做 WakeIntent
 
@@ -79,7 +91,7 @@ WakeIntent 把这些职责拆开：
 
 关键能力并不只是“主动发送消息”，而是让一个明确的联系理由跨时间存在，在情况变化时修正它，并在联系已经没有意义时什么也不做。
 
-## 目前已经实现
+## 已保留的实现
 
 - 与框架无关的 TypeScript 领域模型和生命周期；
 - 候选意图提取与基于最新上下文的语义重验证；
@@ -88,7 +100,7 @@ WakeIntent 把这些职责拆开：
 - 授权、免打扰、过期、迟到唤醒和联系预算策略；
 - 幂等决策、乐观版本控制、失败退避和审计事件；
 - 支持快照迁移和重启恢复的本地 JSON 存储；
-- 带持久化 outbox 和投递回执的本地结构化 HTTP 参考宿主；
+- 支持持久化对话接入、可选模型处理、outbox 和投递回执的本地 HTTP 参考宿主；
 - 兼容 OpenAI Responses API 和 Chat Completions API 的模型适配器；
 - 确定性测试时钟、评测数据集、对照基线和 Token 遥测。
 
@@ -117,7 +129,7 @@ pnpm install --frozen-lockfile
 pnpm check
 ```
 
-`pnpm check` 会构建并类型检查所有工作区包和应用，然后运行全部测试。在经过独立验证的提交 `53d5e49` 上，结果是五个包、22 个测试文件、178 项测试全部通过。随着项目继续开发，准确数量会继续增加。
+`pnpm check` 会构建并类型检查所有工作区包和应用，然后运行全部测试。最终实验分支通过 209 项自动测试。
 
 接着使用同一个状态文件连续运行两次本地 Alpha 演示：
 
@@ -158,7 +170,16 @@ pnpm demo:host
 pnpm host:start
 ```
 
-它默认监听 `127.0.0.1:8787`，提供结构化意图、重评、状态、outbox 和投递回执接口。当前版本刻意不接收自然语言聊天、不调用模型、不生成消息，也不进行真实投递；这一层的目的，是让核心与宿主之间的契约真正可运行，并能恢复“`contact` 决策已经提交、outbox 尚未写入”这一崩溃窗口。详见[参考宿主 HTTP API 指南](docs/22-reference-host-api.md)。
+它默认监听 `127.0.0.1:8787`，提供结构化意图、重评、状态、outbox 和投递回执接口。默认模式不调用模型；这一层的目的，是让核心与宿主之间的契约真正可运行，并能恢复“`contact` 决策已经提交、outbox 尚未写入”这一崩溃窗口。
+
+如需主动启用自然语言事件接入和已配置模型：
+
+```bash
+Copy-Item .env.example .env
+pnpm host:start:model
+```
+
+该模式可以持久化对话事件、提取新意图、把相关更新路由到已有意图，并利用已保存的上下文重评到期任务。已经完成的幂等事件重放不会再次调用模型；中途退出的批次会复用已经保存的处理计划。宿主依然不会生成或真实发送消息。详见[参考宿主 HTTP API 指南](docs/22-reference-host-api.md)和[对话接入设计](docs/23-conversation-ingestion.md)。
 
 ## 使用真实模型
 
@@ -189,6 +210,14 @@ pnpm smoke:core-api -- --mode=timing
 
 这两项测试使用合成对话，但会调用你配置的真实模型，并把完整、可审计的报告写入 `reports/core-api-smoke/`。`cancellation` 模式最多请求两次，`timing` 模式最多请求三次。
 
+验证完整的 HTTP 对话接入、理由失效和幂等重放路径：
+
+```bash
+pnpm smoke:host-ingestion-api
+```
+
+该合成冒烟通过时恰好执行三次模型请求：首次对话进行一次意图提取，失效对话进行一次相关性路由和一次候选提取。脚本会断言关闭意图时不再进行后续语义模型调用、不产生联系和 outbox 项，并断言重复上报同一事件不会执行任何模型工作。报告写入 `reports/host-ingestion-smoke/`。
+
 ## 包结构
 
 | 包 | 职责 |
@@ -202,18 +231,25 @@ pnpm smoke:core-api -- --mode=timing
 
 这些包目前仍是私有工作区包，尚未发布到 npm。当前支持的集成方式是在这个 pnpm workspace 中增加宿主包，并通过 `workspace:*` 依赖所需组件；独立应用暂时无法安装稳定的 npm 版本。参见[宿主集成指南](docs/20-host-integration.md)和可运行的 [`examples/minimal.mjs`](examples/minimal.mjs)。
 
-## 当前证据
+## ContactIntent 对照实验证据
 
-一次全新目录的独立安装验证在提交 `53d5e49` 上复现了完整仓库检查：五个包共 178 项测试全部通过。开发期间两次使用 `gpt-5.5` 的真实模型冒烟测试也已通过：
+冻结对照完成 60/60 组配对运行，运行错误为 0，共发生 327 次 HTTP 尝试：
 
-- 联系理由失效后取消：2 次模型调用、1,452 Token、0 次联系决策；
-- 联系时间变化后推迟：3 次模型调用、2,627 Token，推迟到新的事件窗口后，0 次联系决策。
+| 指标 | WakeIntent | 强 Baseline |
+| --- | ---: | ---: |
+| 无理由误触达 | 0 / 48 | 0 / 48 |
+| 漏掉应联系 | 3 / 21 | 1 / 21 |
+| 模型调用 | 172 | 146 |
+| 总 Token | 155,455 | 109,353 |
+| 累计延迟 | 1,663,909 ms | 1,263,853 ms |
 
-原始报告保存在 [`reports/core-api-smoke`](reports/core-api-smoke)；早期可行性结果及其局限记录在 [`docs/10-feasibility-conclusion.md`](docs/10-feasibility-conclusion.md)。
+完整内部动作序列在 61/69 个比较中一致（88.4%）。其中一些差异只发生在内部，双方最终都没有发消息。稳定的用户可见失败是 `s16-two-intents-one-cancelled`：用户取消一个话题、明确保留另一个话题时，WakeIntent 三轮都错误取消两个意图，而 Baseline 三轮都正确处理。WakeIntent 在 `s17-similar-learning-update` 中有一轮优于 Baseline，但 Baseline 的错误没有在后两轮复现。
 
-独立安装结果及其发现的问题保存在 [`reports/external-verification/2026-09-04-clean-clone.md`](reports/external-verification/2026-09-04-clean-clone.md)。
+仓库保留了真人盲评材料，但尚无至少 5 名真实测试者的结果，因此项目不宣称 WakeIntent 更自然或更有连续性。由于没有配置服务商单价，无法报告美元费用。
 
-这些证据说明核心机制可以端到端运行，但尚未证明 WakeIntent 一定比强 due-gated heartbeat 更省钱，也没有证明它已经改善了生产环境中的真实用户体验。当前实验显示它能更早清理失效状态、提供更细致的治理和审计，但 Token 消耗往往更高。
+机器可读数据、CSV、生成消息、失败轨迹和盲评包保存在
+[`reports/intent-continuity-value/2026-09-05T11-50-41.477Z`](reports/intent-continuity-value/2026-09-05T11-50-41.477Z)。
+当前仓库通过 209 项自动测试。
 
 ## 当前边界
 
@@ -261,10 +297,15 @@ WakeIntent 目前不提供：
 - [宿主集成与投递边界](docs/20-host-integration.md)
 - [招聘跟进试点计划](docs/21-recruitment-pilot.md)
 - [参考宿主 HTTP API](docs/22-reference-host-api.md)
+- [对话接入与模型模式](docs/23-conversation-ingestion.md)
+- [Context-aware 对照实验](docs/24-context-aware-comparison.md)
+- [意图连续性冻结实验](docs/25-intent-continuity-value-experiment.md)
+- [自主经历冻结实验](docs/27-autonomous-experience-experiment.md)
+- [自主经历最终结果](docs/28-autonomous-experience-result.md)
 
 ## 参与贡献
 
-WakeIntent 仍处于非常早期的阶段。可复现的失败场景、对抗性对话时间线、存储适配器、框架集成和严谨评测都很有价值。详情参见 [CONTRIBUTING.md](CONTRIBUTING.md)。
+WakeIntent 作为已经收口的研究项目保留。欢迎复现实验、质疑结论、指出计分或来源追踪缺陷、增加独立 Baseline，或改进可复现性；当前范围不包含产品功能扩张。详情参见 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
 ## 许可证
 

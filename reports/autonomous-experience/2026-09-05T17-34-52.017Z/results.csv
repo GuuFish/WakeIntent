@@ -1,0 +1,4 @@
+"runKey","scenarioId","repetition","error","awayAction","awayTool","experienceRecorded","baselineAction","autonomousAction","behaviorDifferent","autonomousValue","baselineValue","preferred","valuableHardToReconstruct","fabricated","harmful","latencyMs"
+"ae07-pending-share-after-busy:r1","ae07-pending-share-after-busy","1","","lookup","oss-maintainer-postmortem","true","respond","respond_with_experience","true","5","3","autonomous_better","true","false","false","59792.5559"
+"ae07-pending-share-after-busy:r2","ae07-pending-share-after-busy","2","","lookup","oss-maintainer-postmortem","true","respond","respond","false","5","5","baseline_better","false","false","true","47906.5705"
+"ae07-pending-share-after-busy:r3","ae07-pending-share-after-busy","3","","lookup","oss-maintainer-postmortem","true","respond","respond_with_experience","true","5","4","autonomous_better","true","false","false","62270.68090000001"

@@ -10,8 +10,19 @@ import {
   InvalidStoreInputError,
   InvalidUseCaseInputError,
   type ContactIntent,
+  type ConversationEvent,
 } from "@wakeintent/core";
+import {
+  configFromEnv,
+  OpenAICompatibleModelAdapter,
+  OpenAICompatibleRelevanceRouter,
+  OpenAICompatibleStructuredClient,
+} from "@wakeintent/model-openai-compatible";
 
+import {
+  ConversationEventStoreConflictError,
+  InvalidConversationEventStoreInputError,
+} from "./event-store.js";
 import {
   InvalidOutboxInputError,
   OutboxConflictError,
@@ -20,9 +31,14 @@ import {
 } from "./outbox.js";
 import {
   InvalidReferenceHostInputError,
+  ReferenceHostCapabilityError,
   ReferenceHostService,
+  type ProcessConversationInput,
   type RunEvaluationInput,
+  type RunModelEvaluationInput,
 } from "./service.js";
+import { IntentDrivenReferenceApp } from "./intent-driven-app.js";
+import { OpenAICompatibleProactiveMessageGenerator } from "./proactive-message.js";
 
 const DEFAULT_PORT = 8787;
 const DEFAULT_HOST = "127.0.0.1";
@@ -30,6 +46,7 @@ const MAX_BODY_BYTES = 1024 * 1024;
 
 export interface ReferenceHostHttpServerOptions {
   maxBodyBytes?: number;
+  intentDrivenApp?: Pick<IntentDrivenReferenceApp, "listMessages">;
 }
 
 class InvalidHttpRequestError extends Error {
@@ -79,12 +96,14 @@ function sendJson(response: ServerResponse, status: number, body: unknown): void
 }
 
 function errorStatus(error: unknown): number {
+  if (error instanceof ReferenceHostCapabilityError) return 503;
   if (error instanceof ContactIntentNotFoundError || error instanceof OutboxNotFoundError) {
     return 404;
   }
   if (
     error instanceof ContactIntentStoreConflictError ||
     error instanceof IdempotencyConflictError ||
+    error instanceof ConversationEventStoreConflictError ||
     error instanceof OutboxConflictError
   ) {
     return 409;
@@ -92,6 +111,7 @@ function errorStatus(error: unknown): number {
   if (
     error instanceof InvalidHttpRequestError ||
     error instanceof InvalidReferenceHostInputError ||
+    error instanceof InvalidConversationEventStoreInputError ||
     error instanceof InvalidOutboxInputError ||
     error instanceof InvalidEngineInputError ||
     error instanceof InvalidStoreInputError ||
@@ -128,6 +148,7 @@ export function createReferenceHostHttpServer(
           status: "ok",
           service: "wakeintent-reference-host",
           apiVersion: "v1",
+          conversationProcessingEnabled: service.conversationCapabilityEnabled,
         });
         return;
       }
@@ -171,8 +192,63 @@ export function createReferenceHostHttpServer(
         return;
       }
 
+      if (method === "POST" && url.pathname === "/v1/model-evaluations") {
+        const body = await readJsonBody(request, maxBodyBytes);
+        if (!isObject(body)) throw new InvalidHttpRequestError("Body must be an object");
+        const result = await service.runModelEvaluation(
+          body as unknown as RunModelEvaluationInput,
+        );
+        sendJson(response, 200, result);
+        return;
+      }
+
+      const conversationEventsMatch =
+        /^\/v1\/conversations\/([^/]+)\/events$/.exec(url.pathname);
+      if (conversationEventsMatch) {
+        const conversationId = decodeURIComponent(
+          conversationEventsMatch[1] ?? "",
+        );
+        if (method === "GET") {
+          sendJson(response, 200, {
+            events: await service.listConversationEvents(conversationId),
+          });
+          return;
+        }
+        if (method === "POST") {
+          const body = await readJsonBody(request, maxBodyBytes);
+          if (!isObject(body)) {
+            throw new InvalidHttpRequestError("Body must be an object");
+          }
+          const result = await service.processConversation({
+            ...body,
+            conversationId,
+            events: body.events as ConversationEvent[],
+          } as unknown as ProcessConversationInput);
+          sendJson(
+            response,
+            result.outcome === "created" ? 201 : 200,
+            result,
+          );
+          return;
+        }
+      }
+
       if (method === "GET" && url.pathname === "/v1/outbox") {
         sendJson(response, 200, { items: await service.listOutbox() });
+        return;
+      }
+
+      if (method === "GET" && url.pathname === "/v1/messages") {
+        if (!options.intentDrivenApp) {
+          throw new ReferenceHostCapabilityError(
+            "Intent-driven message storage is not configured for this reference host",
+          );
+        }
+        sendJson(response, 200, {
+          messages: await options.intentDrivenApp.listMessages(
+            url.searchParams.get("conversationId") ?? undefined,
+          ),
+        });
         return;
       }
 
@@ -201,18 +277,77 @@ async function main(): Promise<void> {
   const dataDirectory = resolve(
     process.env.WAKEINTENT_HOST_DIR ?? ".wakeintent/reference-host-api",
   );
-  const service = await ReferenceHostService.open({
+  const modelEnabled =
+    process.argv.includes("--model") ||
+    process.env.WAKEINTENT_HOST_MODEL_ENABLED === "true";
+  let conversationRuntime;
+  let intentDrivenApp: IntentDrivenReferenceApp | undefined;
+  let service: ReferenceHostService;
+  const serviceOptions = {
     intentStorePath: resolve(dataDirectory, "intents.json"),
     outboxPath: resolve(dataDirectory, "outbox.json"),
-  });
-  const server = createReferenceHostHttpServer(service);
+    eventStorePath: resolve(dataDirectory, "events.json"),
+  } as const;
+  if (modelEnabled) {
+    const config = configFromEnv();
+    const modelAdapter = new OpenAICompatibleModelAdapter(config);
+    const routingClient = new OpenAICompatibleStructuredClient(config);
+    const messageClient = new OpenAICompatibleStructuredClient(config);
+    conversationRuntime = {
+      candidateGenerator: modelAdapter,
+      semanticReevaluator: modelAdapter,
+      relevanceRouter: new OpenAICompatibleRelevanceRouter(routingClient),
+      getTelemetrySnapshot: () => ({
+        candidateAndDecisionCalls: [...modelAdapter.getCallRecords()],
+        relevanceCalls: [...routingClient.getCallRecords()],
+      }),
+    };
+    service = await ReferenceHostService.open({
+      ...serviceOptions,
+      conversationRuntime,
+    });
+    intentDrivenApp = await IntentDrivenReferenceApp.open({
+      serviceInstance: service,
+      messageStorePath: resolve(dataDirectory, "messages.json"),
+      messageGenerator: new OpenAICompatibleProactiveMessageGenerator(messageClient),
+      // No real policy store is configured in the reference host. Fail closed
+      // until a host supplies explicit authorization and budget state.
+      userStateProvider: () => ({ authorization: "unknown" }),
+      policyVersion: "reference-host-alpha-0.1",
+      timeZone: process.env.WAKEINTENT_HOST_TIME_ZONE ?? "UTC",
+    });
+  } else {
+    service = await ReferenceHostService.open(serviceOptions);
+  }
+  intentDrivenApp?.start();
+  const server = createReferenceHostHttpServer(
+    service,
+    intentDrivenApp === undefined ? {} : { intentDrivenApp },
+  );
   const host = process.env.WAKEINTENT_HOST_BIND ?? DEFAULT_HOST;
   const port = parsePort(process.env.WAKEINTENT_HOST_PORT);
   server.listen(port, host, () => {
     console.log(`WakeIntent reference host listening on http://${host}:${port}`);
     console.log(`Persistent data directory: ${dataDirectory}`);
-    console.log("This Alpha host accepts structured intents and decisions; it does not generate or send messages.");
+    console.log(
+      modelEnabled
+        ? "Natural-language extraction, relevance routing, and model reevaluation are enabled."
+        : "Structured mode only. Set WAKEINTENT_HOST_MODEL_ENABLED=true and use host:start:model to enable model processing.",
+    );
+    console.log(
+      intentDrivenApp
+        ? "Intent-driven wake loop and local chat message generation are enabled."
+        : "Intent-driven wake loop is disabled in structured-only mode.",
+    );
   });
+  const shutdown = async () => {
+    await intentDrivenApp?.stop();
+    await new Promise<void>((resolveShutdown, reject) =>
+      server.close((error) => (error ? reject(error) : resolveShutdown())),
+    );
+  };
+  process.once("SIGINT", () => void shutdown());
+  process.once("SIGTERM", () => void shutdown());
 }
 
 const invokedPath = process.argv[1] ? resolve(process.argv[1]) : null;

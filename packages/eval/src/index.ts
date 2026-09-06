@@ -9,3 +9,6 @@ export * from "./relevance-eval.js";
 export * from "./runner.js";
 export * from "./timeline.js";
 export * from "./types.js";
+export * from "./context-aware.js";
+export * from "./intent-continuity-value.js";
+export * from "./autonomous-experience.js";

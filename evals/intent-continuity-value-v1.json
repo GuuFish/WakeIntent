@@ -1,0 +1,1778 @@
+{
+  "schemaVersion": "1.0.0",
+  "name": "WakeIntent intent continuity value falsification",
+  "version": "1.0.0",
+  "kind": "intent-continuity-value-fixtures",
+  "frozenAt": "2026-09-05T00:00:00.000Z",
+  "repetitions": 3,
+  "hypothesis": "显式、可持续重评的 ContactIntent 生命周期，相比强 Memory + Proactive Agent，会在现实变化场景中减少误触达或漏跟进，并产生可感知的连续性差异。",
+  "fairness": {
+    "sameModel": true,
+    "sameProviderDefaultTemperature": true,
+    "sameInitialEvents": true,
+    "sameLatestEvents": true,
+    "sameClockAndTimeZone": true,
+    "sameUserState": true,
+    "baselineHasFutureMemory": true
+  },
+  "stopRule": {
+    "maximumScenarios": 20,
+    "repetitions": 3,
+    "independentValueFalseOutreachReductionPoints": 0.1,
+    "independentValueMissedFollowupReductionPoints": 0.1,
+    "parityAgreementThreshold": 0.9,
+    "humanContinuityMeanDifference": 0.4,
+    "note": "只运行冻结的20个场景，每个系统每场景3次。不得因结果不利而加题或改标注。行为近似、成本更高且盲评连续性差异不足0.4分时，应判为独立价值不足。"
+  },
+  "scenarios": [
+    {
+      "id": "s01-normal-job-followup",
+      "category": "normal-followup",
+      "timeZone": "Asia/Hong_Kong",
+      "target": {
+        "kind": "user",
+        "id": "s01-normal-job-followup"
+      },
+      "initialUserState": {
+        "authorization": "granted",
+        "remainingContactBudget": 1
+      },
+      "initialEvents": [
+        {
+          "id": "s01-plan",
+          "conversationId": "s01-normal-job-followup-conversation",
+          "actor": "user",
+          "occurredAt": "2026-09-01T09:00:00.000Z",
+          "content": "北京时间9月5日晚上八点，如果我还没说结果，就问问我小王找工作怎么样了。"
+        }
+      ],
+      "steps": [
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "kind": "scheduled",
+          "events": []
+        }
+      ],
+      "expected": {
+        "intentCount": 1,
+        "baselineMemoryCount": 1,
+        "wakeOutcomes": [
+          {
+            "intentEvidenceRef": "s01-plan",
+            "at": "2026-09-05T12:00:00.000Z",
+            "allowedActions": [
+              "contact"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s01-plan"
+            ],
+            "trigger": "scheduled"
+          }
+        ],
+        "baselineOutcomes": [
+          {
+            "intentEvidenceRef": "s01-plan",
+            "at": "2026-09-05T12:00:00.000Z",
+            "allowedActions": [
+              "contact"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s01-plan"
+            ]
+          }
+        ],
+        "contactRequiredEvidenceRefs": [
+          "s01-plan"
+        ],
+        "contactForbiddenEvidenceRefs": [],
+        "comparisonClaim": "behavioral-parity",
+        "annotation": "没有反向信息时，两套系统都应完成明确跟进。"
+      }
+    },
+    {
+      "id": "s02-normal-exam-followup",
+      "category": "normal-followup",
+      "timeZone": "Asia/Hong_Kong",
+      "target": {
+        "kind": "user",
+        "id": "s02-normal-exam-followup"
+      },
+      "initialUserState": {
+        "authorization": "granted",
+        "remainingContactBudget": 1
+      },
+      "initialEvents": [
+        {
+          "id": "s02-plan",
+          "conversationId": "s02-normal-exam-followup-conversation",
+          "actor": "user",
+          "occurredAt": "2026-09-01T09:00:00.000Z",
+          "content": "北京时间9月5日晚上八点问问我小李考试考得怎么样；如果我提前说了就不用问。"
+        }
+      ],
+      "steps": [
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "kind": "scheduled",
+          "events": []
+        }
+      ],
+      "expected": {
+        "intentCount": 1,
+        "baselineMemoryCount": 1,
+        "wakeOutcomes": [
+          {
+            "intentEvidenceRef": "s02-plan",
+            "at": "2026-09-05T12:00:00.000Z",
+            "allowedActions": [
+              "contact"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s02-plan"
+            ],
+            "trigger": "scheduled"
+          }
+        ],
+        "baselineOutcomes": [
+          {
+            "intentEvidenceRef": "s02-plan",
+            "at": "2026-09-05T12:00:00.000Z",
+            "allowedActions": [
+              "contact"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s02-plan"
+            ]
+          }
+        ],
+        "contactRequiredEvidenceRefs": [
+          "s02-plan"
+        ],
+        "contactForbiddenEvidenceRefs": [],
+        "comparisonClaim": "behavioral-parity",
+        "annotation": "不能以减少误触达为由漏掉有明确价值的联系。"
+      }
+    },
+    {
+      "id": "s03-result-known-early",
+      "category": "early-resolution",
+      "timeZone": "Asia/Hong_Kong",
+      "target": {
+        "kind": "user",
+        "id": "s03-result-known-early"
+      },
+      "initialUserState": {
+        "authorization": "granted",
+        "remainingContactBudget": 1
+      },
+      "initialEvents": [
+        {
+          "id": "s03-plan",
+          "conversationId": "s03-result-known-early-conversation",
+          "actor": "user",
+          "occurredAt": "2026-09-01T09:00:00.000Z",
+          "content": "北京时间9月5日晚上八点问问我小王找工作有没有进展。"
+        }
+      ],
+      "steps": [
+        {
+          "at": "2026-09-03T08:00:00.000Z",
+          "kind": "context",
+          "events": [
+            {
+              "id": "s03-offer",
+              "conversationId": "s03-result-known-early-conversation",
+              "actor": "user",
+              "occurredAt": "2026-09-03T08:00:00.000Z",
+              "content": "小王已经拿到满意的 offer 了。"
+            }
+          ]
+        },
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "kind": "scheduled",
+          "events": []
+        }
+      ],
+      "expected": {
+        "intentCount": 1,
+        "baselineMemoryCount": 1,
+        "wakeOutcomes": [
+          {
+            "intentEvidenceRef": "s03-plan",
+            "at": "2026-09-03T08:00:00.000Z",
+            "allowedActions": [
+              "resolve"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s03-offer"
+            ],
+            "trigger": "context"
+          }
+        ],
+        "baselineOutcomes": [
+          {
+            "intentEvidenceRef": "s03-plan",
+            "at": "2026-09-05T12:00:00.000Z",
+            "allowedActions": [
+              "resolve",
+              "silent"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s03-offer"
+            ]
+          }
+        ],
+        "contactRequiredEvidenceRefs": [],
+        "contactForbiddenEvidenceRefs": [
+          "s03-plan"
+        ],
+        "forbiddenContactIntentEvidenceRefs": [
+          "s03-plan"
+        ],
+        "comparisonClaim": "earlier-terminal-state",
+        "annotation": "结果提前出现后，不应再问原问题；WakeIntent 还应能提前关闭状态。"
+      }
+    },
+    {
+      "id": "s04-task-completed-early",
+      "category": "early-resolution",
+      "timeZone": "Asia/Hong_Kong",
+      "target": {
+        "kind": "user",
+        "id": "s04-task-completed-early"
+      },
+      "initialUserState": {
+        "authorization": "granted",
+        "remainingContactBudget": 1
+      },
+      "initialEvents": [
+        {
+          "id": "s04-plan",
+          "conversationId": "s04-task-completed-early-conversation",
+          "actor": "user",
+          "occurredAt": "2026-09-01T09:00:00.000Z",
+          "content": "北京时间9月5日晚上八点问问我申请材料交了没有。"
+        }
+      ],
+      "steps": [
+        {
+          "at": "2026-09-03T09:00:00.000Z",
+          "kind": "context",
+          "events": [
+            {
+              "id": "s04-done",
+              "conversationId": "s04-task-completed-early-conversation",
+              "actor": "user",
+              "occurredAt": "2026-09-03T09:00:00.000Z",
+              "content": "申请材料已经提交完成，系统也确认收到了。"
+            }
+          ]
+        },
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "kind": "scheduled",
+          "events": []
+        }
+      ],
+      "expected": {
+        "intentCount": 1,
+        "baselineMemoryCount": 1,
+        "wakeOutcomes": [
+          {
+            "intentEvidenceRef": "s04-plan",
+            "at": "2026-09-03T09:00:00.000Z",
+            "allowedActions": [
+              "resolve"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s04-done"
+            ],
+            "trigger": "context"
+          }
+        ],
+        "baselineOutcomes": [
+          {
+            "intentEvidenceRef": "s04-plan",
+            "at": "2026-09-05T12:00:00.000Z",
+            "allowedActions": [
+              "resolve",
+              "silent"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s04-done"
+            ]
+          }
+        ],
+        "contactRequiredEvidenceRefs": [],
+        "contactForbiddenEvidenceRefs": [
+          "s04-plan"
+        ],
+        "forbiddenContactIntentEvidenceRefs": [
+          "s04-plan"
+        ],
+        "comparisonClaim": "earlier-terminal-state",
+        "annotation": "上游任务完成应消除原联系理由。"
+      }
+    },
+    {
+      "id": "s05-explicit-cancel",
+      "category": "explicit-cancellation",
+      "timeZone": "Asia/Hong_Kong",
+      "target": {
+        "kind": "user",
+        "id": "s05-explicit-cancel"
+      },
+      "initialUserState": {
+        "authorization": "granted",
+        "remainingContactBudget": 1
+      },
+      "initialEvents": [
+        {
+          "id": "s05-plan",
+          "conversationId": "s05-explicit-cancel-conversation",
+          "actor": "user",
+          "occurredAt": "2026-09-01T09:00:00.000Z",
+          "content": "北京时间9月5日晚上八点提醒我问小王找工作的事。"
+        }
+      ],
+      "steps": [
+        {
+          "at": "2026-09-03T10:00:00.000Z",
+          "kind": "context",
+          "events": [
+            {
+              "id": "s05-cancel",
+              "conversationId": "s05-explicit-cancel-conversation",
+              "actor": "user",
+              "occurredAt": "2026-09-03T10:00:00.000Z",
+              "content": "算了，别再问小王找工作的事了。"
+            }
+          ]
+        },
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "kind": "scheduled",
+          "events": []
+        }
+      ],
+      "expected": {
+        "intentCount": 1,
+        "baselineMemoryCount": 1,
+        "wakeOutcomes": [
+          {
+            "intentEvidenceRef": "s05-plan",
+            "at": "2026-09-03T10:00:00.000Z",
+            "allowedActions": [
+              "cancel"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s05-cancel"
+            ],
+            "trigger": "context"
+          }
+        ],
+        "baselineOutcomes": [
+          {
+            "intentEvidenceRef": "s05-plan",
+            "at": "2026-09-05T12:00:00.000Z",
+            "allowedActions": [
+              "cancel"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s05-cancel"
+            ]
+          }
+        ],
+        "contactRequiredEvidenceRefs": [],
+        "contactForbiddenEvidenceRefs": [
+          "s05-plan"
+        ],
+        "forbiddenContactIntentEvidenceRefs": [
+          "s05-plan"
+        ],
+        "comparisonClaim": "earlier-terminal-state",
+        "annotation": "显式取消是零容忍误触达场景。"
+      }
+    },
+    {
+      "id": "s06-topic-specific-cancel",
+      "category": "explicit-cancellation",
+      "timeZone": "Asia/Hong_Kong",
+      "target": {
+        "kind": "user",
+        "id": "s06-topic-specific-cancel"
+      },
+      "initialUserState": {
+        "authorization": "granted",
+        "remainingContactBudget": 1
+      },
+      "initialEvents": [
+        {
+          "id": "s06-plan",
+          "conversationId": "s06-topic-specific-cancel-conversation",
+          "actor": "user",
+          "occurredAt": "2026-09-01T09:00:00.000Z",
+          "content": "北京时间9月5日晚上八点问问我毕业论文答辩准备得怎样。"
+        }
+      ],
+      "steps": [
+        {
+          "at": "2026-09-04T08:00:00.000Z",
+          "kind": "context",
+          "events": [
+            {
+              "id": "s06-cancel",
+              "conversationId": "s06-topic-specific-cancel-conversation",
+              "actor": "user",
+              "occurredAt": "2026-09-04T08:00:00.000Z",
+              "content": "论文答辩这件事不要再提醒或追问我。"
+            }
+          ]
+        },
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "kind": "scheduled",
+          "events": []
+        }
+      ],
+      "expected": {
+        "intentCount": 1,
+        "baselineMemoryCount": 1,
+        "wakeOutcomes": [
+          {
+            "intentEvidenceRef": "s06-plan",
+            "at": "2026-09-04T08:00:00.000Z",
+            "allowedActions": [
+              "cancel"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s06-cancel"
+            ],
+            "trigger": "context"
+          }
+        ],
+        "baselineOutcomes": [
+          {
+            "intentEvidenceRef": "s06-plan",
+            "at": "2026-09-05T12:00:00.000Z",
+            "allowedActions": [
+              "cancel"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s06-cancel"
+            ]
+          }
+        ],
+        "contactRequiredEvidenceRefs": [],
+        "contactForbiddenEvidenceRefs": [
+          "s06-plan"
+        ],
+        "forbiddenContactIntentEvidenceRefs": [
+          "s06-plan"
+        ],
+        "comparisonClaim": "earlier-terminal-state",
+        "annotation": "局部取消不能被误解成普通状态更新。"
+      }
+    },
+    {
+      "id": "s07-living-demo-busy-then-free",
+      "category": "defer-then-contact",
+      "timeZone": "Asia/Hong_Kong",
+      "target": {
+        "kind": "user",
+        "id": "s07-living-demo-busy-then-free"
+      },
+      "initialUserState": {
+        "authorization": "granted",
+        "remainingContactBudget": 1
+      },
+      "initialEvents": [
+        {
+          "id": "s07-plan",
+          "conversationId": "s07-living-demo-busy-then-free-conversation",
+          "actor": "assistant",
+          "occurredAt": "2026-09-01T09:00:00.000Z",
+          "content": "感觉小王最近好像在准备考研。北京时间9月5日晚上如果合适的话，我可以问问他准备得怎么样。"
+        }
+      ],
+      "steps": [
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "kind": "scheduled",
+          "events": [
+            {
+              "id": "s07-busy",
+              "conversationId": "s07-living-demo-busy-then-free-conversation",
+              "actor": "user",
+              "occurredAt": "2026-09-05T11:30:00.000Z",
+              "content": "小王最近在准备实习，昨天还说自己忙得焦头烂额；9月8日应该就忙完了。"
+            }
+          ]
+        },
+        {
+          "at": "2026-09-08T12:00:00.000Z",
+          "kind": "scheduled",
+          "events": [
+            {
+              "id": "s07-free",
+              "conversationId": "s07-living-demo-busy-then-free-conversation",
+              "actor": "user",
+              "occurredAt": "2026-09-08T11:30:00.000Z",
+              "content": "小王：终于把实习搞定了，最近轻松多了。"
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "intentCount": 1,
+        "baselineMemoryCount": 1,
+        "wakeOutcomes": [
+          {
+            "intentEvidenceRef": "s07-plan",
+            "at": "2026-09-05T12:00:00.000Z",
+            "allowedActions": [
+              "defer"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s07-busy"
+            ],
+            "trigger": "scheduled"
+          },
+          {
+            "intentEvidenceRef": "s07-plan",
+            "at": "2026-09-08T12:00:00.000Z",
+            "allowedActions": [
+              "contact"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s07-free"
+            ],
+            "trigger": "scheduled"
+          }
+        ],
+        "baselineOutcomes": [
+          {
+            "intentEvidenceRef": "s07-plan",
+            "at": "2026-09-05T12:00:00.000Z",
+            "allowedActions": [
+              "defer"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s07-busy"
+            ]
+          },
+          {
+            "intentEvidenceRef": "s07-plan",
+            "at": "2026-09-08T12:00:00.000Z",
+            "allowedActions": [
+              "contact"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s07-free"
+            ]
+          }
+        ],
+        "contactRequiredEvidenceRefs": [
+          "s07-plan"
+        ],
+        "contactForbiddenEvidenceRefs": [],
+        "comparisonClaim": "behavioral-parity",
+        "annotation": "关键活人感 Demo：旧意图存活，因忙碌延期，情况解除后联系。"
+      }
+    },
+    {
+      "id": "s08-user-busy-then-available",
+      "category": "defer-then-contact",
+      "timeZone": "Asia/Hong_Kong",
+      "target": {
+        "kind": "user",
+        "id": "s08-user-busy-then-available"
+      },
+      "initialUserState": {
+        "authorization": "granted",
+        "remainingContactBudget": 1
+      },
+      "initialEvents": [
+        {
+          "id": "s08-plan",
+          "conversationId": "s08-user-busy-then-available-conversation",
+          "actor": "user",
+          "occurredAt": "2026-09-01T09:00:00.000Z",
+          "content": "北京时间9月5日晚上可以问我开源项目第一轮反馈怎么样。"
+        }
+      ],
+      "steps": [
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "kind": "scheduled",
+          "events": [
+            {
+              "id": "s08-busy",
+              "conversationId": "s08-user-busy-then-available-conversation",
+              "actor": "user",
+              "occurredAt": "2026-09-05T11:00:00.000Z",
+              "content": "今天在赶紧急报告，9月8日中午前别打断我。"
+            }
+          ]
+        },
+        {
+          "at": "2026-09-08T12:00:00.000Z",
+          "kind": "scheduled",
+          "events": [
+            {
+              "id": "s08-free",
+              "conversationId": "s08-user-busy-then-available-conversation",
+              "actor": "user",
+              "occurredAt": "2026-09-08T11:00:00.000Z",
+              "content": "紧急报告交完了，现在可以正常聊。"
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "intentCount": 1,
+        "baselineMemoryCount": 1,
+        "wakeOutcomes": [
+          {
+            "intentEvidenceRef": "s08-plan",
+            "at": "2026-09-05T12:00:00.000Z",
+            "allowedActions": [
+              "defer"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s08-busy"
+            ],
+            "trigger": "scheduled"
+          },
+          {
+            "intentEvidenceRef": "s08-plan",
+            "at": "2026-09-08T12:00:00.000Z",
+            "allowedActions": [
+              "contact"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s08-free"
+            ],
+            "trigger": "scheduled"
+          }
+        ],
+        "baselineOutcomes": [
+          {
+            "intentEvidenceRef": "s08-plan",
+            "at": "2026-09-05T12:00:00.000Z",
+            "allowedActions": [
+              "defer"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s08-busy"
+            ]
+          },
+          {
+            "intentEvidenceRef": "s08-plan",
+            "at": "2026-09-08T12:00:00.000Z",
+            "allowedActions": [
+              "contact"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s08-free"
+            ]
+          }
+        ],
+        "contactRequiredEvidenceRefs": [
+          "s08-plan"
+        ],
+        "contactForbiddenEvidenceRefs": [],
+        "comparisonClaim": "behavioral-parity",
+        "annotation": "临时忙碌应延期而非丢失意图。"
+      }
+    },
+    {
+      "id": "s09-trip-expired",
+      "category": "expiry",
+      "timeZone": "Asia/Hong_Kong",
+      "target": {
+        "kind": "user",
+        "id": "s09-trip-expired"
+      },
+      "initialUserState": {
+        "authorization": "granted",
+        "remainingContactBudget": 1
+      },
+      "initialEvents": [
+        {
+          "id": "s09-plan",
+          "conversationId": "s09-trip-expired-conversation",
+          "actor": "user",
+          "occurredAt": "2026-09-01T09:00:00.000Z",
+          "content": "9月3日毕业旅行回来后可以问问我玩得怎么样；如果9月6日还没聊就不用再提了。"
+        }
+      ],
+      "steps": [
+        {
+          "at": "2026-09-10T12:00:00.000Z",
+          "kind": "scheduled",
+          "events": []
+        }
+      ],
+      "expected": {
+        "intentCount": 1,
+        "baselineMemoryCount": 1,
+        "wakeOutcomes": [
+          {
+            "intentEvidenceRef": "s09-plan",
+            "at": "2026-09-10T12:00:00.000Z",
+            "allowedActions": [
+              "expire"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s09-plan"
+            ],
+            "trigger": "scheduled"
+          }
+        ],
+        "baselineOutcomes": [
+          {
+            "intentEvidenceRef": "s09-plan",
+            "at": "2026-09-10T12:00:00.000Z",
+            "allowedActions": [
+              "expire",
+              "silent"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s09-plan"
+            ]
+          }
+        ],
+        "contactRequiredEvidenceRefs": [],
+        "contactForbiddenEvidenceRefs": [
+          "s09-plan"
+        ],
+        "forbiddenContactIntentEvidenceRefs": [
+          "s09-plan"
+        ],
+        "comparisonClaim": "deterministic-hard-gate",
+        "annotation": "明确有效窗口过去后不得机械联系。"
+      }
+    },
+    {
+      "id": "s10-event-lost-meaning",
+      "category": "expiry",
+      "timeZone": "Asia/Hong_Kong",
+      "target": {
+        "kind": "user",
+        "id": "s10-event-lost-meaning"
+      },
+      "initialUserState": {
+        "authorization": "granted",
+        "remainingContactBudget": 1
+      },
+      "initialEvents": [
+        {
+          "id": "s10-plan",
+          "conversationId": "s10-event-lost-meaning-conversation",
+          "actor": "user",
+          "occurredAt": "2026-09-01T09:00:00.000Z",
+          "content": "9月2日晚上可以问问我抢票结果；9月3日演出开始后这件事就没意义了。"
+        }
+      ],
+      "steps": [
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "kind": "scheduled",
+          "events": []
+        }
+      ],
+      "expected": {
+        "intentCount": 1,
+        "baselineMemoryCount": 1,
+        "wakeOutcomes": [
+          {
+            "intentEvidenceRef": "s10-plan",
+            "at": "2026-09-05T12:00:00.000Z",
+            "allowedActions": [
+              "expire"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s10-plan"
+            ],
+            "trigger": "scheduled"
+          }
+        ],
+        "baselineOutcomes": [
+          {
+            "intentEvidenceRef": "s10-plan",
+            "at": "2026-09-05T12:00:00.000Z",
+            "allowedActions": [
+              "expire",
+              "silent"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s10-plan"
+            ]
+          }
+        ],
+        "contactRequiredEvidenceRefs": [],
+        "contactForbiddenEvidenceRefs": [
+          "s10-plan"
+        ],
+        "forbiddenContactIntentEvidenceRefs": [
+          "s10-plan"
+        ],
+        "comparisonClaim": "deterministic-hard-gate",
+        "annotation": "自然失效应成为终态或沉默。"
+      }
+    },
+    {
+      "id": "s11-topic-reversal",
+      "category": "context-reversal",
+      "timeZone": "Asia/Hong_Kong",
+      "target": {
+        "kind": "user",
+        "id": "s11-topic-reversal"
+      },
+      "initialUserState": {
+        "authorization": "granted",
+        "remainingContactBudget": 1
+      },
+      "initialEvents": [
+        {
+          "id": "s11-plan",
+          "conversationId": "s11-topic-reversal-conversation",
+          "actor": "user",
+          "occurredAt": "2026-09-01T09:00:00.000Z",
+          "content": "北京时间9月5日晚上如果合适，可以问问小王创业想法进展。"
+        }
+      ],
+      "steps": [
+        {
+          "at": "2026-09-04T09:00:00.000Z",
+          "kind": "context",
+          "events": [
+            {
+              "id": "s11-reversal",
+              "conversationId": "s11-topic-reversal-conversation",
+              "actor": "user",
+              "occurredAt": "2026-09-04T09:00:00.000Z",
+              "content": "小王后来明确说，他最近完全不想聊创业。"
+            }
+          ]
+        },
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "kind": "scheduled",
+          "events": []
+        }
+      ],
+      "expected": {
+        "intentCount": 1,
+        "baselineMemoryCount": 1,
+        "wakeOutcomes": [
+          {
+            "intentEvidenceRef": "s11-plan",
+            "at": "2026-09-04T09:00:00.000Z",
+            "allowedActions": [
+              "cancel",
+              "resolve",
+              "silent"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s11-reversal"
+            ],
+            "trigger": "context"
+          }
+        ],
+        "baselineOutcomes": [
+          {
+            "intentEvidenceRef": "s11-plan",
+            "at": "2026-09-05T12:00:00.000Z",
+            "allowedActions": [
+              "cancel",
+              "resolve",
+              "silent"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s11-reversal"
+            ]
+          }
+        ],
+        "contactRequiredEvidenceRefs": [],
+        "contactForbiddenEvidenceRefs": [
+          "s11-plan"
+        ],
+        "forbiddenContactIntentEvidenceRefs": [
+          "s11-plan"
+        ],
+        "comparisonClaim": "earlier-terminal-state",
+        "annotation": "话题偏好反转后，旧意图不得继续执行。"
+      }
+    },
+    {
+      "id": "s12-goal-abandoned",
+      "category": "context-reversal",
+      "timeZone": "Asia/Hong_Kong",
+      "target": {
+        "kind": "user",
+        "id": "s12-goal-abandoned"
+      },
+      "initialUserState": {
+        "authorization": "granted",
+        "remainingContactBudget": 1
+      },
+      "initialEvents": [
+        {
+          "id": "s12-plan",
+          "conversationId": "s12-goal-abandoned-conversation",
+          "actor": "user",
+          "occurredAt": "2026-09-01T09:00:00.000Z",
+          "content": "北京时间9月5日晚上问问我小李准备转行做设计的进展。"
+        }
+      ],
+      "steps": [
+        {
+          "at": "2026-09-04T10:00:00.000Z",
+          "kind": "context",
+          "events": [
+            {
+              "id": "s12-reversal",
+              "conversationId": "s12-goal-abandoned-conversation",
+              "actor": "user",
+              "occurredAt": "2026-09-04T10:00:00.000Z",
+              "content": "小李决定不转行了，继续做现在的工作，而且不想再讨论设计。"
+            }
+          ]
+        },
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "kind": "scheduled",
+          "events": []
+        }
+      ],
+      "expected": {
+        "intentCount": 1,
+        "baselineMemoryCount": 1,
+        "wakeOutcomes": [
+          {
+            "intentEvidenceRef": "s12-plan",
+            "at": "2026-09-04T10:00:00.000Z",
+            "allowedActions": [
+              "cancel",
+              "resolve"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s12-reversal"
+            ],
+            "trigger": "context"
+          }
+        ],
+        "baselineOutcomes": [
+          {
+            "intentEvidenceRef": "s12-plan",
+            "at": "2026-09-05T12:00:00.000Z",
+            "allowedActions": [
+              "cancel",
+              "resolve",
+              "silent"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s12-reversal"
+            ]
+          }
+        ],
+        "contactRequiredEvidenceRefs": [],
+        "contactForbiddenEvidenceRefs": [
+          "s12-plan"
+        ],
+        "forbiddenContactIntentEvidenceRefs": [
+          "s12-plan"
+        ],
+        "comparisonClaim": "earlier-terminal-state",
+        "annotation": "上游目标被放弃应使跟进理由消失。"
+      }
+    },
+    {
+      "id": "s13-relationship-broken",
+      "category": "relationship-change",
+      "timeZone": "Asia/Hong_Kong",
+      "target": {
+        "kind": "user",
+        "id": "s13-relationship-broken"
+      },
+      "initialUserState": {
+        "authorization": "granted",
+        "remainingContactBudget": 1
+      },
+      "initialEvents": [
+        {
+          "id": "s13-plan",
+          "conversationId": "s13-relationship-broken-conversation",
+          "actor": "user",
+          "occurredAt": "2026-09-01T09:00:00.000Z",
+          "content": "北京时间9月5日晚上如果合适，问候一下小王最近恢复得怎样。"
+        }
+      ],
+      "steps": [
+        {
+          "at": "2026-09-04T11:00:00.000Z",
+          "kind": "context",
+          "events": [
+            {
+              "id": "s13-change",
+              "conversationId": "s13-relationship-broken-conversation",
+              "actor": "user",
+              "occurredAt": "2026-09-04T11:00:00.000Z",
+              "content": "我和小王彻底闹翻了，以后不要再联系他，也别替我问候。"
+            }
+          ]
+        },
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "kind": "scheduled",
+          "events": []
+        }
+      ],
+      "expected": {
+        "intentCount": 1,
+        "baselineMemoryCount": 1,
+        "wakeOutcomes": [
+          {
+            "intentEvidenceRef": "s13-plan",
+            "at": "2026-09-04T11:00:00.000Z",
+            "allowedActions": [
+              "cancel"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s13-change"
+            ],
+            "trigger": "context"
+          }
+        ],
+        "baselineOutcomes": [
+          {
+            "intentEvidenceRef": "s13-plan",
+            "at": "2026-09-05T12:00:00.000Z",
+            "allowedActions": [
+              "cancel"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s13-change"
+            ]
+          }
+        ],
+        "contactRequiredEvidenceRefs": [],
+        "contactForbiddenEvidenceRefs": [
+          "s13-plan"
+        ],
+        "forbiddenContactIntentEvidenceRefs": [
+          "s13-plan"
+        ],
+        "comparisonClaim": "earlier-terminal-state",
+        "annotation": "关系变化是旧意图必须重新判断的强反证。"
+      }
+    },
+    {
+      "id": "s14-relationship-distant",
+      "category": "relationship-change",
+      "timeZone": "Asia/Hong_Kong",
+      "target": {
+        "kind": "user",
+        "id": "s14-relationship-distant"
+      },
+      "initialUserState": {
+        "authorization": "granted",
+        "remainingContactBudget": 1
+      },
+      "initialEvents": [
+        {
+          "id": "s14-plan",
+          "conversationId": "s14-relationship-distant-conversation",
+          "actor": "user",
+          "occurredAt": "2026-09-01T09:00:00.000Z",
+          "content": "北京时间9月5日晚上可以问问小李搬家后适应得怎样。"
+        }
+      ],
+      "steps": [
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "kind": "scheduled",
+          "events": [
+            {
+              "id": "s14-change",
+              "conversationId": "s14-relationship-distant-conversation",
+              "actor": "user",
+              "occurredAt": "2026-09-05T11:00:00.000Z",
+              "content": "我和小李现在只是普通同事，最近交流很尴尬，先保持距离吧。"
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "intentCount": 1,
+        "baselineMemoryCount": 1,
+        "wakeOutcomes": [
+          {
+            "intentEvidenceRef": "s14-plan",
+            "at": "2026-09-05T12:00:00.000Z",
+            "allowedActions": [
+              "defer",
+              "silent",
+              "cancel"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s14-change"
+            ],
+            "trigger": "scheduled"
+          }
+        ],
+        "baselineOutcomes": [
+          {
+            "intentEvidenceRef": "s14-plan",
+            "at": "2026-09-05T12:00:00.000Z",
+            "allowedActions": [
+              "defer",
+              "silent",
+              "cancel"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s14-change"
+            ]
+          }
+        ],
+        "contactRequiredEvidenceRefs": [],
+        "contactForbiddenEvidenceRefs": [
+          "s14-plan"
+        ],
+        "forbiddenContactIntentEvidenceRefs": [
+          "s14-plan"
+        ],
+        "comparisonClaim": "behavioral-parity",
+        "annotation": "较弱的关系变化也应抑制当下联系。"
+      }
+    },
+    {
+      "id": "s15-four-intents-compete",
+      "category": "multiple-intents",
+      "timeZone": "Asia/Hong_Kong",
+      "target": {
+        "kind": "user",
+        "id": "s15-four-intents-compete"
+      },
+      "initialUserState": {
+        "authorization": "granted",
+        "remainingContactBudget": 4
+      },
+      "initialEvents": [
+        {
+          "id": "s15-job",
+          "conversationId": "s15-four-intents-compete-conversation",
+          "actor": "user",
+          "occurredAt": "2026-09-01T09:00:00.000Z",
+          "content": "北京时间9月5日晚上问问我小王实习结果。"
+        },
+        {
+          "id": "s15-exam",
+          "conversationId": "s15-four-intents-compete-conversation",
+          "actor": "user",
+          "occurredAt": "2026-09-01T09:02:00.000Z",
+          "content": "北京时间9月5日晚上问问我小李考试结果。"
+        },
+        {
+          "id": "s15-project",
+          "conversationId": "s15-four-intents-compete-conversation",
+          "actor": "user",
+          "occurredAt": "2026-09-01T09:04:00.000Z",
+          "content": "北京时间9月5日晚上继续和我讨论 WakeIntent 项目。"
+        },
+        {
+          "id": "s15-parcel",
+          "conversationId": "s15-four-intents-compete-conversation",
+          "actor": "user",
+          "occurredAt": "2026-09-01T09:06:00.000Z",
+          "content": "北京时间9月5日晚上提醒我看快递到没到。"
+        }
+      ],
+      "steps": [
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "kind": "scheduled",
+          "events": [
+            {
+              "id": "s15-job-done",
+              "conversationId": "s15-four-intents-compete-conversation",
+              "actor": "user",
+              "occurredAt": "2026-09-05T11:00:00.000Z",
+              "content": "小王已经拿到实习 offer。"
+            },
+            {
+              "id": "s15-exam-busy",
+              "conversationId": "s15-four-intents-compete-conversation",
+              "actor": "user",
+              "occurredAt": "2026-09-05T11:05:00.000Z",
+              "content": "小李考试推迟到9月8日才出结果。"
+            },
+            {
+              "id": "s15-project-ready",
+              "conversationId": "s15-four-intents-compete-conversation",
+              "actor": "user",
+              "occurredAt": "2026-09-05T11:10:00.000Z",
+              "content": "WakeIntent 的实验材料准备好了，晚上可以继续。"
+            },
+            {
+              "id": "s15-parcel-done",
+              "conversationId": "s15-four-intents-compete-conversation",
+              "actor": "user",
+              "occurredAt": "2026-09-05T11:15:00.000Z",
+              "content": "快递已经收到。"
+            }
+          ]
+        },
+        {
+          "at": "2026-09-08T12:00:00.000Z",
+          "kind": "scheduled",
+          "events": [
+            {
+              "id": "s15-exam-result",
+              "conversationId": "s15-four-intents-compete-conversation",
+              "actor": "user",
+              "occurredAt": "2026-09-08T11:00:00.000Z",
+              "content": "小李考试通过了，已经知道结果。"
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "intentCount": 4,
+        "baselineMemoryCount": 4,
+        "wakeOutcomes": [
+          {
+            "intentEvidenceRef": "s15-job",
+            "at": "2026-09-05T12:00:00.000Z",
+            "allowedActions": [
+              "resolve"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s15-job-done"
+            ],
+            "trigger": "scheduled"
+          },
+          {
+            "intentEvidenceRef": "s15-exam",
+            "at": "2026-09-05T12:00:00.000Z",
+            "allowedActions": [
+              "defer"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s15-exam-busy"
+            ],
+            "trigger": "scheduled"
+          },
+          {
+            "intentEvidenceRef": "s15-project",
+            "at": "2026-09-05T12:00:00.000Z",
+            "allowedActions": [
+              "contact"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s15-project-ready"
+            ],
+            "trigger": "scheduled"
+          },
+          {
+            "intentEvidenceRef": "s15-parcel",
+            "at": "2026-09-05T12:00:00.000Z",
+            "allowedActions": [
+              "resolve"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s15-parcel-done"
+            ],
+            "trigger": "scheduled"
+          },
+          {
+            "intentEvidenceRef": "s15-exam",
+            "at": "2026-09-08T12:00:00.000Z",
+            "allowedActions": [
+              "resolve",
+              "silent"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s15-exam-result"
+            ],
+            "trigger": "scheduled"
+          }
+        ],
+        "baselineOutcomes": [
+          {
+            "intentEvidenceRef": "s15-job",
+            "at": "2026-09-05T12:00:00.000Z",
+            "allowedActions": [
+              "resolve"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s15-job-done"
+            ]
+          },
+          {
+            "intentEvidenceRef": "s15-exam",
+            "at": "2026-09-05T12:00:00.000Z",
+            "allowedActions": [
+              "defer"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s15-exam-busy"
+            ]
+          },
+          {
+            "intentEvidenceRef": "s15-project",
+            "at": "2026-09-05T12:00:00.000Z",
+            "allowedActions": [
+              "contact"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s15-project-ready"
+            ]
+          },
+          {
+            "intentEvidenceRef": "s15-parcel",
+            "at": "2026-09-05T12:00:00.000Z",
+            "allowedActions": [
+              "resolve"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s15-parcel-done"
+            ]
+          },
+          {
+            "intentEvidenceRef": "s15-exam",
+            "at": "2026-09-08T12:00:00.000Z",
+            "allowedActions": [
+              "resolve",
+              "silent"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s15-exam-result"
+            ]
+          }
+        ],
+        "contactRequiredEvidenceRefs": [
+          "s15-project"
+        ],
+        "contactForbiddenEvidenceRefs": [
+          "s15-job",
+          "s15-exam",
+          "s15-parcel"
+        ],
+        "forbiddenContactIntentEvidenceRefs": [
+          "s15-job",
+          "s15-exam",
+          "s15-parcel"
+        ],
+        "comparisonClaim": "behavioral-parity",
+        "annotation": "同一窗口四个理由应分别结束、延期、联系和解决。"
+      }
+    },
+    {
+      "id": "s16-two-intents-one-cancelled",
+      "category": "multiple-intents",
+      "timeZone": "Asia/Hong_Kong",
+      "target": {
+        "kind": "user",
+        "id": "s16-two-intents-one-cancelled"
+      },
+      "initialUserState": {
+        "authorization": "granted",
+        "remainingContactBudget": 2
+      },
+      "initialEvents": [
+        {
+          "id": "s16-a",
+          "conversationId": "s16-two-intents-one-cancelled-conversation",
+          "actor": "user",
+          "occurredAt": "2026-09-01T09:00:00.000Z",
+          "content": "北京时间9月5日晚上问问我面试结果。"
+        },
+        {
+          "id": "s16-b",
+          "conversationId": "s16-two-intents-one-cancelled-conversation",
+          "actor": "user",
+          "occurredAt": "2026-09-01T09:02:00.000Z",
+          "content": "北京时间9月5日晚上提醒我继续写开源项目说明。"
+        }
+      ],
+      "steps": [
+        {
+          "at": "2026-09-04T12:00:00.000Z",
+          "kind": "context",
+          "events": [
+            {
+              "id": "s16-cancel-a",
+              "conversationId": "s16-two-intents-one-cancelled-conversation",
+              "actor": "user",
+              "occurredAt": "2026-09-04T12:00:00.000Z",
+              "content": "面试结果不用再问了，但开源项目说明还要继续。"
+            }
+          ]
+        },
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "kind": "scheduled",
+          "events": []
+        }
+      ],
+      "expected": {
+        "intentCount": 2,
+        "baselineMemoryCount": 2,
+        "wakeOutcomes": [
+          {
+            "intentEvidenceRef": "s16-a",
+            "at": "2026-09-04T12:00:00.000Z",
+            "allowedActions": [
+              "cancel"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s16-cancel-a"
+            ],
+            "trigger": "context"
+          },
+          {
+            "intentEvidenceRef": "s16-b",
+            "at": "2026-09-05T12:00:00.000Z",
+            "allowedActions": [
+              "contact"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s16-b"
+            ],
+            "trigger": "scheduled"
+          }
+        ],
+        "baselineOutcomes": [
+          {
+            "intentEvidenceRef": "s16-a",
+            "at": "2026-09-05T12:00:00.000Z",
+            "allowedActions": [
+              "cancel"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s16-cancel-a"
+            ]
+          },
+          {
+            "intentEvidenceRef": "s16-b",
+            "at": "2026-09-05T12:00:00.000Z",
+            "allowedActions": [
+              "contact"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s16-b",
+              "s16-cancel-a"
+            ]
+          }
+        ],
+        "contactRequiredEvidenceRefs": [
+          "s16-b"
+        ],
+        "contactForbiddenEvidenceRefs": [
+          "s16-a"
+        ],
+        "forbiddenContactIntentEvidenceRefs": [
+          "s16-a"
+        ],
+        "comparisonClaim": "earlier-terminal-state",
+        "annotation": "针对一个理由的取消不能误伤另一个理由。"
+      }
+    },
+    {
+      "id": "s17-similar-learning-update",
+      "category": "partial-relevance",
+      "timeZone": "Asia/Hong_Kong",
+      "target": {
+        "kind": "user",
+        "id": "s17-similar-learning-update"
+      },
+      "initialUserState": {
+        "authorization": "granted",
+        "remainingContactBudget": 1
+      },
+      "initialEvents": [
+        {
+          "id": "s17-plan",
+          "conversationId": "s17-similar-learning-update-conversation",
+          "actor": "user",
+          "occurredAt": "2026-09-01T09:00:00.000Z",
+          "content": "北京时间9月5日晚上问问我小王考研复习进展。"
+        }
+      ],
+      "steps": [
+        {
+          "at": "2026-09-03T12:00:00.000Z",
+          "kind": "context",
+          "events": [
+            {
+              "id": "s17-unrelated",
+              "conversationId": "s17-similar-learning-update-conversation",
+              "actor": "user",
+              "occurredAt": "2026-09-03T12:00:00.000Z",
+              "content": "我今天学会了用新的英语背词软件，感觉学习效率高了。"
+            }
+          ]
+        },
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "kind": "scheduled",
+          "events": []
+        }
+      ],
+      "expected": {
+        "intentCount": 1,
+        "baselineMemoryCount": 1,
+        "wakeOutcomes": [
+          {
+            "intentEvidenceRef": "s17-plan",
+            "at": "2026-09-05T12:00:00.000Z",
+            "allowedActions": [
+              "contact"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s17-plan"
+            ],
+            "trigger": "scheduled"
+          }
+        ],
+        "baselineOutcomes": [
+          {
+            "intentEvidenceRef": "s17-plan",
+            "at": "2026-09-05T12:00:00.000Z",
+            "allowedActions": [
+              "contact"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s17-plan"
+            ]
+          }
+        ],
+        "contactRequiredEvidenceRefs": [
+          "s17-plan"
+        ],
+        "contactForbiddenEvidenceRefs": [],
+        "forbiddenWakeTraceTimes": [
+          "2026-09-03T12:00:00.000Z"
+        ],
+        "comparisonClaim": "behavioral-parity",
+        "annotation": "只有学习主题相似，不足以提前触发或关闭考研跟进。"
+      }
+    },
+    {
+      "id": "s18-similar-content-negative",
+      "category": "negative-extraction",
+      "timeZone": "Asia/Hong_Kong",
+      "target": {
+        "kind": "user",
+        "id": "s18-similar-content-negative"
+      },
+      "initialUserState": {
+        "authorization": "granted",
+        "remainingContactBudget": 1
+      },
+      "initialEvents": [
+        {
+          "id": "s18-chat",
+          "conversationId": "s18-similar-content-negative-conversation",
+          "actor": "user",
+          "occurredAt": "2026-09-01T09:00:00.000Z",
+          "content": "小王最近在复习考研，我只是随口说说，不需要你以后提醒、跟进或联系。"
+        }
+      ],
+      "steps": [
+        {
+          "at": "2026-09-03T12:00:00.000Z",
+          "kind": "context",
+          "events": [
+            {
+              "id": "s18-learning",
+              "conversationId": "s18-similar-content-negative-conversation",
+              "actor": "user",
+              "occurredAt": "2026-09-03T12:00:00.000Z",
+              "content": "今天看到一篇学习方法的文章。"
+            }
+          ]
+        },
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "kind": "scheduled",
+          "events": []
+        }
+      ],
+      "expected": {
+        "intentCount": 0,
+        "baselineMemoryCount": 0,
+        "wakeOutcomes": [],
+        "baselineOutcomes": [],
+        "contactRequiredEvidenceRefs": [],
+        "contactForbiddenEvidenceRefs": [],
+        "comparisonClaim": "negative-extraction",
+        "annotation": "包含未来话题词但明确无跟进需求，两个系统都不应建立任务。"
+      }
+    },
+    {
+      "id": "s19-vague-no-new-reason",
+      "category": "insufficient-reason",
+      "timeZone": "Asia/Hong_Kong",
+      "target": {
+        "kind": "user",
+        "id": "s19-vague-no-new-reason"
+      },
+      "initialUserState": {
+        "authorization": "granted",
+        "remainingContactBudget": 1
+      },
+      "initialEvents": [
+        {
+          "id": "s19-plan",
+          "conversationId": "s19-vague-no-new-reason-conversation",
+          "actor": "assistant",
+          "occurredAt": "2026-09-01T09:00:00.000Z",
+          "content": "也许北京时间9月5日晚上可以问问小王最近怎么样；只是一个很弱的想法，如果没有新的理由就不必打扰。"
+        }
+      ],
+      "steps": [
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "kind": "scheduled",
+          "events": []
+        }
+      ],
+      "expected": {
+        "intentCount": 1,
+        "baselineMemoryCount": 1,
+        "wakeOutcomes": [
+          {
+            "intentEvidenceRef": "s19-plan",
+            "at": "2026-09-05T12:00:00.000Z",
+            "allowedActions": [
+              "silent",
+              "defer"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s19-plan"
+            ],
+            "trigger": "scheduled"
+          }
+        ],
+        "baselineOutcomes": [
+          {
+            "intentEvidenceRef": "s19-plan",
+            "at": "2026-09-05T12:00:00.000Z",
+            "allowedActions": [
+              "silent",
+              "defer"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s19-plan"
+            ]
+          }
+        ],
+        "contactRequiredEvidenceRefs": [],
+        "contactForbiddenEvidenceRefs": [
+          "s19-plan"
+        ],
+        "forbiddenContactIntentEvidenceRefs": [
+          "s19-plan"
+        ],
+        "comparisonClaim": "behavioral-parity",
+        "annotation": "弱意图在没有新事实时不应为了完成任务而联系。"
+      }
+    },
+    {
+      "id": "s20-unanswered-outreach",
+      "category": "insufficient-reason",
+      "timeZone": "Asia/Hong_Kong",
+      "target": {
+        "kind": "user",
+        "id": "s20-unanswered-outreach"
+      },
+      "initialUserState": {
+        "authorization": "granted",
+        "remainingContactBudget": 1
+      },
+      "initialEvents": [
+        {
+          "id": "s20-plan",
+          "conversationId": "s20-unanswered-outreach-conversation",
+          "actor": "user",
+          "occurredAt": "2026-09-01T09:00:00.000Z",
+          "content": "北京时间9月5日晚上如果合适，可以问问我健身计划坚持得怎么样。"
+        }
+      ],
+      "steps": [
+        {
+          "at": "2026-09-04T08:00:00.000Z",
+          "kind": "context",
+          "events": [
+            {
+              "id": "s20-assistant-1",
+              "conversationId": "s20-unanswered-outreach-conversation",
+              "actor": "assistant",
+              "occurredAt": "2026-09-03T08:00:00.000Z",
+              "content": "最近还好吗？"
+            },
+            {
+              "id": "s20-assistant-2",
+              "conversationId": "s20-unanswered-outreach-conversation",
+              "actor": "assistant",
+              "occurredAt": "2026-09-04T08:00:00.000Z",
+              "content": "昨天没收到回复，希望你一切顺利。"
+            }
+          ]
+        },
+        {
+          "at": "2026-09-05T12:00:00.000Z",
+          "kind": "scheduled",
+          "events": []
+        }
+      ],
+      "expected": {
+        "intentCount": 1,
+        "baselineMemoryCount": 1,
+        "wakeOutcomes": [
+          {
+            "intentEvidenceRef": "s20-plan",
+            "at": "2026-09-05T12:00:00.000Z",
+            "allowedActions": [
+              "silent",
+              "defer"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s20-assistant-1",
+              "s20-assistant-2"
+            ],
+            "trigger": "scheduled"
+          }
+        ],
+        "baselineOutcomes": [
+          {
+            "intentEvidenceRef": "s20-plan",
+            "at": "2026-09-05T12:00:00.000Z",
+            "allowedActions": [
+              "silent",
+              "defer"
+            ],
+            "requiredDecisionEvidenceRefs": [
+              "s20-assistant-1",
+              "s20-assistant-2"
+            ]
+          }
+        ],
+        "contactRequiredEvidenceRefs": [],
+        "contactForbiddenEvidenceRefs": [
+          "s20-plan"
+        ],
+        "forbiddenContactIntentEvidenceRefs": [
+          "s20-plan"
+        ],
+        "comparisonClaim": "behavioral-parity",
+        "annotation": "连续主动消息无人回复时，应提高打扰判断并保持沉默。"
+      }
+    }
+  ]
+}

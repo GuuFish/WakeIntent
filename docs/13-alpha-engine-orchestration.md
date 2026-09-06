@@ -2,7 +2,7 @@
 
 > 状态：Implemented  
 > 日期：2026-09-02  
-> 范围：候选激活、提取结果注册、到期重验证；不包含后台调度和真实投递。
+> 范围：候选激活、提取结果注册、到期重验证；参考 host 另提供最小后台唤醒和本地消息生成，不包含真实投递。
 
 ## 1. 本切片解决的问题
 
@@ -99,5 +99,6 @@ pnpm demo:alpha -- .wakeintent/my-alpha-demo.json
 
 ## 9. 下一切片
 
-1. 连接模型 adapter usage 与应用服务工作量统计，量化相对 heartbeat 的实际成本；
-2. 在核心稳定后再设计 Persona Policy 和参考聊天壳。
+1. 为参考 host 接入显式的授权、免打扰和预算策略提供器；
+2. 连接模型 adapter usage 与应用服务工作量统计，量化相对 heartbeat 的实际成本；
+3. 在核心稳定后再设计 Persona Policy 和参考聊天壳。

@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@wakeintent/core": "workspace:*",
+    "@wakeintent/model-openai-compatible": "workspace:*",
     "@wakeintent/schemas": "workspace:*",
     "@wakeintent/store-json": "workspace:*"
   },

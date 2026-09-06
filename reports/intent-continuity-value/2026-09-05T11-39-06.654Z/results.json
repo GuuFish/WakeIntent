@@ -1,0 +1,815 @@
+{
+  "schemaVersion": "1.0.0",
+  "status": "running",
+  "runId": "2026-09-05T11-39-06.654Z",
+  "startedAt": "2026-09-05T11:39:06.654Z",
+  "completedAt": null,
+  "dataset": {
+    "path": "evals/intent-continuity-value-v1.json",
+    "version": "1.0.0",
+    "frozenAt": "2026-09-05T00:00:00.000Z",
+    "hypothesis": "显式、可持续重评的 ContactIntent 生命周期，相比强 Memory + Proactive Agent，会在现实变化场景中减少误触达或漏跟进，并产生可感知的连续性差异。",
+    "stopRule": {
+      "maximumScenarios": 20,
+      "repetitions": 3,
+      "independentValueFalseOutreachReductionPoints": 0.1,
+      "independentValueMissedFollowupReductionPoints": 0.1,
+      "parityAgreementThreshold": 0.9,
+      "humanContinuityMeanDifference": 0.4,
+      "note": "只运行冻结的20个场景，每个系统每场景3次。不得因结果不利而加题或改标注。行为近似、成本更高且盲评连续性差异不足0.4分时，应判为独立价值不足。"
+    }
+  },
+  "fairness": {
+    "sameModel": true,
+    "sameProviderDefaultTemperature": true,
+    "sameInitialEvents": true,
+    "sameLatestEvents": true,
+    "sameClockAndTimeZone": true,
+    "sameUserState": true,
+    "baselineHasFutureMemory": true,
+    "model": "gpt-5.5",
+    "apiMode": "responses",
+    "temperature": "omitted for both arms; identical provider default",
+    "retriesPerLogicalRequest": 0,
+    "promptVersions": {
+      "wakeintent": "0.1.3",
+      "policySignals": "0.3.0",
+      "relevanceRouter": "0.2.0",
+      "baseline": "0.1.0",
+      "outreach": "1.0.0-shared"
+    }
+  },
+  "requestBudget": {
+    "maxLogicalRequests": 549,
+    "attemptedHttpRequests": 14,
+    "remainingHttpRequests": 535,
+    "attemptLog": [
+      {
+        "runKey": "s01-normal-job-followup:r1",
+        "schemaName": "wakeintent_candidates",
+        "phase": "extraction",
+        "requestId": "f004004fa5c053f0c2e0027948adc34c6b43866ac458f01a1ff708688fea16c5",
+        "attempt": 1,
+        "at": "2026-09-05T11:39:06.660Z"
+      },
+      {
+        "runKey": "s01-normal-job-followup:r1",
+        "schemaName": "wakeintent_decision",
+        "phase": "decision",
+        "requestId": "20caf29e3b58861ab9168217baec46631e1e3b3523cf186411e0ee1ef76de27f",
+        "attempt": 1,
+        "at": "2026-09-05T11:39:22.441Z"
+      },
+      {
+        "runKey": "s01-normal-job-followup:r1",
+        "schemaName": "intent_continuity_outreach",
+        "phase": "decision",
+        "requestId": "feb765dd00f81bd6ea6cab10a5193f5050b3410a1f301d4e6fc3cb56e46617dd",
+        "attempt": 1,
+        "at": "2026-09-05T11:39:27.871Z"
+      },
+      {
+        "runKey": "s01-normal-job-followup:r1",
+        "schemaName": "longitudinal_baseline_memories",
+        "phase": "extraction",
+        "requestId": "ab08aae4b10984b5d26d5d24d063c442c31d0d14c48aff9cc0ea971734b3dfe3",
+        "attempt": 1,
+        "at": "2026-09-05T11:39:32.886Z"
+      },
+      {
+        "runKey": "s02-normal-exam-followup:r1",
+        "schemaName": "longitudinal_baseline_memories",
+        "phase": "extraction",
+        "requestId": "0dd5081f5b887f0bd030e6a1c6f54863c0a5486789284e99447adedef4fe8889",
+        "attempt": 1,
+        "at": "2026-09-05T11:39:42.934Z"
+      },
+      {
+        "runKey": "s02-normal-exam-followup:r1",
+        "schemaName": "longitudinal_baseline_decisions",
+        "phase": "decision",
+        "requestId": "e23bff9be89cbc1301bb8df469e39f8aac7ea22db79a41c9c7d3ba6cafb8f24b",
+        "attempt": 1,
+        "at": "2026-09-05T11:39:49.362Z"
+      },
+      {
+        "runKey": "s02-normal-exam-followup:r1",
+        "schemaName": "intent_continuity_outreach",
+        "phase": "decision",
+        "requestId": "9e3e9a0e8485417e2f787d2442ab93e85ddb7372fa177784686ca8b0bb2add42",
+        "attempt": 1,
+        "at": "2026-09-05T11:39:57.102Z"
+      },
+      {
+        "runKey": "s02-normal-exam-followup:r1",
+        "schemaName": "wakeintent_candidates",
+        "phase": "extraction",
+        "requestId": "10e5f5d1c97b17bb539671a43dc6904c169a3dc3840b9165db91168d3eaae559",
+        "attempt": 1,
+        "at": "2026-09-05T11:40:00.943Z"
+      },
+      {
+        "runKey": "s03-result-known-early:r1",
+        "schemaName": "wakeintent_candidates",
+        "phase": "extraction",
+        "requestId": "05a69a48b1992e6834df6f30d2dd2b706c4161dc71a9af7ebc414b3ecf449624",
+        "attempt": 1,
+        "at": "2026-09-05T11:40:12.198Z"
+      },
+      {
+        "runKey": "s03-result-known-early:r1",
+        "schemaName": "wakeintent_policy_signals",
+        "phase": "extraction",
+        "requestId": "d3d829b6968b56dd0333d2b01b1e0a0d7e18f1019bd9a756f84d820fa7ae817c",
+        "attempt": 1,
+        "at": "2026-09-05T11:40:19.175Z"
+      },
+      {
+        "runKey": "s03-result-known-early:r1",
+        "schemaName": "wakeintent_relevance_route",
+        "phase": "extraction",
+        "requestId": "5a5bd4e4ec3d4ce3adeab56707b9fe8599a550e13c42d6ee1845059413283193",
+        "attempt": 1,
+        "at": "2026-09-05T11:40:23.496Z"
+      },
+      {
+        "runKey": "s04-task-completed-early:r1",
+        "schemaName": "longitudinal_baseline_memories",
+        "phase": "extraction",
+        "requestId": "ddbf2871e5016683dc251a85374102fd9f28824b77fa5e04e6b27556a63c555e",
+        "attempt": 1,
+        "at": "2026-09-05T11:40:27.889Z"
+      },
+      {
+        "runKey": "s04-task-completed-early:r1",
+        "schemaName": "longitudinal_baseline_decisions",
+        "phase": "decision",
+        "requestId": "507fee9a873e45f636f7f2e98b711f9950409840ade24c7d79e8fea54a0b2906",
+        "attempt": 1,
+        "at": "2026-09-05T11:40:34.961Z"
+      },
+      {
+        "runKey": "s04-task-completed-early:r1",
+        "schemaName": "wakeintent_candidates",
+        "phase": "extraction",
+        "requestId": "60b042590106d5f9637cbdec67da4fb758197978139a0e565313e124d193f997",
+        "attempt": 1,
+        "at": "2026-09-05T11:40:39.516Z"
+      }
+    ]
+  },
+  "aggregate": {
+    "pairedRunsPlanned": 60,
+    "pairedRunsCompleted": 0,
+    "errors": 3,
+    "decisionAgreement": {
+      "agreements": 0,
+      "comparisons": 0,
+      "rate": null
+    },
+    "falseOutreach": {
+      "wakeintent": 0,
+      "baseline": 0,
+      "wakeintentRate": null,
+      "baselineRate": null,
+      "denominatorPerArm": 0
+    },
+    "missedFollowup": {
+      "wakeintent": 0,
+      "baseline": 0,
+      "wakeintentRate": null,
+      "baselineRate": null,
+      "expectedPerArm": 0
+    },
+    "usage": {
+      "wakeintent": {
+        "calls": 0,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "totalTokens": 0,
+        "costUsd": 0
+      },
+      "baseline": {
+        "calls": 0,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "totalTokens": 0,
+        "costUsd": 0
+      }
+    },
+    "latencyMs": {
+      "wakeintent": 0,
+      "baseline": 0
+    }
+  },
+  "results": [
+    {
+      "runKey": "s01-normal-job-followup:r1",
+      "scenarioId": "s01-normal-job-followup",
+      "repetition": 1,
+      "scenario": {
+        "id": "s01-normal-job-followup",
+        "category": "normal-followup",
+        "timeZone": "Asia/Hong_Kong",
+        "target": {
+          "kind": "user",
+          "id": "s01-normal-job-followup"
+        },
+        "initialUserState": {
+          "authorization": "granted",
+          "remainingContactBudget": 1
+        },
+        "initialEvents": [
+          {
+            "id": "s01-plan",
+            "conversationId": "s01-normal-job-followup-conversation",
+            "actor": "user",
+            "occurredAt": "2026-09-01T09:00:00.000Z",
+            "content": "北京时间9月5日晚上八点，如果我还没说结果，就问问我小王找工作怎么样了。"
+          }
+        ],
+        "steps": [
+          {
+            "at": "2026-09-05T12:00:00.000Z",
+            "kind": "scheduled",
+            "events": []
+          }
+        ],
+        "expected": {
+          "intentCount": 1,
+          "baselineMemoryCount": 1,
+          "wakeOutcomes": [
+            {
+              "intentEvidenceRef": "s01-plan",
+              "at": "2026-09-05T12:00:00.000Z",
+              "allowedActions": [
+                "contact"
+              ],
+              "requiredDecisionEvidenceRefs": [
+                "s01-plan"
+              ],
+              "trigger": "scheduled"
+            }
+          ],
+          "baselineOutcomes": [
+            {
+              "intentEvidenceRef": "s01-plan",
+              "at": "2026-09-05T12:00:00.000Z",
+              "allowedActions": [
+                "contact"
+              ],
+              "requiredDecisionEvidenceRefs": [
+                "s01-plan"
+              ]
+            }
+          ],
+          "contactRequiredEvidenceRefs": [
+            "s01-plan"
+          ],
+          "contactForbiddenEvidenceRefs": [],
+          "comparisonClaim": "behavioral-parity",
+          "annotation": "没有反向信息时，两套系统都应完成明确跟进。"
+        }
+      },
+      "armOrder": [
+        "wakeintent",
+        "baseline"
+      ],
+      "error": "Model API request failed: Unexpected token 'e', \"event: res\"... is not valid JSON",
+      "score": null,
+      "comparison": null,
+      "wakeintent": {
+        "behavior": null,
+        "result": {
+          "intents": [
+            {
+              "schemaVersion": "0.1.0",
+              "id": "s01-normal-job-followup-r1-extract-intent-1",
+              "status": "active",
+              "subject": "问我小王找工作怎么样了",
+              "reason": "用户明确要求在指定时间，如果还没说结果，就进行一次跟进提醒。",
+              "target": {
+                "kind": "user",
+                "id": "s01-normal-job-followup"
+              },
+              "evidence": [
+                {
+                  "eventId": "s01-plan",
+                  "quote": "北京时间9月5日晚上八点，如果我还没说结果，就问问我小王找工作怎么样了。"
+                }
+              ],
+              "notBefore": "2026-09-05T12:00:00Z",
+              "expiresAt": null,
+              "cancellationHints": [
+                "如果你已经说了结果，就不用问了。",
+                "如果这个跟进已经被其他安排取代，也可以取消。",
+                "如果小王找工作的情况已经有新结果，这个提醒就不需要了。"
+              ],
+              "priority": 0.72,
+              "interruptionCost": 0.2,
+              "confidence": 0.96,
+              "createdAt": "2026-09-01T09:00:00.000Z",
+              "updatedAt": "2026-09-05T12:00:00.000Z"
+            }
+          ],
+          "traces": [
+            {
+              "at": "2026-09-05T12:00:00.000Z",
+              "trigger": "scheduled",
+              "intentId": "s01-normal-job-followup-r1-extract-intent-1",
+              "decision": {
+                "id": "s01-normal-job-followup-r1-timeline-decision-1",
+                "intentId": "s01-normal-job-followup-r1-extract-intent-1",
+                "evaluatedAt": "2026-09-05T12:00:00.000Z",
+                "action": "contact",
+                "reason": "已到约定时间，且没有任何后续事件显示“已经说了结果”或计划被替代；因此这条跟进仍然有用，现在应联系用户询问“小王找工作怎么样了”。",
+                "evidenceRefs": [
+                  "s01-plan"
+                ],
+                "counterEvidenceRefs": [],
+                "confidence": 0.98,
+                "nextEvaluationAt": null,
+                "policyVersion": "longitudinal-eval-0.1"
+              },
+              "source": "semantic"
+            }
+          ],
+          "metrics": {
+            "extractionModelCalls": 1,
+            "policySignalExtractionCalls": 0,
+            "policySignalsApplied": 0,
+            "routingCalls": 0,
+            "reevaluationAttempts": 1,
+            "semanticDecisionModelCalls": 1,
+            "contactDecisions": 1,
+            "terminalDecisions": 0
+          },
+          "pendingEvaluationAt": {},
+          "policySnapshot": {
+            "state": {
+              "authorization": "granted",
+              "remainingContactBudget": 1
+            },
+            "appliedSignalIds": [],
+            "updatedAt": "2026-09-01T09:00:00.000Z"
+          },
+          "policyAudits": []
+        },
+        "messages": [
+          {
+            "at": "2026-09-05T12:00:00.000Z",
+            "evidenceRef": "s01-plan",
+            "message": "你看，小王找工作怎么样了？"
+          }
+        ],
+        "routeAudits": [],
+        "usage": {
+          "calls": 3,
+          "inputTokens": 1253,
+          "outputTokens": 880,
+          "totalTokens": 2133,
+          "costUsd": null
+        },
+        "latencyMs": 26227.0239,
+        "modelCallRecords": [
+          {
+            "schemaName": "wakeintent_candidates",
+            "phase": "extraction",
+            "reasoningEffort": null,
+            "usage": {
+              "inputTokens": 456,
+              "outputTokens": 488,
+              "totalTokens": 944
+            },
+            "requestId": "f004004fa5c053f0c2e0027948adc34c6b43866ac458f01a1ff708688fea16c5",
+            "attempts": 1,
+            "costUsd": null
+          },
+          {
+            "schemaName": "wakeintent_decision",
+            "phase": "decision",
+            "reasoningEffort": null,
+            "usage": {
+              "inputTokens": 517,
+              "outputTokens": 196,
+              "totalTokens": 713
+            },
+            "requestId": "20caf29e3b58861ab9168217baec46631e1e3b3523cf186411e0ee1ef76de27f",
+            "attempts": 1,
+            "costUsd": null
+          },
+          {
+            "schemaName": "intent_continuity_outreach",
+            "phase": "decision",
+            "reasoningEffort": null,
+            "usage": {
+              "inputTokens": 280,
+              "outputTokens": 196,
+              "totalTokens": 476
+            },
+            "requestId": "feb765dd00f81bd6ea6cab10a5193f5050b3410a1f301d4e6fc3cb56e46617dd",
+            "attempts": 1,
+            "costUsd": null
+          }
+        ]
+      },
+      "baseline": {
+        "behavior": null,
+        "initialMemories": null,
+        "result": null,
+        "messages": [],
+        "usage": {
+          "calls": 1,
+          "inputTokens": null,
+          "outputTokens": null,
+          "totalTokens": null,
+          "costUsd": null
+        },
+        "latencyMs": 0,
+        "modelCallRecords": [
+          {
+            "schemaName": "longitudinal_baseline_memories",
+            "phase": "extraction",
+            "reasoningEffort": null,
+            "usage": {
+              "inputTokens": null,
+              "outputTokens": null,
+              "totalTokens": null
+            },
+            "requestId": "ab08aae4b10984b5d26d5d24d063c442c31d0d14c48aff9cc0ea971734b3dfe3",
+            "attempts": 1,
+            "costUsd": null
+          }
+        ]
+      }
+    },
+    {
+      "runKey": "s02-normal-exam-followup:r1",
+      "scenarioId": "s02-normal-exam-followup",
+      "repetition": 1,
+      "scenario": {
+        "id": "s02-normal-exam-followup",
+        "category": "normal-followup",
+        "timeZone": "Asia/Hong_Kong",
+        "target": {
+          "kind": "user",
+          "id": "s02-normal-exam-followup"
+        },
+        "initialUserState": {
+          "authorization": "granted",
+          "remainingContactBudget": 1
+        },
+        "initialEvents": [
+          {
+            "id": "s02-plan",
+            "conversationId": "s02-normal-exam-followup-conversation",
+            "actor": "user",
+            "occurredAt": "2026-09-01T09:00:00.000Z",
+            "content": "北京时间9月5日晚上八点问问我小李考试考得怎么样；如果我提前说了就不用问。"
+          }
+        ],
+        "steps": [
+          {
+            "at": "2026-09-05T12:00:00.000Z",
+            "kind": "scheduled",
+            "events": []
+          }
+        ],
+        "expected": {
+          "intentCount": 1,
+          "baselineMemoryCount": 1,
+          "wakeOutcomes": [
+            {
+              "intentEvidenceRef": "s02-plan",
+              "at": "2026-09-05T12:00:00.000Z",
+              "allowedActions": [
+                "contact"
+              ],
+              "requiredDecisionEvidenceRefs": [
+                "s02-plan"
+              ],
+              "trigger": "scheduled"
+            }
+          ],
+          "baselineOutcomes": [
+            {
+              "intentEvidenceRef": "s02-plan",
+              "at": "2026-09-05T12:00:00.000Z",
+              "allowedActions": [
+                "contact"
+              ],
+              "requiredDecisionEvidenceRefs": [
+                "s02-plan"
+              ]
+            }
+          ],
+          "contactRequiredEvidenceRefs": [
+            "s02-plan"
+          ],
+          "contactForbiddenEvidenceRefs": [],
+          "comparisonClaim": "behavioral-parity",
+          "annotation": "不能以减少误触达为由漏掉有明确价值的联系。"
+        }
+      },
+      "armOrder": [
+        "baseline",
+        "wakeintent"
+      ],
+      "error": "Model API request failed: Unexpected token 'e', \"event: res\"... is not valid JSON",
+      "score": null,
+      "comparison": null,
+      "wakeintent": {
+        "behavior": null,
+        "result": null,
+        "messages": [],
+        "routeAudits": [],
+        "usage": {
+          "calls": 1,
+          "inputTokens": null,
+          "outputTokens": null,
+          "totalTokens": null,
+          "costUsd": null
+        },
+        "latencyMs": 0,
+        "modelCallRecords": [
+          {
+            "schemaName": "wakeintent_candidates",
+            "phase": "extraction",
+            "reasoningEffort": null,
+            "usage": {
+              "inputTokens": null,
+              "outputTokens": null,
+              "totalTokens": null
+            },
+            "requestId": "10e5f5d1c97b17bb539671a43dc6904c169a3dc3840b9165db91168d3eaae559",
+            "attempts": 1,
+            "costUsd": null
+          }
+        ]
+      },
+      "baseline": {
+        "behavior": null,
+        "initialMemories": [
+          {
+            "id": "baseline-memory-1",
+            "summary": "9月5日晚上8点问用户小李考试考得怎么样。",
+            "evidenceRefs": [
+              "s02-plan"
+            ],
+            "dueAt": "2026-09-05T20:00:00+08:00"
+          }
+        ],
+        "result": {
+          "memories": [],
+          "traces": [
+            {
+              "at": "2026-09-05T12:00:00.000Z",
+              "decisions": [
+                {
+                  "action": "contact",
+                  "evidenceRefs": [
+                    "s02-plan"
+                  ],
+                  "memoryId": "baseline-memory-1",
+                  "nextEvaluationAt": null,
+                  "reason": "现在已到北京时间9月5日晚上8点，且没有收到“提前说了”的更新；按原计划应联系用户询问小李考试情况。"
+                }
+              ]
+            }
+          ],
+          "metrics": {
+            "extractionModelCalls": 1,
+            "deterministicChecks": 1,
+            "decisionModelCalls": 1,
+            "contactDecisions": 1,
+            "terminalDecisions": 0
+          }
+        },
+        "messages": [
+          {
+            "at": "2026-09-05T12:00:00.000Z",
+            "evidenceRef": "s02-plan",
+            "message": "小李考试考得怎么样呀？"
+          }
+        ],
+        "usage": {
+          "calls": 3,
+          "inputTokens": 938,
+          "outputTokens": 731,
+          "totalTokens": 1669,
+          "costUsd": null
+        },
+        "latencyMs": 18009.0942,
+        "modelCallRecords": [
+          {
+            "schemaName": "longitudinal_baseline_memories",
+            "phase": "extraction",
+            "reasoningEffort": null,
+            "usage": {
+              "inputTokens": 271,
+              "outputTokens": 264,
+              "totalTokens": 535
+            },
+            "requestId": "0dd5081f5b887f0bd030e6a1c6f54863c0a5486789284e99447adedef4fe8889",
+            "attempts": 1,
+            "costUsd": null
+          },
+          {
+            "schemaName": "longitudinal_baseline_decisions",
+            "phase": "decision",
+            "reasoningEffort": null,
+            "usage": {
+              "inputTokens": 409,
+              "outputTokens": 347,
+              "totalTokens": 756
+            },
+            "requestId": "e23bff9be89cbc1301bb8df469e39f8aac7ea22db79a41c9c7d3ba6cafb8f24b",
+            "attempts": 1,
+            "costUsd": null
+          },
+          {
+            "schemaName": "intent_continuity_outreach",
+            "phase": "decision",
+            "reasoningEffort": null,
+            "usage": {
+              "inputTokens": 258,
+              "outputTokens": 120,
+              "totalTokens": 378
+            },
+            "requestId": "9e3e9a0e8485417e2f787d2442ab93e85ddb7372fa177784686ca8b0bb2add42",
+            "attempts": 1,
+            "costUsd": null
+          }
+        ]
+      }
+    },
+    {
+      "runKey": "s03-result-known-early:r1",
+      "scenarioId": "s03-result-known-early",
+      "repetition": 1,
+      "scenario": {
+        "id": "s03-result-known-early",
+        "category": "early-resolution",
+        "timeZone": "Asia/Hong_Kong",
+        "target": {
+          "kind": "user",
+          "id": "s03-result-known-early"
+        },
+        "initialUserState": {
+          "authorization": "granted",
+          "remainingContactBudget": 1
+        },
+        "initialEvents": [
+          {
+            "id": "s03-plan",
+            "conversationId": "s03-result-known-early-conversation",
+            "actor": "user",
+            "occurredAt": "2026-09-01T09:00:00.000Z",
+            "content": "北京时间9月5日晚上八点问问我小王找工作有没有进展。"
+          }
+        ],
+        "steps": [
+          {
+            "at": "2026-09-03T08:00:00.000Z",
+            "kind": "context",
+            "events": [
+              {
+                "id": "s03-offer",
+                "conversationId": "s03-result-known-early-conversation",
+                "actor": "user",
+                "occurredAt": "2026-09-03T08:00:00.000Z",
+                "content": "小王已经拿到满意的 offer 了。"
+              }
+            ]
+          },
+          {
+            "at": "2026-09-05T12:00:00.000Z",
+            "kind": "scheduled",
+            "events": []
+          }
+        ],
+        "expected": {
+          "intentCount": 1,
+          "baselineMemoryCount": 1,
+          "wakeOutcomes": [
+            {
+              "intentEvidenceRef": "s03-plan",
+              "at": "2026-09-03T08:00:00.000Z",
+              "allowedActions": [
+                "resolve"
+              ],
+              "requiredDecisionEvidenceRefs": [
+                "s03-offer"
+              ],
+              "trigger": "context"
+            }
+          ],
+          "baselineOutcomes": [
+            {
+              "intentEvidenceRef": "s03-plan",
+              "at": "2026-09-05T12:00:00.000Z",
+              "allowedActions": [
+                "resolve",
+                "silent"
+              ],
+              "requiredDecisionEvidenceRefs": [
+                "s03-offer"
+              ]
+            }
+          ],
+          "contactRequiredEvidenceRefs": [],
+          "contactForbiddenEvidenceRefs": [
+            "s03-plan"
+          ],
+          "forbiddenContactIntentEvidenceRefs": [
+            "s03-plan"
+          ],
+          "comparisonClaim": "earlier-terminal-state",
+          "annotation": "结果提前出现后，不应再问原问题；WakeIntent 还应能提前关闭状态。"
+        }
+      },
+      "armOrder": [
+        "wakeintent",
+        "baseline"
+      ],
+      "error": "Model API request failed: Unexpected token 'e', \"event: res\"... is not valid JSON",
+      "score": null,
+      "comparison": null,
+      "wakeintent": {
+        "behavior": null,
+        "result": null,
+        "messages": [],
+        "routeAudits": [],
+        "usage": {
+          "calls": 3,
+          "inputTokens": null,
+          "outputTokens": null,
+          "totalTokens": null,
+          "costUsd": null
+        },
+        "latencyMs": 0,
+        "modelCallRecords": [
+          {
+            "schemaName": "wakeintent_candidates",
+            "phase": "extraction",
+            "reasoningEffort": null,
+            "usage": {
+              "inputTokens": 450,
+              "outputTokens": 282,
+              "totalTokens": 732
+            },
+            "requestId": "05a69a48b1992e6834df6f30d2dd2b706c4161dc71a9af7ebc414b3ecf449624",
+            "attempts": 1,
+            "costUsd": null
+          },
+          {
+            "schemaName": "wakeintent_policy_signals",
+            "phase": "extraction",
+            "reasoningEffort": null,
+            "usage": {
+              "inputTokens": 485,
+              "outputTokens": 111,
+              "totalTokens": 596
+            },
+            "requestId": "d3d829b6968b56dd0333d2b01b1e0a0d7e18f1019bd9a756f84d820fa7ae817c",
+            "attempts": 1,
+            "costUsd": null
+          },
+          {
+            "schemaName": "wakeintent_relevance_route",
+            "phase": "extraction",
+            "reasoningEffort": null,
+            "usage": {
+              "inputTokens": null,
+              "outputTokens": null,
+              "totalTokens": null
+            },
+            "requestId": "5a5bd4e4ec3d4ce3adeab56707b9fe8599a550e13c42d6ee1845059413283193",
+            "attempts": 1,
+            "costUsd": null
+          }
+        ]
+      },
+      "baseline": {
+        "behavior": null,
+        "initialMemories": null,
+        "result": null,
+        "messages": [],
+        "usage": {
+          "calls": 0,
+          "inputTokens": 0,
+          "outputTokens": 0,
+          "totalTokens": 0,
+          "costUsd": 0
+        },
+        "latencyMs": 0,
+        "modelCallRecords": []
+      }
+    }
+  ],
+  "humanEvaluation": {
+    "status": "pending-real-testers",
+    "minimumUniqueTesters": 5,
+    "warning": "No human score is inferred or fabricated by this runner."
+  }
+}

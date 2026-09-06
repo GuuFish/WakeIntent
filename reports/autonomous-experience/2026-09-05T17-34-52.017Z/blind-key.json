@@ -1,0 +1,17 @@
+[
+  {
+    "itemId": "ae07-pending-share-after-busy:r1",
+    "candidateA": "baseline",
+    "candidateB": "autonomous"
+  },
+  {
+    "itemId": "ae07-pending-share-after-busy:r2",
+    "candidateA": "autonomous",
+    "candidateB": "baseline"
+  },
+  {
+    "itemId": "ae07-pending-share-after-busy:r3",
+    "candidateA": "baseline",
+    "candidateB": "autonomous"
+  }
+]

@@ -11,10 +11,10 @@ import {
   registerExtractedIntents,
   requestRelevantEvaluations,
 } from "../packages/core/dist/index.js";
-import { ModelRelevanceRouter } from "../packages/eval/dist/index.js";
 import {
   configFromEnv,
   OpenAICompatibleModelAdapter,
+  OpenAICompatibleRelevanceRouter,
   OpenAICompatibleStructuredClient,
 } from "../packages/model-openai-compatible/dist/index.js";
 import { openJsonContactIntentStore } from "../packages/store-json/dist/index.js";
@@ -65,7 +65,7 @@ const usageSummary = (records) => {
 const config = { ...configFromEnv(), maxRetries: 0 };
 const adapter = new OpenAICompatibleModelAdapter(config);
 const routingClient = new OpenAICompatibleStructuredClient(config);
-const router = new ModelRelevanceRouter(routingClient);
+const router = new OpenAICompatibleRelevanceRouter(routingClient);
 let sequence = 0;
 const idGenerator = (kind) => `core-smoke-${kind}-${++sequence}`;
 const initialEvent = {

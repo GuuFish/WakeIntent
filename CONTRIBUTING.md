@@ -1,18 +1,25 @@
 # Contributing to WakeIntent
 
-WakeIntent is a research Alpha. Contributions should make the contact decision
-engine easier to verify, embed, or operate without weakening user control.
+WakeIntent has completed its first core-value experiment. Standalone product
+expansion is paused because the frozen comparison did not show enough
+user-visible benefit over a strong Memory + Proactive Agent baseline to justify
+the added complexity and token cost.
+
+Contributions are still welcome when they improve reproducibility, correct a
+verified defect, preserve the research record, or make the existing component
+safer to study and embed.
 
 ## Good first contributions
 
-- Add a reproducible conversation timeline that exposes a wrong contact,
-  missed cancellation, poor deferral, or unnecessary model call.
-- Improve documentation or examples whose current behavior you verified.
-- Add an adapter without coupling it into `@wakeintent/core`.
-- Improve deterministic policy gates, persistence safety, or telemetry.
+- Reproduce the frozen experiment without changing its scenarios or scoring.
+- Fix documentation or report-generation defects while preserving raw results.
+- Add a focused regression test for a verified lifecycle or persistence bug.
+- Improve credential handling, deterministic replay, or audit integrity.
+- Propose an independent experiment that could falsify a clearly stated new
+  hypothesis.
 
-Large UI, delivery-channel, or full-Agent changes should begin with a design
-discussion so the core project does not accidentally become a chat client.
+New UI, delivery channels, personas, agent frameworks, or product expansion are
+out of scope until new evidence supports reopening that work.
 
 ## Development
 
@@ -34,6 +41,7 @@ maximum request count, and never print or commit credentials. Copy
 - Preserve raw evaluation reports; do not rewrite an unfavorable result.
 - Compare systems with the same model, context, time information, and request
   opportunity when making performance claims.
+- Do not tune the frozen dataset or scoring after seeing model output.
 - State what was tested and which limitations remain.
 - Treat `contact` as a decision, not proof of delivery.
 

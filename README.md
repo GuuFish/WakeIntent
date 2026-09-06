@@ -4,41 +4,63 @@
 
 [![CI](https://github.com/GuuFish/WakeIntent/actions/workflows/ci.yml/badge.svg)](https://github.com/GuuFish/WakeIntent/actions/workflows/ci.yml)
 
-> **Developer component — not an end-user app.** This repository is for
-> developers who want to embed proactive contact decisions into an AI product.
-> Cloning it gives you an engine, adapters, examples, and evaluation tools; it
-> does not launch a chat UI, run a background assistant, or send notifications.
+> **Research repository — not an end-user app.** This repository preserves the
+> runnable implementation, frozen datasets, audited results, and failure cases
+> from WakeIntent's completed experiments. It does not launch a chat UI, run a
+> background assistant, or send notifications.
 
 WakeIntent is a framework-agnostic contact-intent engine for conversational AI.
 It turns a conversational reason to follow up later into a durable `ContactIntent`,
 then revalidates that reason against newer context before deciding to contact,
 defer, cancel, expire, resolve, or stay silent.
 
-> **Status: research Alpha 0.1.** The core engine, local persistence, model
-> adapter, audit trail, and evaluation tooling run today. WakeIntent is not yet a
-> production notification service or a finished chat application.
+> **Status: experiment concluded; standalone product development is paused.**
+> WakeIntent remains a runnable research artifact and experimental
+> implementation. A frozen comparison against a strong Memory + Proactive Agent
+> baseline did not show enough behavioral benefit to justify the extra complexity
+> and token cost.
 
-## Vision
+## Research status
 
-Most conversational AI still lives inside a request-response loop: it speaks
-when called and disappears when the user stops typing. WakeIntent's long-term
-goal is to provide the missing continuity layer—not by making a model think in
-an expensive endless loop, but by letting an assistant preserve a concrete
-reason to reconnect, sleep without polling, and wake only when time or relevant
-new context makes that reason worth reconsidering.
+WakeIntent is currently preserved as an experimental research repository. Its
+two completed comparisons test whether explicit continuity mechanisms add
+stable user-visible value beyond a strong Memory + Proactive Agent baseline.
 
-If the project succeeds, an assistant, companion, tutor, recruiter, support
-agent, or other user-authorized AI product could share the same small protocol:
-create a contact intent during normal conversation; revise or invalidate it as
-life changes; revalidate it against current context, policy, relationship, and
-persona; then contact through the host's chosen channel—or deliberately remain
-silent. Different characters may be reserved, warm, or talkative, but none
-should bypass consent, interruption budgets, or explainability.
+| Experiment | Audited result | Current decision |
+| --- | --- | --- |
+| Explicit ContactIntent continuity | No reduction in false outreach; more missed follow-ups and 42.2% more tokens | Pause standalone product development |
+| Autonomous away-time experience | Behavior differed in 20/60 runs, but only 1/60 passed the full causal and counterfactual chain | Do not pursue as a product direction |
 
-The ambition is therefore larger than a reminder feature and smaller than a
-general autonomous-agent framework: make thoughtful, accountable continuity a
-reusable piece of AI infrastructure. This is a direction, not a claim that the
-Alpha has already achieved it.
+WakeIntent tested a narrow question: does preserving a future contact reason as
+an explicit, durable lifecycle object lead to better behavior than saving a
+future-follow-up memory and letting the same model reconsider it later?
+
+In the frozen experiment, 20 synthetic longitudinal scenarios were run three
+times for both systems with the same model, conversation facts, time, and user
+state. Both systems made zero unjustified outreaches. WakeIntent missed 3 of 21
+required follow-ups while the strong baseline missed 1, used 42.2% more tokens,
+made 17.8% more model calls, and took 31.7% more cumulative latency. The key
+busy-then-free demo produced the same `defer -> contact` behavior in all three
+runs.
+
+The result does not prove that explicit intent state is useless in every system.
+It shows that this implementation did not turn lifecycle structure, earlier
+state cleanup, and auditability into better user-visible behavior. The current
+decision is therefore to stop expanding WakeIntent as a standalone product and
+retain the code, datasets, failures, and reports as an honest engineering
+experiment or a possible internal component for another proactive agent.
+
+See the [experiment report](reports/intent-continuity-value/2026-09-05T11-50-41.477Z/experiment-report.md)
+and [frozen protocol](docs/25-intent-continuity-value-experiment.md).
+A follow-on Autonomous Experience experiment also tested whether one bounded,
+actually executed activity during user absence could create useful behavior that
+the same baseline could not reconstruct at return. Across another 20 scenarios
+and 3 repetitions, behavior differed in 20/60 runs, but only 1/60 passed the
+full causal and counterfactual chain, no positive scenario was stable, and the
+Autonomous product path used 91.9% more tokens. The result was
+**B_DIFFERENT_NOT_VALUABLE**, so the project will not pursue autonomous experience
+as a product direction. See the [final result](docs/28-autonomous-experience-result.md)
+and [audited machine-readable report](reports/autonomous-experience/2026-09-05T17-43-19.137Z/results.audited.json).
 
 ## Why this exists
 
@@ -108,7 +130,7 @@ The important behavior is not merely sending messages. It is preserving a
 specific reason across time, revising it when circumstances change, and doing
 nothing when contact is no longer justified.
 
-## What works now
+## Preserved implementation
 
 - framework-independent TypeScript domain model and lifecycle;
 - candidate extraction and latest-context semantic reevaluation;
@@ -117,7 +139,8 @@ nothing when contact is no longer justified.
 - authorization, do-not-disturb, expiry, late-wakeup, and contact-budget policy;
 - idempotent decisions, optimistic revisions, failure backoff, and audit events;
 - recoverable local JSON storage with snapshot migrations;
-- a local structured HTTP reference host with a persistent, receipt-aware outbox;
+- a local HTTP reference host with durable conversation ingestion, optional
+  model processing, and a receipt-aware outbox;
 - OpenAI-compatible Responses and Chat Completions adapter;
 - deterministic test clock, evaluation datasets, baselines, and token telemetry.
 
@@ -147,10 +170,7 @@ pnpm install --frozen-lockfile
 pnpm check
 ```
 
-`pnpm check` builds and type-checks every workspace package and app, then runs
-their tests. At the independently verified commit `53d5e49`, the summary was
-178 passing tests across five packages and 22 test files. The exact count grows
-as the project changes.
+`pnpm check` builds and type-checks every workspace package and app, then runs their tests. The final experiment branch passes 209 automated tests.
 
 Now run the local Alpha demo twice with the same state file:
 
@@ -210,11 +230,24 @@ pnpm host:start
 ```
 
 It binds to `127.0.0.1:8787` by default and exposes structured intent,
-evaluation, state, outbox, and delivery-receipt endpoints. It deliberately does
-not accept natural-language chat, call a model, generate a message, or deliver
-one yet. Its purpose is to make the core's host contract runnable and to recover
-the crash window between a committed `contact` decision and outbox enqueue.
-See the [reference host API guide](docs/22-reference-host-api.md).
+evaluation, state, outbox, and delivery-receipt endpoints. This default mode
+makes no model calls. Its purpose is to make the core's host contract runnable
+and to recover the crash window between a committed `contact` decision and
+outbox enqueue.
+
+To opt into natural-language event ingestion with the configured model:
+
+```bash
+cp .env.example .env
+pnpm host:start:model
+```
+
+That mode can persist conversation events, extract new intents, route relevant
+updates to existing intents, and reevaluate due work from stored context. A
+completed idempotent event replay performs no model work; an interrupted batch
+reuses its persisted processing plan. The host still does not generate or send
+messages. See the [reference host API guide](docs/22-reference-host-api.md) and
+[conversation ingestion design](docs/23-conversation-ingestion.md).
 
 ## Try a real model
 
@@ -251,6 +284,20 @@ These tests use synthetic conversations but call the configured model. They
 write detailed, auditable reports under `reports/core-api-smoke/`. The
 `cancellation` mode makes at most two requests; `timing` makes at most three.
 
+To verify the complete HTTP conversation-ingestion path, including invalidation
+and idempotent replay:
+
+```bash
+pnpm smoke:host-ingestion-api
+```
+
+This synthetic smoke makes exactly three model requests when it passes: one
+initial extraction, then one relevance route and one extraction for the
+invalidating turn. It asserts that closure requires no later semantic model
+call, produces no contact or outbox item, and that replaying the same event
+performs no model work. Reports are written under
+`reports/host-ingestion-smoke/`.
+
 ## Packages
 
 | Package | Responsibility |
@@ -269,28 +316,37 @@ application cannot yet install a stable registry release. See the
 [host integration guide](docs/20-host-integration.md) and the runnable
 [`examples/minimal.mjs`](examples/minimal.mjs) reference.
 
-## Current evidence
+## ContactIntent comparison evidence
 
-An independent clean-clone verification reproduced the complete repository
-check at commit `53d5e49`: 178 tests across five packages. Two real-model smoke
-runs performed during development using `gpt-5.5` also passed:
+The final frozen comparison completed 60/60 paired scenario runs with zero
+runtime errors and 327 HTTP attempts:
 
-- cancellation after the follow-up reason became invalid: 2 model calls, 1,452
-  tokens, 0 contact decisions;
-- timing change: 3 model calls, 2,627 tokens, deferred until after the updated
-  event window, 0 contact decisions.
+| Metric | WakeIntent | Strong baseline |
+| --- | ---: | ---: |
+| Unjustified outreach | 0 / 48 | 0 / 48 |
+| Missed required follow-up | 3 / 21 | 1 / 21 |
+| Model calls | 172 | 146 |
+| Total tokens | 155,455 | 109,353 |
+| Cumulative latency | 1,663,909 ms | 1,263,853 ms |
 
-The reports are preserved in
-[`reports/core-api-smoke`](reports/core-api-smoke). Earlier feasibility results
-and their limitations are documented in
-[`docs/10-feasibility-conclusion.md`](docs/10-feasibility-conclusion.md).
-The independent installation result, including the issues it found, is preserved
-in [`reports/external-verification/2026-09-04-clean-clone.md`](reports/external-verification/2026-09-04-clean-clone.md).
+Complete internal action sequences agreed in 61/69 cases (88.4%). Several
+differences were internal only: neither system sent a message. The stable
+user-visible failure was `s16-two-intents-one-cancelled`, where WakeIntent
+incorrectly cancelled both intents in all three runs even though the user
+cancelled one topic and explicitly kept the other. The baseline handled all
+three runs correctly. WakeIntent outperformed the baseline once in
+`s17-similar-learning-update`, but that baseline error did not repeat in the
+other two runs.
 
-This evidence shows that the mechanism runs end to end. It does **not** yet show
-that WakeIntent is cheaper than a strong due-gated heartbeat or that it improves
-user experience in production. Current experiments found better early state
-cleanup and auditability, but often higher token usage.
+The blind evaluation pack is preserved, but no result from five real human
+testers exists. The project therefore makes no claim that WakeIntent feels more
+natural or continuous. Model cost in USD is unavailable because provider
+pricing was not configured.
+
+Machine-readable data, CSV output, generated messages, failure traces, and the
+blind pack are preserved under
+[`reports/intent-continuity-value/2026-09-05T11-50-41.477Z`](reports/intent-continuity-value/2026-09-05T11-50-41.477Z).
+The repository currently passes 209 automated tests.
 
 ## Scope and limitations
 
@@ -346,12 +402,18 @@ Start with:
 - [Host integration and delivery boundary](docs/20-host-integration.md)
 - [Recruitment pilot plan](docs/21-recruitment-pilot.md)
 - [Reference host HTTP API](docs/22-reference-host-api.md)
+- [Conversation ingestion and model mode](docs/23-conversation-ingestion.md)
+- [Context-aware comparison](docs/24-context-aware-comparison.md)
+- [Intent continuity frozen experiment](docs/25-intent-continuity-value-experiment.md)
+- [Autonomous Experience frozen experiment](docs/27-autonomous-experience-experiment.md)
+- [Autonomous Experience final result](docs/28-autonomous-experience-result.md)
 
 ## Contributing
 
-WakeIntent is intentionally early. Reproducible failure cases, adversarial
-conversation timelines, storage adapters, framework integrations, and careful
-evaluation work are especially useful. See [CONTRIBUTING.md](CONTRIBUTING.md).
+WakeIntent is preserved as concluded research. Contributions that reproduce or
+challenge the results, identify scoring or provenance defects, add independent
+baselines, or improve reproducibility are welcome. Product feature expansion is
+outside the current scope. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
