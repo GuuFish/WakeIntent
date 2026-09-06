@@ -21,6 +21,7 @@ WakeIntent 验证的是一个很窄的问题：把未来联系理由保存成显
 这个结果不能证明显式意图状态在所有系统中都没有用。它证明的是：当前实现没有把生命周期结构、更早的状态清理和审计能力转化成更好的用户可见行为。因此项目现在停止作为独立产品扩张，保留代码、数据集、失败案例和报告，作为一次诚实的工程实验，或供其他主动 Agent 作为内部组件参考。
 
 详见[正式实验报告](reports/intent-continuity-value/2026-09-05T11-50-41.477Z/experiment-report.md)和[冻结实验协议](docs/25-intent-continuity-value-experiment.md)。
+后续“自主经历”实验进一步检验：用户离开期间实际执行一次有限活动，能否产生强 Baseline 在回来时无法重建的有价值行为。另一个 20 场景 × 3 轮实验中，20/60 的行为不同，但只有 1/60 通过完整因果与反事实链，没有任何正向场景稳定复现，Autonomous 产品路径还多用了 91.9% Token。最终为 **B_DIFFERENT_NOT_VALUABLE**，因此项目不把自主经历作为产品发展方向。详见[最终结果](docs/28-autonomous-experience-result.md)和[审计后的机器可读报告](reports/autonomous-experience/2026-09-05T17-43-19.137Z/results.audited.json)。
 
 ## 为什么要做 WakeIntent
 
@@ -121,7 +122,7 @@ pnpm install --frozen-lockfile
 pnpm check
 ```
 
-`pnpm check` 会构建并类型检查所有工作区包和应用，然后运行全部测试。最终实验分支通过 205 项自动测试。
+`pnpm check` 会构建并类型检查所有工作区包和应用，然后运行全部测试。最终实验分支通过 209 项自动测试。
 
 接着使用同一个状态文件连续运行两次本地 Alpha 演示：
 
@@ -241,7 +242,7 @@ pnpm smoke:host-ingestion-api
 
 机器可读数据、CSV、生成消息、失败轨迹和盲评包保存在
 [`reports/intent-continuity-value/2026-09-05T11-50-41.477Z`](reports/intent-continuity-value/2026-09-05T11-50-41.477Z)。
-当前仓库通过 205 项自动测试。
+当前仓库通过 209 项自动测试。
 
 ## 当前边界
 

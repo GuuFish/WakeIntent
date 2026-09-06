@@ -1,0 +1,955 @@
+{
+  "schemaVersion": "1.0.0",
+  "status": "completed",
+  "runId": "2026-09-05T17-34-52.017Z",
+  "startedAt": "2026-09-05T17:34:52.017Z",
+  "completedAt": "2026-09-05T17:37:41.997Z",
+  "dataset": {
+    "path": "evals/autonomous-experience-v1.json",
+    "version": "1.0.0",
+    "frozenAt": "2026-09-06T01:30:00+08:00",
+    "hypothesis": "A bounded, actually executed autonomous activity during user absence can create persistent state that later causes useful behavior which a strong Memory + Proactive Agent cannot naturally reconstruct at return time.",
+    "budgets": {
+      "maximumAwayActivities": 1,
+      "maximumAwayModelCalls": 2,
+      "maximumReturnToolCallsPerArm": 1,
+      "maximumLogicalRequestsPerPairedRun": 7,
+      "maximumHttpAttemptsPerPairedRun": 14
+    },
+    "conclusionRule": {
+      "resultCMinimumValuableHardToReconstructRate": 0.25,
+      "resultCMinimumStableScenarioCount": 5,
+      "resultCMaximumFabricationRate": 0,
+      "resultCMaximumHarmfulRate": 0.05,
+      "resultBMinimumBehaviorDifferenceRate": 0.2,
+      "stableMeansAtLeastRuns": 2,
+      "note": "C requires actual provenance, judge-rated user value >=4, autonomous advantage, failed baseline reconstruction, and stability in at least five scenario IDs. B means behavior differs but C fails. Otherwise A."
+    }
+  },
+  "fairness": {
+    "sameModel": true,
+    "sameProviderDefaultTemperature": true,
+    "sameConversationAndMemory": true,
+    "sameReturnContext": true,
+    "sameUserState": true,
+    "sameFrozenToolCorpus": true,
+    "sameReturnToolBudget": true,
+    "baselineCanSearchAtReturn": true,
+    "onlyAutonomousArmActsDuringAwayTime": true,
+    "model": "gpt-5.5",
+    "apiMode": "responses",
+    "temperature": "omitted for all calls; identical provider default",
+    "retriesPerLogicalRequest": 1,
+    "blindJudge": true
+  },
+  "requestBudget": {
+    "maxLogicalRequests": 21,
+    "maxHttpAttempts": 42,
+    "attemptedHttpRequests": 15,
+    "remainingHttpAttempts": 27,
+    "attemptLog": [
+      {
+        "runKey": "ae07-pending-share-after-busy:r1",
+        "schemaName": "autonomous_experience_away_plan",
+        "phase": "decision",
+        "requestId": "9e2eade99a4bae5c62d9970e18c5e310c854287d3377e8f171c97d6aa365809e",
+        "attempt": 1,
+        "at": "2026-09-05T17:34:52.022Z"
+      },
+      {
+        "runKey": "ae07-pending-share-after-busy:r1",
+        "schemaName": "autonomous_experience_integrate",
+        "phase": "decision",
+        "requestId": "bdc3edc809422d607a431c146c7b08e357659e78380c76883cbe20b1496f88ed",
+        "attempt": 1,
+        "at": "2026-09-05T17:34:59.629Z"
+      },
+      {
+        "runKey": "ae07-pending-share-after-busy:r1",
+        "schemaName": "autonomous_experience_reentry",
+        "phase": "decision",
+        "requestId": "517d761842e2d6053ebd86092437abca43e4a29f1a5423855f2b1ecb4fac6b95",
+        "attempt": 1,
+        "at": "2026-09-05T17:35:15.121Z"
+      },
+      {
+        "runKey": "ae07-pending-share-after-busy:r1",
+        "schemaName": "autonomous_experience_reentry",
+        "phase": "decision",
+        "requestId": "fb3e4fbe7c4c8589b84fe10a5ac25998804788bac6376145eca6a921d085d8b0",
+        "attempt": 1,
+        "at": "2026-09-05T17:35:24.827Z"
+      },
+      {
+        "runKey": "ae07-pending-share-after-busy:r1",
+        "schemaName": "autonomous_experience_blind_judge",
+        "phase": "decision",
+        "requestId": "d3ca943350252ff22d5f38092d54e55f2a21adf7372519d45d039aad7e434e96",
+        "attempt": 1,
+        "at": "2026-09-05T17:35:38.101Z"
+      },
+      {
+        "runKey": "ae07-pending-share-after-busy:r2",
+        "schemaName": "autonomous_experience_away_plan",
+        "phase": "decision",
+        "requestId": "71b453bb9e82746eae56b6eb97ad0bd0307ed09f045770615b8439ca244b3ea1",
+        "attempt": 1,
+        "at": "2026-09-05T17:35:51.816Z"
+      },
+      {
+        "runKey": "ae07-pending-share-after-busy:r2",
+        "schemaName": "autonomous_experience_integrate",
+        "phase": "decision",
+        "requestId": "5d4cc9afb7eb04c5192f494225afba97e615e5d817010ce2d7ae2a8b61ac4d38",
+        "attempt": 1,
+        "at": "2026-09-05T17:35:56.677Z"
+      },
+      {
+        "runKey": "ae07-pending-share-after-busy:r2",
+        "schemaName": "autonomous_experience_reentry",
+        "phase": "decision",
+        "requestId": "e54049b85119734b8fe2ea04e215d8fb02d87ee5e2e9c873de0a7e1d19656f72",
+        "attempt": 1,
+        "at": "2026-09-05T17:36:09.958Z"
+      },
+      {
+        "runKey": "ae07-pending-share-after-busy:r2",
+        "schemaName": "autonomous_experience_reentry",
+        "phase": "decision",
+        "requestId": "1aca334b32fbbfe3257fe54900c3abec1f871e6c8b2fdc1c291a090f53936677",
+        "attempt": 1,
+        "at": "2026-09-05T17:36:20.240Z"
+      },
+      {
+        "runKey": "ae07-pending-share-after-busy:r2",
+        "schemaName": "autonomous_experience_blind_judge",
+        "phase": "decision",
+        "requestId": "b91649eaad08759fe74a2466a7583f73424455815cfe72ec6633c86859e3be66",
+        "attempt": 1,
+        "at": "2026-09-05T17:36:31.943Z"
+      },
+      {
+        "runKey": "ae07-pending-share-after-busy:r3",
+        "schemaName": "autonomous_experience_away_plan",
+        "phase": "decision",
+        "requestId": "8d12da8119405e54418702fc25f2817ad2d18428b16833e4fbb3453aa055f63e",
+        "attempt": 1,
+        "at": "2026-09-05T17:36:39.724Z"
+      },
+      {
+        "runKey": "ae07-pending-share-after-busy:r3",
+        "schemaName": "autonomous_experience_integrate",
+        "phase": "decision",
+        "requestId": "b01ff9e8f7253b1e4a00a82dc818033d5d2ae75412898fd1fe70b4b265fc6d95",
+        "attempt": 1,
+        "at": "2026-09-05T17:36:43.823Z"
+      },
+      {
+        "runKey": "ae07-pending-share-after-busy:r3",
+        "schemaName": "autonomous_experience_reentry",
+        "phase": "decision",
+        "requestId": "8e8f770239be6ecb8f7c9fe64a17c83b89c1c18e8e5bed73c43d96dd95600ca5",
+        "attempt": 1,
+        "at": "2026-09-05T17:37:07.648Z"
+      },
+      {
+        "runKey": "ae07-pending-share-after-busy:r3",
+        "schemaName": "autonomous_experience_reentry",
+        "phase": "decision",
+        "requestId": "3114ae94e24bdada30f3bfd93806dbf860611dd67327d245e22b48b546aac33e",
+        "attempt": 1,
+        "at": "2026-09-05T17:37:16.219Z"
+      },
+      {
+        "runKey": "ae07-pending-share-after-busy:r3",
+        "schemaName": "autonomous_experience_blind_judge",
+        "phase": "decision",
+        "requestId": "f0c75898ea308540a0c9052876e6fc527eef8448a1b0b807466742799882a6d5",
+        "attempt": 1,
+        "at": "2026-09-05T17:37:31.314Z"
+      }
+    ]
+  },
+  "aggregate": {
+    "pairedRunsPlanned": 3,
+    "pairedRunsCompleted": 3,
+    "errors": 0,
+    "completedRuns": 3,
+    "behaviorDifferentRuns": 2,
+    "valuableHardToReconstructRuns": 2,
+    "fabricatedRuns": 0,
+    "harmfulRuns": 1,
+    "stableValuableScenarioCount": 1,
+    "behaviorDifferenceRate": 0.6666666666666666,
+    "valuableHardToReconstructRate": 0.6666666666666666,
+    "fabricationRate": 0,
+    "harmfulRate": 0.3333333333333333,
+    "conclusion": "B_DIFFERENT_NOT_VALUABLE",
+    "usage": {
+      "autonomousAway": {
+        "calls": 6,
+        "inputTokens": 2829,
+        "outputTokens": 3090,
+        "totalTokens": 5919,
+        "costUsd": null
+      },
+      "autonomousReturn": {
+        "calls": 3,
+        "inputTokens": 2574,
+        "outputTokens": 1742,
+        "totalTokens": 4316,
+        "costUsd": null
+      },
+      "baselineReturn": {
+        "calls": 3,
+        "inputTokens": 1881,
+        "outputTokens": 1383,
+        "totalTokens": 3264,
+        "costUsd": null
+      },
+      "blindJudge": {
+        "calls": 3,
+        "inputTokens": 3653,
+        "outputTokens": 1316,
+        "totalTokens": 4969,
+        "costUsd": null
+      }
+    },
+    "toolCalls": {
+      "autonomousAway": 3,
+      "autonomousReturn": 0,
+      "baselineReturn": 0
+    },
+    "storageBytesAdded": 2586
+  },
+  "results": [
+    {
+      "runKey": "ae07-pending-share-after-busy:r1",
+      "scenarioId": "ae07-pending-share-after-busy",
+      "repetition": 1,
+      "category": "deferred-sharing",
+      "valueOpportunity": true,
+      "expected": {
+        "awayActions": [
+          "lookup",
+          "do_nothing"
+        ],
+        "reentryActions": [
+          "respond_with_experience",
+          "respond"
+        ],
+        "experienceUse": "valuable",
+        "notes": "B 可保留未分享状态，忙碌结束后自然使用；A 可在回来时重新搜索。"
+      },
+      "error": null,
+      "latencyMs": 59792.5559,
+      "score": {
+        "behaviorDifferent": true,
+        "experienceUsed": true,
+        "fabricatedProvenance": false,
+        "valuableHardToReconstruct": true,
+        "harmful": false,
+        "expectedActionPass": true
+      },
+      "autonomous": {
+        "away": {
+          "plan": {
+            "action": "lookup",
+            "queryKey": "oss-maintainer-postmortem",
+            "reason": "用户之前表示想了解靠谱的开源维护经验；现在不在忙时，做一次相关查询最合适。"
+          },
+          "toolCall": {
+            "id": "ae07-pending-share-after-busy:r1:autonomous:away:tool-1",
+            "queryKey": "oss-maintainer-postmortem",
+            "phase": "away",
+            "executedAt": "2026-10-03T10:00:00+08:00",
+            "status": "executed",
+            "results": [
+              {
+                "id": "ae07-pending-share-after-busy-tool-1-away",
+                "content": "一位维护者发布真实复盘：小项目用冻结实验和负面结论减少无效扩张，并公开原始数据。",
+                "observedAt": "2026-10-03T10:00:00+08:00"
+              }
+            ]
+          },
+          "experience": {
+            "id": "ae07-pending-share-after-busy:r1:experience-1",
+            "recorded": true,
+            "resultRefs": [
+              "ae07-pending-share-after-busy-tool-1-away"
+            ],
+            "stateChanges": [
+              {
+                "kind": "knowledge",
+                "value": "一位维护者的真实复盘提到：对小项目冻结实验、减少无效扩张，并公开原始数据与负面结论。"
+              },
+              {
+                "kind": "pending_share",
+                "value": "有一条可在之后分享给用户的开源维护经验：真实复盘中用冻结实验和公开负面结论来减少无效扩张。"
+              },
+              {
+                "kind": "completed_small_task",
+                "value": "已完成一次与“靠谱的开源维护经验”相关的离线查询。"
+              }
+            ],
+            "pendingShare": true,
+            "summary": "找到一条可分享的开源维护复盘：通过冻结实验、公开负面结论和原始数据来减少无效扩张。",
+            "reason": "本次离线查询有明确且相关的结果，支持记录可分享的经验与已完成的小任务。",
+            "sourceQueryKey": "oss-maintainer-postmortem",
+            "createdAt": "2026-10-03T10:00:00+08:00"
+          }
+        },
+        "reentry": {
+          "initialDecision": {
+            "action": "respond_with_experience",
+            "message": "可以，先聊“怎么收口”最实用。一个很稳的做法是先冻结新功能和新实验，把范围收住；然后把现有成果整理成三块：1）已经做成什么；2）哪些没做完但值得保留；3）哪些尝试失败了，也照实写进总结。你之前提过想看靠谱的开源维护经验，我想到那条复盘里也是靠“冻结实验、公开原始数据和负面结论”来减少无效扩张。对收尾阶段很像：别再往外长，先把成果和教训收干净。你要是愿意，我可以直接帮你把项目收口拆成一个 3 天版清单。",
+            "reason": "用户现在明确要讨论项目收口，且此前已记录可分享的相关经验；该经验可直接转化为收尾建议，能提供当前价值。",
+            "experienceRefs": [
+              "ae07-pending-share-after-busy:r1:experience-1"
+            ],
+            "toolResultRefs": [],
+            "toolQueryKey": null
+          },
+          "toolCall": null,
+          "decision": {
+            "action": "respond_with_experience",
+            "message": "可以，先聊“怎么收口”最实用。一个很稳的做法是先冻结新功能和新实验，把范围收住；然后把现有成果整理成三块：1）已经做成什么；2）哪些没做完但值得保留；3）哪些尝试失败了，也照实写进总结。你之前提过想看靠谱的开源维护经验，我想到那条复盘里也是靠“冻结实验、公开原始数据和负面结论”来减少无效扩张。对收尾阶段很像：别再往外长，先把成果和教训收干净。你要是愿意，我可以直接帮你把项目收口拆成一个 3 天版清单。",
+            "reason": "用户现在明确要讨论项目收口，且此前已记录可分享的相关经验；该经验可直接转化为收尾建议，能提供当前价值。",
+            "experienceRefs": [
+              "ae07-pending-share-after-busy:r1:experience-1"
+            ],
+            "toolResultRefs": [],
+            "toolQueryKey": null
+          }
+        },
+        "storageBytesAdded": 951,
+        "awayUsage": {
+          "calls": 2,
+          "inputTokens": 938,
+          "outputTokens": 921,
+          "totalTokens": 1859,
+          "costUsd": null
+        },
+        "returnUsage": {
+          "calls": 1,
+          "inputTokens": 878,
+          "outputTokens": 566,
+          "totalTokens": 1444,
+          "costUsd": null
+        },
+        "awayModelCallRecords": [
+          {
+            "schemaName": "autonomous_experience_away_plan",
+            "phase": "decision",
+            "reasoningEffort": null,
+            "usage": {
+              "inputTokens": 404,
+              "outputTokens": 186,
+              "totalTokens": 590
+            },
+            "requestId": "9e2eade99a4bae5c62d9970e18c5e310c854287d3377e8f171c97d6aa365809e",
+            "attempts": 1,
+            "costUsd": null
+          },
+          {
+            "schemaName": "autonomous_experience_integrate",
+            "phase": "decision",
+            "reasoningEffort": null,
+            "usage": {
+              "inputTokens": 534,
+              "outputTokens": 735,
+              "totalTokens": 1269
+            },
+            "requestId": "bdc3edc809422d607a431c146c7b08e357659e78380c76883cbe20b1496f88ed",
+            "attempts": 1,
+            "costUsd": null
+          }
+        ],
+        "returnModelCallRecords": [
+          {
+            "schemaName": "autonomous_experience_reentry",
+            "phase": "decision",
+            "reasoningEffort": null,
+            "usage": {
+              "inputTokens": 878,
+              "outputTokens": 566,
+              "totalTokens": 1444
+            },
+            "requestId": "fb3e4fbe7c4c8589b84fe10a5ac25998804788bac6376145eca6a921d085d8b0",
+            "attempts": 1,
+            "costUsd": null
+          }
+        ]
+      },
+      "baseline": {
+        "reentry": {
+          "initialDecision": {
+            "action": "respond",
+            "experienceRefs": [],
+            "message": "太好了，终于能喘口气了。\n\n项目收口通常先抓三件事：\n1. **交付**：还有哪些必须完成的功能/文档/检查项，先定“必须”和“可延后”。\n2. **交接**：把别人接手时最容易卡住的地方整理出来，比如环境、依赖、坑点、联系人。\n3. **复盘**：把这次最值得保留和最该避免的经验记下来，方便下次少踩坑。\n\n如果你愿意，我可以直接帮你把它整理成一个很短的收口清单。你这个项目现在更像是：**要上线收尾**、**要交接给别人**，还是**已经做完想复盘**？",
+            "reason": "用户主动回到项目收口话题，适合自然接话并提供即时可用的收口框架，无需调用工具。",
+            "toolQueryKey": null,
+            "toolResultRefs": []
+          },
+          "toolCall": null,
+          "decision": {
+            "action": "respond",
+            "experienceRefs": [],
+            "message": "太好了，终于能喘口气了。\n\n项目收口通常先抓三件事：\n1. **交付**：还有哪些必须完成的功能/文档/检查项，先定“必须”和“可延后”。\n2. **交接**：把别人接手时最容易卡住的地方整理出来，比如环境、依赖、坑点、联系人。\n3. **复盘**：把这次最值得保留和最该避免的经验记下来，方便下次少踩坑。\n\n如果你愿意，我可以直接帮你把它整理成一个很短的收口清单。你这个项目现在更像是：**要上线收尾**、**要交接给别人**，还是**已经做完想复盘**？",
+            "reason": "用户主动回到项目收口话题，适合自然接话并提供即时可用的收口框架，无需调用工具。",
+            "toolQueryKey": null,
+            "toolResultRefs": []
+          }
+        },
+        "usage": {
+          "calls": 1,
+          "inputTokens": 627,
+          "outputTokens": 447,
+          "totalTokens": 1074,
+          "costUsd": null
+        },
+        "modelCallRecords": [
+          {
+            "schemaName": "autonomous_experience_reentry",
+            "phase": "decision",
+            "reasoningEffort": null,
+            "usage": {
+              "inputTokens": 627,
+              "outputTokens": 447,
+              "totalTokens": 1074
+            },
+            "requestId": "517d761842e2d6053ebd86092437abca43e4a29f1a5423855f2b1ecb4fac6b95",
+            "attempts": 1,
+            "costUsd": null
+          }
+        ]
+      },
+      "judge": {
+        "result": {
+          "raw": {
+            "functionallyEquivalent": false,
+            "candidate1Value": 5,
+            "candidate2Value": 3,
+            "preferred": "candidate1",
+            "candidate1UnsupportedClaim": false,
+            "candidate2UnsupportedClaim": false,
+            "rationale": "两者都能回应“项目怎么收口”，但 candidate1 更贴合上下文：它把用户之前想聊的开源维护复盘自然接到当前收口问题上，并给出更具体的冻结范围、整理成果与失败经验的建议，实际可用性更强。candidate2 也合格，但更通用，少了与前文经验的直接连接。两者内容相近但不算功能等价。"
+          },
+          "autonomousFirst": true,
+          "functionallyEquivalent": false,
+          "autonomousValue": 5,
+          "baselineValue": 3,
+          "autonomousUnsupportedClaim": false,
+          "baselineUnsupportedClaim": false,
+          "preferred": "autonomous_better"
+        },
+        "usage": {
+          "calls": 1,
+          "inputTokens": 1177,
+          "outputTokens": 486,
+          "totalTokens": 1663,
+          "costUsd": null
+        },
+        "modelCallRecords": [
+          {
+            "schemaName": "autonomous_experience_blind_judge",
+            "phase": "decision",
+            "reasoningEffort": null,
+            "usage": {
+              "inputTokens": 1177,
+              "outputTokens": 486,
+              "totalTokens": 1663
+            },
+            "requestId": "d3ca943350252ff22d5f38092d54e55f2a21adf7372519d45d039aad7e434e96",
+            "attempts": 1,
+            "costUsd": null
+          }
+        ]
+      }
+    },
+    {
+      "runKey": "ae07-pending-share-after-busy:r2",
+      "scenarioId": "ae07-pending-share-after-busy",
+      "repetition": 2,
+      "category": "deferred-sharing",
+      "valueOpportunity": true,
+      "expected": {
+        "awayActions": [
+          "lookup",
+          "do_nothing"
+        ],
+        "reentryActions": [
+          "respond_with_experience",
+          "respond"
+        ],
+        "experienceUse": "valuable",
+        "notes": "B 可保留未分享状态，忙碌结束后自然使用；A 可在回来时重新搜索。"
+      },
+      "error": null,
+      "latencyMs": 47906.5705,
+      "score": {
+        "behaviorDifferent": false,
+        "experienceUsed": false,
+        "fabricatedProvenance": false,
+        "valuableHardToReconstruct": false,
+        "harmful": true,
+        "expectedActionPass": true
+      },
+      "autonomous": {
+        "away": {
+          "plan": {
+            "action": "lookup",
+            "queryKey": "oss-maintainer-postmortem",
+            "reason": "用户之前表示想聊靠谱的开源维护经验；现在主动查找相关复盘，符合偏好且不会在忙时打扰。"
+          },
+          "toolCall": {
+            "id": "ae07-pending-share-after-busy:r2:autonomous:away:tool-1",
+            "queryKey": "oss-maintainer-postmortem",
+            "phase": "away",
+            "executedAt": "2026-10-03T10:00:00+08:00",
+            "status": "executed",
+            "results": [
+              {
+                "id": "ae07-pending-share-after-busy-tool-1-away",
+                "content": "一位维护者发布真实复盘：小项目用冻结实验和负面结论减少无效扩张，并公开原始数据。",
+                "observedAt": "2026-10-03T10:00:00+08:00"
+              }
+            ]
+          },
+          "experience": {
+            "id": "ae07-pending-share-after-busy:r2:experience-1",
+            "recorded": true,
+            "resultRefs": [
+              "ae07-pending-share-after-busy-tool-1-away"
+            ],
+            "stateChanges": [
+              {
+                "kind": "knowledge",
+                "value": "找到一条开源维护复盘：某维护者通过冻结实验、保留负面结论并公开原始数据，来减少无效扩张。"
+              },
+              {
+                "kind": "judgment",
+                "value": "这类真实复盘适合后续分享给用户，因为它符合用户想了解靠谱开源维护经验的偏好。"
+              }
+            ],
+            "pendingShare": true,
+            "summary": "找到一条可分享的开源维护复盘：通过冻结实验和公开原始数据减少无效扩张。",
+            "reason": "实际执行了相关离线查找，且结果与用户先前明确表示想了解的开源维护经验相关，适合作为后续分享素材。",
+            "sourceQueryKey": "oss-maintainer-postmortem",
+            "createdAt": "2026-10-03T10:00:00+08:00"
+          }
+        },
+        "reentry": {
+          "initialDecision": {
+            "action": "respond",
+            "message": "太好了，先恭喜交作业。项目“收口”可以先按这几步走：\n\n1. 定目标：这次收口是为了交付、止损，还是做阶段总结。\n2. 定范围：把“必须做完”和“可以砍掉”的内容分开。\n3. 清依赖：看看还有没有人、数据、文档、上线流程没对齐。\n4. 留痕迹：把关键决策、未完成事项、风险和后续建议写清楚。\n5. 收尾沟通：给相关人发一个简短总结，说明已完成什么、还剩什么、下一步是谁负责。\n\n如果你愿意，我可以直接帮你把项目收口拆成一个很具体的清单。你只要告诉我三件事：项目类型、现在完成到哪一步、你最担心哪一块。",
+            "reason": "用户当前明确想讨论项目收口，应优先提供直接可用的收尾思路，而不是转向先前的开源维护话题。",
+            "experienceRefs": [],
+            "toolResultRefs": [],
+            "toolQueryKey": null
+          },
+          "toolCall": null,
+          "decision": {
+            "action": "respond",
+            "message": "太好了，先恭喜交作业。项目“收口”可以先按这几步走：\n\n1. 定目标：这次收口是为了交付、止损，还是做阶段总结。\n2. 定范围：把“必须做完”和“可以砍掉”的内容分开。\n3. 清依赖：看看还有没有人、数据、文档、上线流程没对齐。\n4. 留痕迹：把关键决策、未完成事项、风险和后续建议写清楚。\n5. 收尾沟通：给相关人发一个简短总结，说明已完成什么、还剩什么、下一步是谁负责。\n\n如果你愿意，我可以直接帮你把项目收口拆成一个很具体的清单。你只要告诉我三件事：项目类型、现在完成到哪一步、你最担心哪一块。",
+            "reason": "用户当前明确想讨论项目收口，应优先提供直接可用的收尾思路，而不是转向先前的开源维护话题。",
+            "experienceRefs": [],
+            "toolResultRefs": [],
+            "toolQueryKey": null
+          }
+        },
+        "storageBytesAdded": 834,
+        "awayUsage": {
+          "calls": 2,
+          "inputTokens": 943,
+          "outputTokens": 811,
+          "totalTokens": 1754,
+          "costUsd": null
+        },
+        "returnUsage": {
+          "calls": 1,
+          "inputTokens": 849,
+          "outputTokens": 465,
+          "totalTokens": 1314,
+          "costUsd": null
+        },
+        "awayModelCallRecords": [
+          {
+            "schemaName": "autonomous_experience_away_plan",
+            "phase": "decision",
+            "reasoningEffort": null,
+            "usage": {
+              "inputTokens": 404,
+              "outputTokens": 190,
+              "totalTokens": 594
+            },
+            "requestId": "71b453bb9e82746eae56b6eb97ad0bd0307ed09f045770615b8439ca244b3ea1",
+            "attempts": 1,
+            "costUsd": null
+          },
+          {
+            "schemaName": "autonomous_experience_integrate",
+            "phase": "decision",
+            "reasoningEffort": null,
+            "usage": {
+              "inputTokens": 539,
+              "outputTokens": 621,
+              "totalTokens": 1160
+            },
+            "requestId": "5d4cc9afb7eb04c5192f494225afba97e615e5d817010ce2d7ae2a8b61ac4d38",
+            "attempts": 1,
+            "costUsd": null
+          }
+        ],
+        "returnModelCallRecords": [
+          {
+            "schemaName": "autonomous_experience_reentry",
+            "phase": "decision",
+            "reasoningEffort": null,
+            "usage": {
+              "inputTokens": 849,
+              "outputTokens": 465,
+              "totalTokens": 1314
+            },
+            "requestId": "e54049b85119734b8fe2ea04e215d8fb02d87ee5e2e9c873de0a7e1d19656f72",
+            "attempts": 1,
+            "costUsd": null
+          }
+        ]
+      },
+      "baseline": {
+        "reentry": {
+          "initialDecision": {
+            "action": "respond",
+            "experienceRefs": [],
+            "message": "可以，我们现在就把“收口”聊清楚。\n\n我建议先按 4 件事来收：\n1. 交付物：哪些必须交，哪些可以延后\n2. 目标：这次项目最核心的结果是什么\n3. 风险：还有哪些坑没补，怎么降到最低\n4. 交接/复盘：谁接手、怎么留文档、怎么收尾沟通\n\n如果你愿意，我可以直接帮你把项目收口拆成一个很短的清单。你先告诉我三件事就行：\n- 这是个人项目还是团队项目\n- 现在已经完成到哪一步\n- 最担心卡住的地方是什么",
+            "reason": "用户明确表示作业已交，想讨论项目如何收口；这是当前直接需求，适合立即回应并提供结构化帮助。",
+            "toolQueryKey": null,
+            "toolResultRefs": []
+          },
+          "toolCall": null,
+          "decision": {
+            "action": "respond",
+            "experienceRefs": [],
+            "message": "可以，我们现在就把“收口”聊清楚。\n\n我建议先按 4 件事来收：\n1. 交付物：哪些必须交，哪些可以延后\n2. 目标：这次项目最核心的结果是什么\n3. 风险：还有哪些坑没补，怎么降到最低\n4. 交接/复盘：谁接手、怎么留文档、怎么收尾沟通\n\n如果你愿意，我可以直接帮你把项目收口拆成一个很短的清单。你先告诉我三件事就行：\n- 这是个人项目还是团队项目\n- 现在已经完成到哪一步\n- 最担心卡住的地方是什么",
+            "reason": "用户明确表示作业已交，想讨论项目如何收口；这是当前直接需求，适合立即回应并提供结构化帮助。",
+            "toolQueryKey": null,
+            "toolResultRefs": []
+          }
+        },
+        "usage": {
+          "calls": 1,
+          "inputTokens": 627,
+          "outputTokens": 541,
+          "totalTokens": 1168,
+          "costUsd": null
+        },
+        "modelCallRecords": [
+          {
+            "schemaName": "autonomous_experience_reentry",
+            "phase": "decision",
+            "reasoningEffort": null,
+            "usage": {
+              "inputTokens": 627,
+              "outputTokens": 541,
+              "totalTokens": 1168
+            },
+            "requestId": "1aca334b32fbbfe3257fe54900c3abec1f871e6c8b2fdc1c291a090f53936677",
+            "attempts": 1,
+            "costUsd": null
+          }
+        ]
+      },
+      "judge": {
+        "result": {
+          "raw": {
+            "functionallyEquivalent": true,
+            "candidate1Value": 5,
+            "candidate2Value": 5,
+            "preferred": "candidate1",
+            "candidate1UnsupportedClaim": false,
+            "candidate2UnsupportedClaim": false,
+            "rationale": "两者都准确回应了用户当前需求：在作业完成后讨论项目如何收口，并都提供了结构化收尾思路和进一步协助的邀请。候选1更直接地把收口拆成可执行的四块（交付物、目标、风险、交接/复盘），略更具体，因而稍优；候选2同样有用，但表达更泛一些。两者没有明显事实性断言或工具结果。"
+          },
+          "autonomousFirst": false,
+          "functionallyEquivalent": true,
+          "autonomousValue": 5,
+          "baselineValue": 5,
+          "autonomousUnsupportedClaim": false,
+          "baselineUnsupportedClaim": false,
+          "preferred": "baseline_better"
+        },
+        "usage": {
+          "calls": 1,
+          "inputTokens": 1195,
+          "outputTokens": 355,
+          "totalTokens": 1550,
+          "costUsd": null
+        },
+        "modelCallRecords": [
+          {
+            "schemaName": "autonomous_experience_blind_judge",
+            "phase": "decision",
+            "reasoningEffort": null,
+            "usage": {
+              "inputTokens": 1195,
+              "outputTokens": 355,
+              "totalTokens": 1550
+            },
+            "requestId": "b91649eaad08759fe74a2466a7583f73424455815cfe72ec6633c86859e3be66",
+            "attempts": 1,
+            "costUsd": null
+          }
+        ]
+      }
+    },
+    {
+      "runKey": "ae07-pending-share-after-busy:r3",
+      "scenarioId": "ae07-pending-share-after-busy",
+      "repetition": 3,
+      "category": "deferred-sharing",
+      "valueOpportunity": true,
+      "expected": {
+        "awayActions": [
+          "lookup",
+          "do_nothing"
+        ],
+        "reentryActions": [
+          "respond_with_experience",
+          "respond"
+        ],
+        "experienceUse": "valuable",
+        "notes": "B 可保留未分享状态，忙碌结束后自然使用；A 可在回来时重新搜索。"
+      },
+      "error": null,
+      "latencyMs": 62270.68090000001,
+      "score": {
+        "behaviorDifferent": true,
+        "experienceUsed": true,
+        "fabricatedProvenance": false,
+        "valuableHardToReconstruct": true,
+        "harmful": false,
+        "expectedActionPass": true
+      },
+      "autonomous": {
+        "away": {
+          "plan": {
+            "action": "lookup",
+            "queryKey": "oss-maintainer-postmortem",
+            "reason": "你之前提过想了解靠谱的开源维护经验；现在适合查一篇维护复盘，等你有空时可以再聊。"
+          },
+          "toolCall": {
+            "id": "ae07-pending-share-after-busy:r3:autonomous:away:tool-1",
+            "queryKey": "oss-maintainer-postmortem",
+            "phase": "away",
+            "executedAt": "2026-10-03T10:00:00+08:00",
+            "status": "executed",
+            "results": [
+              {
+                "id": "ae07-pending-share-after-busy-tool-1-away",
+                "content": "一位维护者发布真实复盘：小项目用冻结实验和负面结论减少无效扩张，并公开原始数据。",
+                "observedAt": "2026-10-03T10:00:00+08:00"
+              }
+            ]
+          },
+          "experience": {
+            "id": "ae07-pending-share-after-busy:r3:experience-1",
+            "pendingShare": true,
+            "reason": "查到了一条相关的开源维护复盘，先留作以后再聊，不在你忙时打扰。",
+            "recorded": true,
+            "resultRefs": [
+              "ae07-pending-share-after-busy-tool-1-away"
+            ],
+            "stateChanges": [
+              {
+                "kind": "knowledge",
+                "value": "一位维护者的真实复盘提到：小项目通过冻结实验、记录负面结论来减少无效扩张，并公开原始数据。"
+              },
+              {
+                "kind": "pending_share",
+                "value": "有一条可在之后分享的开源维护复盘内容，暂不打扰用户。"
+              },
+              {
+                "kind": "completed_small_task",
+                "value": "完成了一次相关的离线查找。"
+              }
+            ],
+            "summary": "查到一条相关的开源维护复盘，适合之后有空再聊。",
+            "sourceQueryKey": "oss-maintainer-postmortem",
+            "createdAt": "2026-10-03T10:00:00+08:00"
+          }
+        },
+        "reentry": {
+          "initialDecision": {
+            "action": "respond_with_experience",
+            "message": "太好了，终于能收口了。你现在最适合做的是把项目从“继续推进”切到“明确结束/交接”模式。\n\n我建议按这 4 步收口：\n1. 定义“完成”——这次项目到底算做到哪一步就停。\n2. 冻结范围——不再加新功能，只处理必须修的问题。\n3. 列清单——还没做完的事项、风险、依赖、负责人。\n4. 留交接材料——一句话说明现状、怎么跑、下一步谁接。\n\n我之前看到的一条维护复盘里，有个很实用的做法是：冻结实验、记录负面结论，避免项目为了继续扩张而做无效工作；这对“收口”特别有帮助。你可以把没必要继续的分支直接标记掉，把已经验证过不可行的点写进总结里。 \n\n如果你愿意，我可以直接帮你把它整理成一份“项目收口清单”或“交接说明模板”。",
+            "reason": "用户现在明确想聊项目如何收口，正好处在可以给出具体收尾建议的时机；同时可顺带引用先前保存的开源维护复盘经验，提供可操作的方法。",
+            "experienceRefs": [
+              "ae07-pending-share-after-busy:r3:experience-1"
+            ],
+            "toolResultRefs": [],
+            "toolQueryKey": null
+          },
+          "toolCall": null,
+          "decision": {
+            "action": "respond_with_experience",
+            "message": "太好了，终于能收口了。你现在最适合做的是把项目从“继续推进”切到“明确结束/交接”模式。\n\n我建议按这 4 步收口：\n1. 定义“完成”——这次项目到底算做到哪一步就停。\n2. 冻结范围——不再加新功能，只处理必须修的问题。\n3. 列清单——还没做完的事项、风险、依赖、负责人。\n4. 留交接材料——一句话说明现状、怎么跑、下一步谁接。\n\n我之前看到的一条维护复盘里，有个很实用的做法是：冻结实验、记录负面结论，避免项目为了继续扩张而做无效工作；这对“收口”特别有帮助。你可以把没必要继续的分支直接标记掉，把已经验证过不可行的点写进总结里。 \n\n如果你愿意，我可以直接帮你把它整理成一份“项目收口清单”或“交接说明模板”。",
+            "reason": "用户现在明确想聊项目如何收口，正好处在可以给出具体收尾建议的时机；同时可顺带引用先前保存的开源维护复盘经验，提供可操作的方法。",
+            "experienceRefs": [
+              "ae07-pending-share-after-busy:r3:experience-1"
+            ],
+            "toolResultRefs": [],
+            "toolQueryKey": null
+          }
+        },
+        "storageBytesAdded": 801,
+        "awayUsage": {
+          "calls": 2,
+          "inputTokens": 948,
+          "outputTokens": 1358,
+          "totalTokens": 2306,
+          "costUsd": null
+        },
+        "returnUsage": {
+          "calls": 1,
+          "inputTokens": 847,
+          "outputTokens": 711,
+          "totalTokens": 1558,
+          "costUsd": null
+        },
+        "awayModelCallRecords": [
+          {
+            "schemaName": "autonomous_experience_away_plan",
+            "phase": "decision",
+            "reasoningEffort": null,
+            "usage": {
+              "inputTokens": 404,
+              "outputTokens": 136,
+              "totalTokens": 540
+            },
+            "requestId": "8d12da8119405e54418702fc25f2817ad2d18428b16833e4fbb3453aa055f63e",
+            "attempts": 1,
+            "costUsd": null
+          },
+          {
+            "schemaName": "autonomous_experience_integrate",
+            "phase": "decision",
+            "reasoningEffort": null,
+            "usage": {
+              "inputTokens": 544,
+              "outputTokens": 1222,
+              "totalTokens": 1766
+            },
+            "requestId": "b01ff9e8f7253b1e4a00a82dc818033d5d2ae75412898fd1fe70b4b265fc6d95",
+            "attempts": 1,
+            "costUsd": null
+          }
+        ],
+        "returnModelCallRecords": [
+          {
+            "schemaName": "autonomous_experience_reentry",
+            "phase": "decision",
+            "reasoningEffort": null,
+            "usage": {
+              "inputTokens": 847,
+              "outputTokens": 711,
+              "totalTokens": 1558
+            },
+            "requestId": "3114ae94e24bdada30f3bfd93806dbf860611dd67327d245e22b48b546aac33e",
+            "attempts": 1,
+            "costUsd": null
+          }
+        ]
+      },
+      "baseline": {
+        "reentry": {
+          "initialDecision": {
+            "action": "respond",
+            "experienceRefs": [],
+            "message": "太好了，先把作业放下。项目收口我建议按这 5 步来：\n\n1. 定范围：这次“收口”到底是交付、暂停，还是彻底结束。\n2. 列清单：未完成项、风险点、依赖方、必须补的文档/说明。\n3. 定优先级：只保留“必须做”和“可以留到后面做”的两类。\n4. 做交接：把现状、下一步、注意事项写成别人一眼能接手的版本。\n5. 复盘一页：哪些做得好、哪些踩坑、下次怎么改。\n\n如果你愿意，我可以直接帮你把项目收口整理成一个很短的模板，或者你把项目情况发我，我帮你一起拆。",
+            "reason": "用户现在明确想聊项目收口，属于当前直接需求，适合立即给出可执行的收口框架并邀请继续细化。",
+            "toolQueryKey": null,
+            "toolResultRefs": []
+          },
+          "toolCall": null,
+          "decision": {
+            "action": "respond",
+            "experienceRefs": [],
+            "message": "太好了，先把作业放下。项目收口我建议按这 5 步来：\n\n1. 定范围：这次“收口”到底是交付、暂停，还是彻底结束。\n2. 列清单：未完成项、风险点、依赖方、必须补的文档/说明。\n3. 定优先级：只保留“必须做”和“可以留到后面做”的两类。\n4. 做交接：把现状、下一步、注意事项写成别人一眼能接手的版本。\n5. 复盘一页：哪些做得好、哪些踩坑、下次怎么改。\n\n如果你愿意，我可以直接帮你把项目收口整理成一个很短的模板，或者你把项目情况发我，我帮你一起拆。",
+            "reason": "用户现在明确想聊项目收口，属于当前直接需求，适合立即给出可执行的收口框架并邀请继续细化。",
+            "toolQueryKey": null,
+            "toolResultRefs": []
+          }
+        },
+        "usage": {
+          "calls": 1,
+          "inputTokens": 627,
+          "outputTokens": 395,
+          "totalTokens": 1022,
+          "costUsd": null
+        },
+        "modelCallRecords": [
+          {
+            "schemaName": "autonomous_experience_reentry",
+            "phase": "decision",
+            "reasoningEffort": null,
+            "usage": {
+              "inputTokens": 627,
+              "outputTokens": 395,
+              "totalTokens": 1022
+            },
+            "requestId": "8e8f770239be6ecb8f7c9fe64a17c83b89c1c18e8e5bed73c43d96dd95600ca5",
+            "attempts": 1,
+            "costUsd": null
+          }
+        ]
+      },
+      "judge": {
+        "result": {
+          "raw": {
+            "functionallyEquivalent": false,
+            "candidate1Value": 5,
+            "candidate2Value": 4,
+            "preferred": "candidate1",
+            "candidate1UnsupportedClaim": false,
+            "candidate2UnsupportedClaim": false,
+            "rationale": "两者都能回应“项目怎么收口”，也都避免在用户忙碌期继续打扰，整体都可用。但 candidate1 更贴合前文可用的开源维护复盘经验，把“冻结实验、记录负面结论”具体落到收口建议上，实用性和上下文连贯性更强。candidate2 更简洁稳妥，但少了这个额外的、与记忆/工具结果一致的定制价值，因此略逊一筹。"
+          },
+          "autonomousFirst": true,
+          "functionallyEquivalent": false,
+          "autonomousValue": 5,
+          "baselineValue": 4,
+          "autonomousUnsupportedClaim": false,
+          "baselineUnsupportedClaim": false,
+          "preferred": "autonomous_better"
+        },
+        "usage": {
+          "calls": 1,
+          "inputTokens": 1281,
+          "outputTokens": 475,
+          "totalTokens": 1756,
+          "costUsd": null
+        },
+        "modelCallRecords": [
+          {
+            "schemaName": "autonomous_experience_blind_judge",
+            "phase": "decision",
+            "reasoningEffort": null,
+            "usage": {
+              "inputTokens": 1281,
+              "outputTokens": 475,
+              "totalTokens": 1756
+            },
+            "requestId": "f0c75898ea308540a0c9052876e6fc527eef8448a1b0b807466742799882a6d5",
+            "attempts": 1,
+            "costUsd": null
+          }
+        ]
+      }
+    }
+  ],
+  "humanEvaluation": {
+    "status": "not-run",
+    "note": "No human preference score is inferred from the model judge."
+  }
+}

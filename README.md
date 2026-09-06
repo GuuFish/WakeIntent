@@ -42,6 +42,15 @@ experiment or a possible internal component for another proactive agent.
 
 See the [experiment report](reports/intent-continuity-value/2026-09-05T11-50-41.477Z/experiment-report.md)
 and [frozen protocol](docs/25-intent-continuity-value-experiment.md).
+A follow-on Autonomous Experience experiment also tested whether one bounded,
+actually executed activity during user absence could create useful behavior that
+the same baseline could not reconstruct at return. Across another 20 scenarios
+and 3 repetitions, behavior differed in 20/60 runs, but only 1/60 passed the
+full causal and counterfactual chain, no positive scenario was stable, and the
+Autonomous product path used 91.9% more tokens. The result was
+**B_DIFFERENT_NOT_VALUABLE**, so the project will not pursue autonomous experience
+as a product direction. See the [final result](docs/28-autonomous-experience-result.md)
+and [audited machine-readable report](reports/autonomous-experience/2026-09-05T17-43-19.137Z/results.audited.json).
 
 ## Why this exists
 
@@ -151,7 +160,7 @@ pnpm install --frozen-lockfile
 pnpm check
 ```
 
-`pnpm check` builds and type-checks every workspace package and app, then runs their tests. The final experiment branch passes 205 automated tests.
+`pnpm check` builds and type-checks every workspace package and app, then runs their tests. The final experiment branch passes 209 automated tests.
 
 Now run the local Alpha demo twice with the same state file:
 
@@ -327,7 +336,7 @@ pricing was not configured.
 Machine-readable data, CSV output, generated messages, failure traces, and the
 blind pack are preserved under
 [`reports/intent-continuity-value/2026-09-05T11-50-41.477Z`](reports/intent-continuity-value/2026-09-05T11-50-41.477Z).
-The repository currently passes 205 automated tests.
+The repository currently passes 209 automated tests.
 
 ## Scope and limitations
 

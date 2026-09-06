@@ -44,7 +44,14 @@
     "eval:intent-continuity:plan": "pnpm --filter @wakeintent/core build && pnpm --filter @wakeintent/model-openai-compatible build && pnpm --filter @wakeintent/eval build && node scripts/run-intent-continuity-value.mjs",
     "eval:intent-continuity:api": "pnpm --filter @wakeintent/core build && pnpm --filter @wakeintent/model-openai-compatible build && pnpm --filter @wakeintent/eval build && node --env-file=.env scripts/run-intent-continuity-value.mjs --execute",
     "demo:intent-continuity:plan": "pnpm --filter @wakeintent/core build && pnpm --filter @wakeintent/model-openai-compatible build && pnpm --filter @wakeintent/eval build && node scripts/run-intent-continuity-value.mjs --ids=s07-living-demo-busy-then-free",
-    "demo:intent-continuity:api": "pnpm --filter @wakeintent/core build && pnpm --filter @wakeintent/model-openai-compatible build && pnpm --filter @wakeintent/eval build && node --env-file=.env scripts/run-intent-continuity-value.mjs --execute --ids=s07-living-demo-busy-then-free"
+    "demo:intent-continuity:api": "pnpm --filter @wakeintent/core build && pnpm --filter @wakeintent/model-openai-compatible build && pnpm --filter @wakeintent/eval build && node --env-file=.env scripts/run-intent-continuity-value.mjs --execute --ids=s07-living-demo-busy-then-free",
+    "eval:autonomous-experience:plan": "pnpm --filter @wakeintent/model-openai-compatible build && pnpm --filter @wakeintent/eval build && node scripts/run-autonomous-experience.mjs",
+    "eval:autonomous-experience:api": "pnpm --filter @wakeintent/model-openai-compatible build && pnpm --filter @wakeintent/eval build && node --env-file=.env scripts/run-autonomous-experience.mjs --execute",
+    "demo:autonomous-experience:plan": "pnpm --filter @wakeintent/model-openai-compatible build && pnpm --filter @wakeintent/eval build && node scripts/run-autonomous-experience.mjs --ids=ae07-pending-share-after-busy",
+    "demo:autonomous-experience:api": "pnpm --filter @wakeintent/model-openai-compatible build && pnpm --filter @wakeintent/eval build && node --env-file=.env scripts/run-autonomous-experience.mjs --execute --ids=ae07-pending-share-after-busy",
+    "eval:autonomous-experience:rescore": "pnpm --filter @wakeintent/eval build && node scripts/rescore-autonomous-experience.mjs reports/autonomous-experience/2026-09-05T17-43-19.137Z/results.json",
+    "eval:autonomous-experience:audit": "pnpm --filter @wakeintent/model-openai-compatible build && pnpm --filter @wakeintent/eval build && node --env-file=.env scripts/audit-autonomous-experience.mjs reports/autonomous-experience/2026-09-05T17-43-19.137Z/results.corrected.json",
+    "demo:autonomous-experience:result": "node scripts/show-autonomous-experience-result.mjs"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
