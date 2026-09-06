@@ -19,7 +19,16 @@ defer, cancel, expire, resolve, or stay silent.
 > frozen comparison against a strong Memory + Proactive Agent baseline did not
 > show enough behavioral benefit to justify the extra complexity and token cost.
 
-## Research outcome
+## Research status
+
+WakeIntent is currently preserved as an experimental research repository. Its
+two completed comparisons test whether explicit continuity mechanisms add
+stable user-visible value beyond a strong Memory + Proactive Agent baseline.
+
+| Experiment | Audited result | Current decision |
+| --- | --- | --- |
+| Explicit ContactIntent continuity | No reduction in false outreach; more missed follow-ups and 42.2% more tokens | Pause standalone product development |
+| Autonomous away-time experience | Behavior differed in 20/60 runs, but only 1/60 passed the full causal and counterfactual chain | Do not pursue as a product direction |
 
 WakeIntent tested a narrow question: does preserving a future contact reason as
 an explicit, durable lifecycle object lead to better behavior than saving a
