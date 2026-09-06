@@ -91,7 +91,7 @@ WakeIntent 把这些职责拆开：
 
 关键能力并不只是“主动发送消息”，而是让一个明确的联系理由跨时间存在，在情况变化时修正它，并在联系已经没有意义时什么也不做。
 
-## 目前已经实现
+## 已保留的实现
 
 - 与框架无关的 TypeScript 领域模型和生命周期；
 - 候选意图提取与基于最新上下文的语义重验证；
@@ -231,7 +231,7 @@ pnpm smoke:host-ingestion-api
 
 这些包目前仍是私有工作区包，尚未发布到 npm。当前支持的集成方式是在这个 pnpm workspace 中增加宿主包，并通过 `workspace:*` 依赖所需组件；独立应用暂时无法安装稳定的 npm 版本。参见[宿主集成指南](docs/20-host-integration.md)和可运行的 [`examples/minimal.mjs`](examples/minimal.mjs)。
 
-## 最终证据
+## ContactIntent 对照实验证据
 
 冻结对照完成 60/60 组配对运行，运行错误为 0，共发生 327 次 HTTP 尝试：
 
@@ -298,10 +298,14 @@ WakeIntent 目前不提供：
 - [招聘跟进试点计划](docs/21-recruitment-pilot.md)
 - [参考宿主 HTTP API](docs/22-reference-host-api.md)
 - [对话接入与模型模式](docs/23-conversation-ingestion.md)
+- [Context-aware 对照实验](docs/24-context-aware-comparison.md)
+- [意图连续性冻结实验](docs/25-intent-continuity-value-experiment.md)
+- [自主经历冻结实验](docs/27-autonomous-experience-experiment.md)
+- [自主经历最终结果](docs/28-autonomous-experience-result.md)
 
 ## 参与贡献
 
-WakeIntent 仍处于非常早期的阶段。可复现的失败场景、对抗性对话时间线、存储适配器、框架集成和严谨评测都很有价值。详情参见 [CONTRIBUTING.md](CONTRIBUTING.md)。
+WakeIntent 作为已经收口的研究项目保留。欢迎复现实验、质疑结论、指出计分或来源追踪缺陷、增加独立 Baseline，或改进可复现性；当前范围不包含产品功能扩张。详情参见 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
 ## 许可证
 

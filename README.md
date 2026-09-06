@@ -15,9 +15,10 @@ then revalidates that reason against newer context before deciding to contact,
 defer, cancel, expire, resolve, or stay silent.
 
 > **Status: experiment concluded; standalone product development is paused.**
-> WakeIntent remains a runnable research artifact and experimental implementation. A
-> frozen comparison against a strong Memory + Proactive Agent baseline did not
-> show enough behavioral benefit to justify the extra complexity and token cost.
+> WakeIntent remains a runnable research artifact and experimental
+> implementation. A frozen comparison against a strong Memory + Proactive Agent
+> baseline did not show enough behavioral benefit to justify the extra complexity
+> and token cost.
 
 ## Research status
 
@@ -129,7 +130,7 @@ The important behavior is not merely sending messages. It is preserving a
 specific reason across time, revising it when circumstances change, and doing
 nothing when contact is no longer justified.
 
-## What works now
+## Preserved implementation
 
 - framework-independent TypeScript domain model and lifecycle;
 - candidate extraction and latest-context semantic reevaluation;
@@ -315,7 +316,7 @@ application cannot yet install a stable registry release. See the
 [host integration guide](docs/20-host-integration.md) and the runnable
 [`examples/minimal.mjs`](examples/minimal.mjs) reference.
 
-## Final evidence
+## ContactIntent comparison evidence
 
 The final frozen comparison completed 60/60 paired scenario runs with zero
 runtime errors and 327 HTTP attempts:
@@ -402,12 +403,17 @@ Start with:
 - [Recruitment pilot plan](docs/21-recruitment-pilot.md)
 - [Reference host HTTP API](docs/22-reference-host-api.md)
 - [Conversation ingestion and model mode](docs/23-conversation-ingestion.md)
+- [Context-aware comparison](docs/24-context-aware-comparison.md)
+- [Intent continuity frozen experiment](docs/25-intent-continuity-value-experiment.md)
+- [Autonomous Experience frozen experiment](docs/27-autonomous-experience-experiment.md)
+- [Autonomous Experience final result](docs/28-autonomous-experience-result.md)
 
 ## Contributing
 
-WakeIntent is intentionally early. Reproducible failure cases, adversarial
-conversation timelines, storage adapters, framework integrations, and careful
-evaluation work are especially useful. See [CONTRIBUTING.md](CONTRIBUTING.md).
+WakeIntent is preserved as concluded research. Contributions that reproduce or
+challenge the results, identify scoring or provenance defects, add independent
+baselines, or improve reproducibility are welcome. Product feature expansion is
+outside the current scope. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
