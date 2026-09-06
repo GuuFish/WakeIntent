@@ -4,10 +4,10 @@
 
 [![CI](https://github.com/GuuFish/WakeIntent/actions/workflows/ci.yml/badge.svg)](https://github.com/GuuFish/WakeIntent/actions/workflows/ci.yml)
 
-> **Developer component — not an end-user app.** This repository is for
-> developers who want to embed proactive contact decisions into an AI product.
-> Cloning it gives you an engine, adapters, examples, and evaluation tools; it
-> does not launch a chat UI, run a background assistant, or send notifications.
+> **Research repository — not an end-user app.** This repository preserves the
+> runnable implementation, frozen datasets, audited results, and failure cases
+> from WakeIntent's completed experiments. It does not launch a chat UI, run a
+> background assistant, or send notifications.
 
 WakeIntent is a framework-agnostic contact-intent engine for conversational AI.
 It turns a conversational reason to follow up later into a durable `ContactIntent`,
@@ -15,7 +15,7 @@ then revalidates that reason against newer context before deciding to contact,
 defer, cancel, expire, resolve, or stay silent.
 
 > **Status: experiment concluded; standalone product development is paused.**
-> WakeIntent remains a runnable research artifact and developer component. A
+> WakeIntent remains a runnable research artifact and experimental implementation. A
 > frozen comparison against a strong Memory + Proactive Agent baseline did not
 > show enough behavioral benefit to justify the extra complexity and token cost.
 

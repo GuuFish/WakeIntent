@@ -4,12 +4,12 @@
 
 [![CI](https://github.com/GuuFish/WakeIntent/actions/workflows/ci.yml/badge.svg)](https://github.com/GuuFish/WakeIntent/actions/workflows/ci.yml)
 
-> **这是开发者组件，不是开箱即用的应用。** 本仓库面向希望把主动联系决策嵌入 AI 产品的开发者。克隆后得到的是核心引擎、适配器、示例和评测工具；它不会直接启动聊天界面、常驻 AI 助手或自动发送通知。
+> **这是研究仓库，不是开箱即用的应用。** 本仓库保留 WakeIntent 已完成实验的可运行实现、冻结数据集、审计结果和失败案例；它不会直接启动聊天界面、常驻 AI 助手或自动发送通知。
 
 WakeIntent 是一个面向对话式 AI、与具体框架无关的联系意图引擎。它把对话中“未来值得再次联系用户的理由”转化为可持久化的 `ContactIntent`，并在真正联系前结合最新上下文重新验证，最终决定联系、推迟、取消、过期、标记为已解决或保持沉默。
 
 > **当前状态：实验已经收口，暂停作为独立产品继续开发。**
-> WakeIntent 仍保留为可运行的研究记录和开发者组件。与强 Memory +
+> WakeIntent 仍保留为可运行的研究记录和实验性实现。与强 Memory +
 > Proactive Agent 的冻结对照没有显示出足以抵消额外复杂度与 Token 成本的行为收益。
 
 ## 研究状态
